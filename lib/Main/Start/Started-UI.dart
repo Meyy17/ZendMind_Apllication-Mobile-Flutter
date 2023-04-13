@@ -1,7 +1,8 @@
-// ignore_for_file: prefer_const_constructors, file_names, prefer_interpolation_to_compose_strings
+// ignore_for_file: file_names, use_build_context_synchronously
 
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:zenmind/Main/Authentication/Login-UI.dart';
 
 //DevFile
 import 'package:zenmind/Settings.dart';
@@ -9,6 +10,7 @@ import 'package:zenmind/Settings.dart';
 //Package
 import 'package:action_slider/action_slider.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:zenmind/Widget/IconsWidget.dart';
 
 class StartedUI extends StatelessWidget {
   const StartedUI({super.key});
@@ -31,10 +33,10 @@ class StartedUI extends StatelessWidget {
                             : themeNotifier.isDark = true;
                       },
                       icon: AnimatedSwitcher(
-                          duration: Duration(seconds: 1),
+                          duration: const Duration(seconds: 1),
                           transitionBuilder: (child, anim) =>
                               RotationTransition(
-                                turns: child.key == ValueKey('icon1')
+                                turns: child.key == const ValueKey('icon1')
                                     ? Tween<double>(begin: 1, end: 0.75)
                                         .animate(anim)
                                     : Tween<double>(begin: 0.75, end: 1)
@@ -46,12 +48,12 @@ class StartedUI extends StatelessWidget {
                               ? Icon(
                                   Icons.light_mode_outlined,
                                   key: const ValueKey('icon1'),
-                                  color: getTheme().textColors(context),
+                                  color: getTheme().unselectedWidget(context),
                                 )
                               : Icon(
                                   Icons.dark_mode,
                                   key: const ValueKey('icon2'),
-                                  color: getTheme().textColors(context),
+                                  color: getTheme().unselectedWidget(context),
                                 )),
                     ),
                   ],
@@ -63,30 +65,29 @@ class StartedUI extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      Container(
-                        decoration: BoxDecoration(
-                            color: Color(0xffD4FFFB),
-                            borderRadius: BorderRadius.circular(100)),
-                        child: SvgPicture.asset(
-                          svgAssetsLocation + "Icons-1.svg",
-                          width: 105,
-                          height: 105,
-                        ),
+                      circleIconsWthBG(context: context, size: 121),
+                      const SizedBox(
+                        height: 20,
                       ),
-                      Text("ZenMind"),
-                      Text("Let’s Find Zen in Your Mind With Us.")
+                      Text(
+                        "ZenMind",
+                        style: TextStyle(
+                            fontSize: 30,
+                            fontWeight: FontWeight.w800,
+                            color: getTheme().themeColor),
+                      ),
                     ],
                   ),
                 )),
-                Container(
+                SizedBox(
                   width: double.infinity,
-                  height: 311,
+                  height: 300,
                   child: Stack(children: [
                     SizedBox(
-                      height: 311,
+                      height: 300,
                       width: double.infinity,
                       child: SvgPicture.asset(
-                        svgAssetsLocation + "SplashCircleAssets.svg",
+                        "${svgAssetsLocation}SplashCircleAssets.svg",
                         fit: BoxFit.fill,
                       ),
                     ),
@@ -95,9 +96,11 @@ class StartedUI extends StatelessWidget {
                       padding: const EdgeInsets.symmetric(horizontal: 20),
                       child: Center(
                           child: ActionSlider.standard(
+                        backgroundBorderRadius: BorderRadius.circular(10.0),
+                        foregroundBorderRadius: BorderRadius.circular(10),
                         // ignore: prefer_const_literals_to_create_immutables
                         boxShadow: [
-                          BoxShadow(
+                          const BoxShadow(
                               color: Colors.transparent,
                               blurRadius: 0,
                               spreadRadius: 0)
@@ -105,13 +108,36 @@ class StartedUI extends StatelessWidget {
                         action: (controller) async {
                           controller.loading();
                           await Future.delayed(const Duration(seconds: 1));
-                          controller.success();
+                          Navigator.pushAndRemoveUntil(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => const LoginUI(),
+                              ),
+                              (route) => false);
                         },
-                        successIcon: Icon(Icons.check),
-                        toggleColor: getTheme().cardColors(context),
-                        icon: Icon(Icons.arrow_forward_ios_outlined),
-                        backgroundColor: Color(0xff42CCC9),
-                        child: Text("Get Started"),
+
+                        loadingIcon: const SizedBox(
+                            width: 55,
+                            child: Center(
+                                child: SizedBox(
+                              width: 24.0,
+                              height: 24.0,
+                              child: CircularProgressIndicator(
+                                  strokeWidth: 2.0, color: Colors.white),
+                            ))),
+                        toggleColor: getTheme().thirdColor,
+                        icon: const Icon(
+                          Icons.arrow_forward_ios_outlined,
+                          color: Colors.white,
+                        ),
+                        backgroundColor: getTheme().buttonColors,
+                        child: const Text(
+                          "Get Started",
+                          style: TextStyle(
+                              color: Colors.white,
+                              fontWeight: FontWeight.w800,
+                              fontSize: 15),
+                        ),
                       )),
                     )
                   ]),

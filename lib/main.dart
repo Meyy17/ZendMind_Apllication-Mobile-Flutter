@@ -1,9 +1,10 @@
+// ignore_for_file: deprecated_member_use, must_be_immutable
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:zenmind/Main/DB/SharedPereference.dart';
 import 'package:zenmind/Main/Start/Started-UI.dart';
 import 'Settings.dart';
-import 'Main/DB/SharedPereference.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 void main() {
   runApp(MyApp());
@@ -25,9 +26,18 @@ class MyApp extends StatelessWidget {
           debugShowCheckedModeBanner: false,
           themeMode: themeNotifier.isDark ? ThemeMode.dark : ThemeMode.light,
           darkTheme: ThemeData(
+              textTheme: GoogleFonts.poppinsTextTheme(
+                ThemeData(brightness: Brightness.dark).textTheme,
+              ),
               primarySwatch: getTheme().themeColor,
+              buttonColor: getTheme().buttonColors,
               brightness: Brightness.dark),
-          theme: ThemeData(primarySwatch: getTheme().themeColor),
+          theme: ThemeData(
+              textTheme: GoogleFonts.poppinsTextTheme(
+                ThemeData(brightness: Brightness.light).textTheme,
+              ),
+              buttonColor: getTheme().buttonColors,
+              primarySwatch: getTheme().themeColor),
           home: const StartedUI(),
         );
       }),
