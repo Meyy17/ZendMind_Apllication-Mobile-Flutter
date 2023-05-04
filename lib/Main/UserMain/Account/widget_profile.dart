@@ -5,7 +5,7 @@ import 'package:zenmind/settings_all.dart';
 
 class ProfileWidget {
   Widget cardDrawer() {
-    return Card(
+    return const Card(
       child: ListTile(
         leading: Icon(Icons.light_mode_outlined),
         title: Text("Change Theme"),
