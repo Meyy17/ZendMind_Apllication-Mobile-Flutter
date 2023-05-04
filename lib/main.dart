@@ -2,8 +2,8 @@
 
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:zenmind/Main/Start/Started-UI.dart';
-import 'Settings.dart';
+import 'package:zenmind/Main/Start/start_menu.dart';
+import 'package:zenmind/settings_all.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 void main() {
@@ -29,15 +29,15 @@ class MyApp extends StatelessWidget {
               textTheme: GoogleFonts.poppinsTextTheme(
                 ThemeData(brightness: Brightness.dark).textTheme,
               ),
-              primarySwatch: getTheme().themeColor,
-              buttonColor: getTheme().buttonColors,
+              primarySwatch: GetTheme().themeColor,
+              buttonColor: GetTheme().buttonColors,
               brightness: Brightness.dark),
           theme: ThemeData(
               textTheme: GoogleFonts.poppinsTextTheme(
                 ThemeData(brightness: Brightness.light).textTheme,
               ),
-              buttonColor: getTheme().buttonColors,
-              primarySwatch: getTheme().themeColor),
+              buttonColor: GetTheme().buttonColors,
+              primarySwatch: GetTheme().themeColor),
           home: const StartedUI(),
         );
       }),
@@ -50,9 +50,9 @@ class MyApp extends StatelessWidget {
     //         debugShowCheckedModeBanner: false,
     //         themeMode: currentMode,
     //         darkTheme: ThemeData(
-    //             primarySwatch: getTheme().themeColor,
+    //             primarySwatch: GetTheme().themeColor,
     //             brightness: Brightness.dark),
-    //         theme: ThemeData(primarySwatch: getTheme().themeColor),
+    //         theme: ThemeData(primarySwatch: GetTheme().themeColor),
     //         home: const StartedUI(),
     //       );
     //     });

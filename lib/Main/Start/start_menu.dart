@@ -1,16 +1,13 @@
-// ignore_for_file: file_names, use_build_context_synchronously
-
 import 'package:flutter/material.dart';
+import 'package:page_transition/page_transition.dart';
 import 'package:provider/provider.dart';
-import 'package:zenmind/Main/Authentication/Login-UI.dart';
-
-//DevFile
-import 'package:zenmind/Settings.dart';
+import 'package:zenmind/Main/Authentication/login_menu.dart';
 
 //Package
 import 'package:action_slider/action_slider.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:zenmind/Widget/IconsWidget.dart';
+import 'package:zenmind/settings_all.dart';
 
 class StartedUI extends StatelessWidget {
   const StartedUI({super.key});
@@ -48,12 +45,12 @@ class StartedUI extends StatelessWidget {
                               ? Icon(
                                   Icons.light_mode_outlined,
                                   key: const ValueKey('icon1'),
-                                  color: getTheme().unselectedWidget(context),
+                                  color: GetTheme().unselectedWidget(context),
                                 )
                               : Icon(
                                   Icons.dark_mode,
                                   key: const ValueKey('icon2'),
-                                  color: getTheme().unselectedWidget(context),
+                                  color: GetTheme().unselectedWidget(context),
                                 )),
                     ),
                   ],
@@ -74,7 +71,7 @@ class StartedUI extends StatelessWidget {
                         style: TextStyle(
                             fontSize: 30,
                             fontWeight: FontWeight.w800,
-                            color: getTheme().themeColor),
+                            color: GetTheme().themeColor),
                       ),
                     ],
                   ),
@@ -93,7 +90,8 @@ class StartedUI extends StatelessWidget {
                     ),
                     Container(
                       margin: const EdgeInsets.only(top: 50),
-                      padding: const EdgeInsets.symmetric(horizontal: 20),
+                      padding: EdgeInsets.symmetric(
+                          horizontal: GetSizeScreen().paddingScreen),
                       child: Center(
                           child: ActionSlider.standard(
                         backgroundBorderRadius: BorderRadius.circular(10.0),
@@ -105,14 +103,13 @@ class StartedUI extends StatelessWidget {
                               blurRadius: 0,
                               spreadRadius: 0)
                         ],
-                        action: (controller) async {
+                        action: (controller) {
                           controller.loading();
-                          await Future.delayed(const Duration(seconds: 1));
                           Navigator.pushAndRemoveUntil(
                               context,
-                              MaterialPageRoute(
-                                builder: (context) => const LoginUI(),
-                              ),
+                              PageTransition(
+                                  type: PageTransitionType.fade,
+                                  child: const LoginUI()),
                               (route) => false);
                         },
 
@@ -125,12 +122,12 @@ class StartedUI extends StatelessWidget {
                               child: CircularProgressIndicator(
                                   strokeWidth: 2.0, color: Colors.white),
                             ))),
-                        toggleColor: getTheme().thirdColor,
+                        toggleColor: GetTheme().thirdColor,
                         icon: const Icon(
                           Icons.arrow_forward_ios_outlined,
                           color: Colors.white,
                         ),
-                        backgroundColor: getTheme().buttonColors,
+                        backgroundColor: GetTheme().buttonColors,
                         child: const Text(
                           "Get Started",
                           style: TextStyle(

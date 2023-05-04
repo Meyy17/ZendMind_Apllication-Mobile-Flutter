@@ -1,7 +1,7 @@
 // ignore_for_file: file_names
 
 import 'package:flutter/material.dart';
-import 'package:zenmind/Settings.dart';
+import 'package:zenmind/settings_all.dart';
 
 Widget inputStyleFillWithIcons(
     {required context,
@@ -10,6 +10,7 @@ Widget inputStyleFillWithIcons(
     required TextEditingController controller,
     required String? Function(String?)? validator}) {
   return TextFormField(
+    validator: validator,
     controller: controller,
     decoration: InputDecoration(
         border: const OutlineInputBorder(
@@ -23,7 +24,7 @@ Widget inputStyleFillWithIcons(
         ),
         prefixIcon: prefixIcons,
         filled: true,
-        fillColor: getTheme().backgroundGrey(context),
+        fillColor: GetTheme().backgroundGrey(context),
         hintStyle: const TextStyle(fontSize: 13),
         contentPadding:
             const EdgeInsets.symmetric(horizontal: 25, vertical: 20),

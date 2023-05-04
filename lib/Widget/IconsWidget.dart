@@ -2,13 +2,13 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:zenmind/Settings.dart';
+import 'package:zenmind/settings_all.dart';
 
 Widget circleIconsWthBG({required context, required double size}) {
   return Container(
     padding: const EdgeInsets.all(25),
     decoration: BoxDecoration(
-        color: getTheme().accentCardColors(context),
+        color: GetTheme().accentCardColors(context),
         borderRadius: BorderRadius.circular(100)),
     child: SvgPicture.asset(
       "${svgAssetsLocation}Icons-1.svg",

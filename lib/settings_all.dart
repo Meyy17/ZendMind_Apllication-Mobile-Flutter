@@ -1,13 +1,13 @@
-// ignore_for_file: file_names, camel_case_types, deprecated_member_use
+// ignore_for_file: deprecated_member_use
 
 import 'package:flutter/material.dart';
-import 'package:zenmind/Main/DB/SharedPereference.dart';
+import 'package:zenmind/DB/SharedPereference.dart';
 
 //URL
 const svgAssetsLocation = "Assets/Picture/Svg/";
 
 //Size
-class getSizeScreen {
+class GetSizeScreen {
   double width(context) {
     return MediaQuery.of(context).size.width;
   }
@@ -15,6 +15,8 @@ class getSizeScreen {
   double height(context) {
     return MediaQuery.of(context).size.height;
   }
+
+  double paddingScreen = 20;
 }
 
 //Theme
@@ -27,7 +29,7 @@ class ThemeModel extends ChangeNotifier {
   ThemeModel() {
     getPreferences();
   }
-//Switching themes in the flutter apps - Flutterant
+
   set isDark(bool value) {
     _isDark = value;
     preferences.setTheme(value);
@@ -40,7 +42,7 @@ class ThemeModel extends ChangeNotifier {
   }
 }
 
-class getTheme {
+class GetTheme {
   Color primaryColor(context) {
     return Theme.of(context).primaryColor;
   }
@@ -54,7 +56,7 @@ class getTheme {
   }
 
   Color accentCardColors(context) {
-    return Theme.of(context).backgroundColor;
+    return Theme.of(context).colorScheme.background;
   }
 
   Color backgroundGrey(context) {
