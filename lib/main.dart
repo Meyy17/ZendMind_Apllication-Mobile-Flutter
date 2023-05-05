@@ -30,13 +30,11 @@ class MyApp extends StatelessWidget {
                 ThemeData(brightness: Brightness.dark).textTheme,
               ),
               primarySwatch: GetTheme().themeColor,
-              buttonColor: GetTheme().buttonColors,
               brightness: Brightness.dark),
           theme: ThemeData(
               textTheme: GoogleFonts.poppinsTextTheme(
                 ThemeData(brightness: Brightness.light).textTheme,
               ),
-              buttonColor: GetTheme().buttonColors,
               primarySwatch: GetTheme().themeColor),
           home: const StartedUI(),
         );

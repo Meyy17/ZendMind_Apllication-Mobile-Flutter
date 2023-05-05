@@ -48,7 +48,7 @@ class GetTheme {
   }
 
   Color buttonColor(context) {
-    return Theme.of(context).buttonColor;
+    return Theme.of(context).primaryColor;
   }
 
   Color cardColors(context) {
