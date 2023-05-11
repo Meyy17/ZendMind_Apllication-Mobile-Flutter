@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:zenmind/Main/UserMain/Account/EditAccount/profile_edit.dart';
 import 'package:zenmind/Widget/Button.dart';
 import 'package:zenmind/Widget/InputText.dart';
 import 'package:zenmind/settings_all.dart';
@@ -90,7 +91,10 @@ class ProfileWidget {
                 width: 120,
                 height: 40,
                 child: flatButtonPrimaryRounded(
-                    context: context, text: "Edit Profile", onPressed: () {}),
+                    context: context, text: "Edit Profile", onPressed: () {
+                      Navigator.push(context, MaterialPageRoute(builder: (context) => ProfileEdit()),
+                    );
+                }),
               )
             ],
           ),

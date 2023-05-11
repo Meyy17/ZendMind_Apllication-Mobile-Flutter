@@ -3,6 +3,8 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:zenmind/Widget/Button.dart';
 import 'package:zenmind/settings_all.dart';
 
+import 'BookConsultation/book_consultation.dart';
+
 class ConsultationWidget {
   Widget needHandleList({required context}) {
     return Column(
@@ -133,7 +135,10 @@ class ConsultationWidget {
                         child: flatButtonPrimaryRounded(
                             context: context,
                             text: "Book now",
-                            onPressed: () {}),
+                            onPressed: () {
+                              Navigator.push(context, MaterialPageRoute(builder: (context) => BookConsultation()),
+                              );
+                            }),
                       )
                     ],
                   )
