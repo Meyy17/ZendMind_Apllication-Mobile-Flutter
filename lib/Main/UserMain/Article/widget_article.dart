@@ -1,6 +1,7 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:dots_indicator/dots_indicator.dart';
 import 'package:flutter/material.dart';
+import 'package:zenmind/Main/UserMain/Article/ArticleDetail/article_detail.dart';
 import 'package:zenmind/settings_all.dart';
 
 class ArticleWidget {
@@ -111,61 +112,67 @@ class ArticleWidget {
             shrinkWrap: true,
             physics: const NeverScrollableScrollPhysics(),
             itemBuilder: (BuildContext context, int index) {
-              return Container(
-                padding: const EdgeInsets.all(10),
-                decoration: BoxDecoration(
-                    color: GetTheme().cardColors(context),
-                    borderRadius: BorderRadius.circular(10)),
-                child: Row(
-                  children: [
-                    Container(
-                      width: 90,
-                      height: 90,
-                      decoration: BoxDecoration(
-                          color: GetTheme().backgroundGrey(context),
-                          borderRadius: BorderRadius.circular(10)),
-                    ),
-                    const SizedBox(
-                      width: 20,
-                    ),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        const Text(
-                          "Mental Health",
-                          style: TextStyle(fontSize: 10),
-                        ),
-                        const SizedBox(
-                          height: 5,
-                        ),
-                        const Text(
-                          "Lorem ipsum dolor sit amet.",
-                          style: TextStyle(
-                              fontSize: 14, fontWeight: FontWeight.w800),
-                        ),
-                        const SizedBox(
-                          height: 7,
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Container(
-                              height: 15,
-                              width: 15,
-                              decoration: BoxDecoration(
-                                  color: GetTheme().backgroundGrey(context),
-                                  borderRadius: BorderRadius.circular(100)),
-                            ),
-                            const Text(
-                              "Mc Kindey",
-                              style: TextStyle(
-                                  fontSize: 10, fontWeight: FontWeight.w600),
-                            ),
-                          ],
-                        )
-                      ],
-                    )
-                  ],
+              return GestureDetector(
+                onTap: (){
+                  Navigator.push(context, MaterialPageRoute(builder: (context) => ArticleDetail())
+                  );
+                },
+                child: Container(
+                  padding: const EdgeInsets.all(10),
+                  decoration: BoxDecoration(
+                      color: GetTheme().cardColors(context),
+                      borderRadius: BorderRadius.circular(10)),
+                  child: Row(
+                    children: [
+                      Container(
+                        width: 90,
+                        height: 90,
+                        decoration: BoxDecoration(
+                            color: GetTheme().backgroundGrey(context),
+                            borderRadius: BorderRadius.circular(10)),
+                      ),
+                      const SizedBox(
+                        width: 20,
+                      ),
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          const Text(
+                            "Mental Health",
+                            style: TextStyle(fontSize: 10),
+                          ),
+                          const SizedBox(
+                            height: 5,
+                          ),
+                          const Text(
+                            "Lorem ipsum dolor sit amet.",
+                            style: TextStyle(
+                                fontSize: 14, fontWeight: FontWeight.w800),
+                          ),
+                          const SizedBox(
+                            height: 7,
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Container(
+                                height: 15,
+                                width: 15,
+                                decoration: BoxDecoration(
+                                    color: GetTheme().backgroundGrey(context),
+                                    borderRadius: BorderRadius.circular(100)),
+                              ),
+                              const Text(
+                                "Mc Kindey",
+                                style: TextStyle(
+                                    fontSize: 10, fontWeight: FontWeight.w600),
+                              ),
+                            ],
+                          )
+                        ],
+                      )
+                    ],
+                  ),
                 ),
               );
             },
