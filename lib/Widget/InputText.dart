@@ -8,8 +8,10 @@ Widget inputStyleFillWithIcons(
     required String hintText,
     required Icon prefixIcons,
     required TextEditingController controller,
+    required bool readOnly,
     required String? Function(String?)? validator}) {
   return TextFormField(
+    readOnly: readOnly,
     validator: validator,
     controller: controller,
     decoration: InputDecoration(

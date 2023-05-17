@@ -114,7 +114,7 @@ class ArticleWidget {
             itemBuilder: (BuildContext context, int index) {
               return GestureDetector(
                 onTap: (){
-                  Navigator.push(context, MaterialPageRoute(builder: (context) => ArticleDetail())
+                  Navigator.push(context, MaterialPageRoute(builder: (context) => const ArticleDetail())
                   );
                 },
                 child: Container(

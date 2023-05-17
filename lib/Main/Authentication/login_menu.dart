@@ -1,7 +1,14 @@
+import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:page_transition/page_transition.dart';
+import 'package:zenmind/DB/auth_preference.dart';
+import 'package:zenmind/Main/Authentication/auth_services.dart';
 import 'package:zenmind/Main/Authentication/register_menu.dart';
+import 'package:zenmind/Main/Authentication/verifymail_menu.dart';
 import 'package:zenmind/Main/UserMain/navigation_menu.dart';
+import 'package:zenmind/Models/auth_model.dart';
+import 'package:zenmind/Models/response_model.dart';
 import 'package:zenmind/Widget/Button.dart';
 import 'package:zenmind/Widget/IconsWidget.dart';
 import 'package:zenmind/Widget/InputText.dart';
@@ -17,73 +24,155 @@ class LoginUI extends StatefulWidget {
 class _LoginUIState extends State<LoginUI> {
   // Variable
   final formKey = GlobalKey<FormState>();
+  ApiResponse responseLogin = ApiResponse();
+  LoginModel userDataFromLogin = LoginModel();
+
+  AuthPreferences authLocalDB = AuthPreferences();
 
   //Controller
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
 
+  bool isLoad = false;
+
+  void orderLogin() async {
+    var res = await AuthServices()
+        .login(email: emailController.text, password: passwordController.text);
+
+    setState(() {
+      responseLogin = res;
+      if (responseLogin.error == null) {
+        setState(() {
+          userDataFromLogin = responseLogin.data as LoginModel;
+
+          authLocalDB.setToken(userDataFromLogin.data!.user!.token ?? "");
+          authLocalDB.setId(userDataFromLogin.data!.user!.id ?? 0);
+
+          if (authLocalDB.getToken() != null) {
+            Navigator.pushAndRemoveUntil(
+                context,
+                PageTransition(
+                    type: PageTransitionType.fade, child: const Navigation()),
+                (route) => false);
+          }
+        });
+      } else if (res.error == "Verify email") {
+        setState(() {
+          isLoad = false;
+        });
+        showCupertinoDialog(
+          context: context,
+          builder: (context) => AlertDialog(
+            title: const Text("Please Verify Ur Email"),
+            actions: [
+              TextButton(
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                  child: const Text("No")),
+              TextButton(
+                  onPressed: () {
+                    Navigator.push(
+                        context,
+                        PageTransition(
+                            child: VerifyEmailMenu(
+                              email: emailController.text,
+                              password: passwordController.text,
+                            ),
+                            type: PageTransitionType.fade));
+                  },
+                  child: const Text("Yes"))
+            ],
+          ),
+        );
+      } else {
+        setState(() {
+          isLoad = false;
+        });
+        final snackBar = SnackBar(
+          elevation: 0,
+          behavior: SnackBarBehavior.floating,
+          backgroundColor: Colors.transparent,
+          content: AwesomeSnackbarContent(
+            title: 'On Snap!',
+            message: responseLogin.error.toString(),
+            contentType: ContentType.failure,
+          ),
+        );
+
+        ScaffoldMessenger.of(context)
+          ..hideCurrentSnackBar()
+          ..showSnackBar(snackBar);
+      }
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: false,
-      body: SafeArea(
-        child: SizedBox(
-          width: double.infinity,
-          child: Padding(
-            padding:
-                EdgeInsets.symmetric(horizontal: GetSizeScreen().paddingScreen),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                const Spacer(),
-                circleIconsWthBG(context: context, size: 105),
-                const SizedBox(
-                  height: 20,
-                ),
-                Text(
-                  "Login",
-                  style: TextStyle(
-                      fontSize: 20,
-                      fontWeight: FontWeight.w800,
-                      color: GetTheme().themeColor),
-                ),
-                const Spacer(),
-                form(formkey: formKey),
-                SizedBox(
-                    width: double.infinity,
-                    child: Align(
-                      alignment: Alignment.center,
-                      child: Text(
-                        "Or",
-                        style: TextStyle(
-                            color: GetTheme().unselectedWidget(context)),
+      body: isLoad
+          ? const Center(
+              child: CircularProgressIndicator(),
+            )
+          : SafeArea(
+              child: SizedBox(
+                width: double.infinity,
+                child: Padding(
+                  padding: EdgeInsets.symmetric(
+                      horizontal: GetSizeScreen().paddingScreen),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      const Spacer(),
+                      circleIconsWthBG(context: context, size: 105),
+                      const SizedBox(
+                        height: 20,
                       ),
-                    )),
-                const SizedBox(
-                  height: 10,
+                      Text(
+                        "Welcome back to zendmind",
+                        style: TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.w800,
+                            color: GetTheme().themeColor),
+                      ),
+                      const Spacer(),
+                      form(formkey: formKey),
+                      SizedBox(
+                          width: double.infinity,
+                          child: Align(
+                            alignment: Alignment.center,
+                            child: Text(
+                              "Or",
+                              style: TextStyle(
+                                  color: GetTheme().unselectedWidget(context)),
+                            ),
+                          )),
+                      const SizedBox(
+                        height: 10,
+                      ),
+                      googleLoginBtn(
+                          context: context, onPressed: () {}, text: "Google"),
+                      const SizedBox(
+                        height: 10,
+                      ),
+                      actionTextButton(
+                          text: "New to ZenMind?",
+                          btnTxt: "Register",
+                          onPressed: () {
+                            Navigator.pushReplacement(
+                                context,
+                                PageTransition(
+                                    type: PageTransitionType.fade,
+                                    child: const RegisterUI()));
+                          }),
+                      const Spacer(),
+                    ],
+                  ),
                 ),
-                googleLoginBtn(
-                    context: context, onPressed: () {}, text: "Google"),
-                const SizedBox(
-                  height: 10,
-                ),
-                actionTextButton(
-                    text: "New to ZenMind?",
-                    btnTxt: "Register",
-                    onPressed: () {
-                      Navigator.pushReplacement(
-                          context,
-                          PageTransition(
-                              type: PageTransitionType.fade,
-                              child: const RegisterUI()));
-                    }),
-                const Spacer(),
-              ],
+              ),
             ),
-          ),
-        ),
-      ),
     );
   }
 
@@ -93,6 +182,7 @@ class _LoginUIState extends State<LoginUI> {
       child: Column(
         children: [
           inputStyleFillWithIcons(
+              readOnly: false,
               prefixIcons: const Icon(Icons.email),
               validator: (p0) =>
                   p0!.isEmpty ? 'Mohon masukkan email anda' : null,
@@ -103,6 +193,7 @@ class _LoginUIState extends State<LoginUI> {
             height: 20,
           ),
           inputStyleFillWithIcons(
+              readOnly: false,
               prefixIcons: const Icon(Icons.lock),
               validator: (p0) => p0!.length < 6
                   ? 'Minimal panjang password adalah 6 karakter'
@@ -125,12 +216,10 @@ class _LoginUIState extends State<LoginUI> {
               text: "Login",
               onPressed: () {
                 if (formKey.currentState!.validate()) {
-                  Navigator.pushAndRemoveUntil(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => const Navigation(),
-                      ),
-                      (route) => false);
+                  setState(() {
+                    isLoad = true;
+                  });
+                  orderLogin();
                 }
               }),
           const SizedBox(

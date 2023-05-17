@@ -136,7 +136,7 @@ class ConsultationWidget {
                             context: context,
                             text: "Book now",
                             onPressed: () {
-                              Navigator.push(context, MaterialPageRoute(builder: (context) => BookConsultation()),
+                              Navigator.push(context, MaterialPageRoute(builder: (context) => const BookConsultation()),
                               );
                             }),
                       )

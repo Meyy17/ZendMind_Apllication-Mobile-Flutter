@@ -1,20 +1,34 @@
 import 'package:flutter/material.dart';
-import 'package:zenmind/Main/UserMain/Account/EditAccount/profile_edit.dart';
+import 'package:zenmind/Models/user_model.dart';
 import 'package:zenmind/Widget/Button.dart';
 import 'package:zenmind/Widget/InputText.dart';
 import 'package:zenmind/settings_all.dart';
 
 class ProfileWidget {
-  Widget cardDrawer() {
-    return const Card(
+  Widget cardDrawer(
+      {required String title,
+      required Function()? onPressed,
+      required IconData icon,
+      required Color contentColors,
+      required Color background}) {
+    return Card(
+      color: background,
       child: ListTile(
-        leading: Icon(Icons.light_mode_outlined),
-        title: Text("Change Theme"),
+        leading: Icon(
+          icon,
+          color: contentColors,
+        ),
+        title: Text(title, style: TextStyle(color: contentColors)),
+        onTap: onPressed,
       ),
     );
   }
 
-  Widget header({required context, required Function() onTapSetting}) {
+  Widget header(
+      {required context,
+      required Function() onTapSetting,
+      required Function() onTapEditProfile,
+      required UserModel userdata}) {
     return Row(
       children: [
         SizedBox(
@@ -64,12 +78,13 @@ class ProfileWidget {
             children: [
               Row(
                 children: [
-                  const Expanded(
+                  Expanded(
                       child: Text(
-                    "Andika Setya Eka Natha",
+                    userdata.data!.name ?? "Error",
                     maxLines: 2,
                     overflow: TextOverflow.ellipsis,
-                    style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
+                    style: const TextStyle(
+                        fontSize: 15, fontWeight: FontWeight.bold),
                   )),
                   const SizedBox(
                     width: 10,
@@ -78,9 +93,9 @@ class ProfileWidget {
                       onTap: onTapSetting, child: const Icon(Icons.settings)),
                 ],
               ),
-              const Text(
-                "Joined at dd/mm/yyyy",
-                style: TextStyle(
+              Text(
+                "Joined at ${userdata.data!.createdAt}",
+                style: const TextStyle(
                   fontSize: 10,
                 ),
               ),
@@ -91,10 +106,9 @@ class ProfileWidget {
                 width: 120,
                 height: 40,
                 child: flatButtonPrimaryRounded(
-                    context: context, text: "Edit Profile", onPressed: () {
-                      Navigator.push(context, MaterialPageRoute(builder: (context) => ProfileEdit()),
-                    );
-                }),
+                    context: context,
+                    text: "Edit Profile",
+                    onPressed: onTapEditProfile),
               )
             ],
           ),
@@ -103,7 +117,10 @@ class ProfileWidget {
     );
   }
 
-  Widget generalView({required context, required TextEditingController email}) {
+  Widget generalView(
+      {required context,
+      required TextEditingController email,
+      required UserModel userdata}) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -112,8 +129,9 @@ class ProfileWidget {
           height: 10,
         ),
         inputStyleFillWithIcons(
+            readOnly: true,
             context: context,
-            hintText: "Andika@gmail.com",
+            hintText: userdata.data!.email ?? "",
             prefixIcons: const Icon(Icons.email),
             controller: email,
             validator: null),
@@ -123,19 +141,21 @@ class ProfileWidget {
           height: 10,
         ),
         inputStyleFillWithIcons(
+            readOnly: true,
             context: context,
-            hintText: "Andika Setya Natha",
+            hintText: userdata.data!.name ?? "",
             prefixIcons: const Icon(Icons.email),
             controller: email,
             validator: null),
         const Spacer(),
-        titleGeneralView(text: "Username"),
+        titleGeneralView(text: "Gender"),
         const SizedBox(
           height: 10,
         ),
         inputStyleFillWithIcons(
+            readOnly: true,
             context: context,
-            hintText: "Andika",
+            hintText: userdata.data!.gender ?? "",
             prefixIcons: const Icon(Icons.email),
             controller: email,
             validator: null),

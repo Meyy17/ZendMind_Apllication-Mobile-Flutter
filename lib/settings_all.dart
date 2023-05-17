@@ -1,7 +1,7 @@
 // ignore_for_file: deprecated_member_use
 
 import 'package:flutter/material.dart';
-import 'package:zenmind/DB/SharedPereference.dart';
+import 'package:zenmind/DB/themes_preference.dart';
 
 //URL
 const svgAssetsLocation = "Assets/Picture/Svg/";

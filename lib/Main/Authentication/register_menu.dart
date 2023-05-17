@@ -1,11 +1,16 @@
+import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
 import 'package:flutter/material.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:zenmind/Main/Authentication/login_menu.dart';
-import 'package:zenmind/Main/UserMain/navigation_menu.dart';
+import 'package:zenmind/Main/Authentication/verifymail_menu.dart';
+import 'package:zenmind/Models/auth_model.dart';
 import 'package:zenmind/Widget/Button.dart';
 import 'package:zenmind/Widget/IconsWidget.dart';
 import 'package:zenmind/Widget/InputText.dart';
 import 'package:zenmind/settings_all.dart';
+
+import '../../Models/response_model.dart';
+import 'auth_services.dart';
 
 class RegisterUI extends StatefulWidget {
   const RegisterUI({super.key});
@@ -17,11 +22,54 @@ class RegisterUI extends StatefulWidget {
 class _RegisterUIState extends State<RegisterUI> {
   // Variable
   final formKey = GlobalKey<FormState>();
+  ApiResponse responseLogin = ApiResponse();
+  RegisterModel userDataFromRegister = RegisterModel();
 
   //Controller
   TextEditingController nameController = TextEditingController();
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
+
+  void orderRegister() async {
+    var res = await AuthServices().register(
+        email: emailController.text,
+        password: passwordController.text,
+        name: nameController.text);
+
+    setState(() {
+      responseLogin = res;
+      if (responseLogin.error == null) {
+        setState(() {
+          userDataFromRegister = responseLogin.data as RegisterModel;
+
+          Navigator.pushAndRemoveUntil(
+              context,
+              MaterialPageRoute(
+                builder: (context) => VerifyEmailMenu(
+                  password: passwordController.text,
+                  email: userDataFromRegister.data!.email ?? "",
+                ),
+              ),
+              (route) => false);
+        });
+      } else {
+        final snackBar = SnackBar(
+          elevation: 0,
+          behavior: SnackBarBehavior.floating,
+          backgroundColor: Colors.transparent,
+          content: AwesomeSnackbarContent(
+            title: 'On Snap!',
+            message: responseLogin.error.toString(),
+            contentType: ContentType.failure,
+          ),
+        );
+
+        ScaffoldMessenger.of(context)
+          ..hideCurrentSnackBar()
+          ..showSnackBar(snackBar);
+      }
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -43,7 +91,7 @@ class _RegisterUIState extends State<RegisterUI> {
                   height: 20,
                 ),
                 Text(
-                  "Register",
+                  "Hai, Welcome to zendmind",
                   style: TextStyle(
                       fontSize: 20,
                       fontWeight: FontWeight.w800,
@@ -94,6 +142,7 @@ class _RegisterUIState extends State<RegisterUI> {
       child: Column(
         children: [
           inputStyleFillWithIcons(
+              readOnly: false,
               prefixIcons: const Icon(Icons.person),
               validator: (p0) =>
                   p0!.isEmpty ? 'Mohon masukkan nama lengkap anda' : null,
@@ -104,6 +153,7 @@ class _RegisterUIState extends State<RegisterUI> {
             height: 20,
           ),
           inputStyleFillWithIcons(
+              readOnly: false,
               prefixIcons: const Icon(Icons.email),
               validator: (p0) =>
                   p0!.isEmpty ? 'Mohon masukkan email anda' : null,
@@ -114,6 +164,7 @@ class _RegisterUIState extends State<RegisterUI> {
             height: 20,
           ),
           inputStyleFillWithIcons(
+              readOnly: false,
               prefixIcons: const Icon(Icons.lock),
               validator: (p0) => p0!.length < 6
                   ? 'Minimal panjang password adalah 6 karakter'
@@ -129,12 +180,7 @@ class _RegisterUIState extends State<RegisterUI> {
               text: "Register",
               onPressed: () {
                 if (formKey.currentState!.validate()) {
-                  Navigator.pushAndRemoveUntil(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => const Navigation(),
-                      ),
-                      (route) => false);
+                  orderRegister();
                 }
               }),
           const SizedBox(

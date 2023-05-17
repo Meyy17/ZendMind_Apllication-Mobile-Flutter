@@ -1,19 +1,45 @@
-// ignore_for_file: deprecated_member_use, must_be_immutable
+// ignore_for_file: deprecated_member_use, must_be_immutable, unnecessary_null_comparison
 
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:zenmind/DB/auth_preference.dart';
 import 'package:zenmind/Main/Start/start_menu.dart';
+import 'package:zenmind/Main/UserMain/navigation_menu.dart';
 import 'package:zenmind/settings_all.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 void main() {
-  runApp(MyApp());
+  runApp(const MyApp());
 }
 
-class MyApp extends StatelessWidget {
-  MyApp({super.key});
+class MyApp extends StatefulWidget {
+  const MyApp({super.key});
 
+  @override
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
   ValueNotifier<ThemeMode> themeNotifier = ValueNotifier(ThemeMode.system);
+
+  AuthPreferences authPreferences = AuthPreferences();
+
+  String tokenLocalUsers = "";
+
+  void getData() async {
+    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+    setState(() {
+      tokenLocalUsers =
+          sharedPreferences.getString(AuthPreferences.tokenKey) ?? "";
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    getData();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -36,7 +62,7 @@ class MyApp extends StatelessWidget {
                 ThemeData(brightness: Brightness.light).textTheme,
               ),
               primarySwatch: GetTheme().themeColor),
-          home: const StartedUI(),
+          home: tokenLocalUsers != "" ? const Navigation() : const StartedUI(),
         );
       }),
     );
