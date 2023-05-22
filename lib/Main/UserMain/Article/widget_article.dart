@@ -6,11 +6,11 @@ import 'package:zenmind/Models/articles_model.dart';
 import 'package:zenmind/settings_all.dart';
 
 class ArticleWidget {
-  Widget header({
-    required String? Function(int?, CarouselPageChangedReason?)?
-        onChangeCarosuel,
-    required int indexSlider,
-  }) {
+  Widget header(
+      {required String? Function(int?, CarouselPageChangedReason?)?
+          onChangeCarosuel,
+      required int indexSlider,
+      required ArticlesModel article}) {
     CarouselController carouselController = CarouselController();
     return Column(
       children: [
@@ -20,8 +20,8 @@ class ArticleWidget {
         Padding(
           padding:
               EdgeInsets.symmetric(horizontal: GetSizeScreen().paddingScreen),
-          child: Row(
-            children: const [
+          child: const Row(
+            children: [
               Text(
                 "Recomendation",
                 style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
@@ -54,24 +54,55 @@ class ArticleWidget {
                   Container(
             width: GetSizeScreen().width(context),
             decoration: BoxDecoration(
-                color: GetTheme().backgroundGrey(context),
-                borderRadius: BorderRadius.circular(10)),
-            child: Padding(
-              padding: const EdgeInsets.all(20.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  const Text("By : "),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: const [
-                      Text("Article Title"),
-                      Text("Sub Heading"),
+              color: GetTheme().backgroundGrey(context),
+              borderRadius: BorderRadius.circular(10),
+            ),
+            child: Stack(
+              children: [
+                ClipRRect(
+                  borderRadius: BorderRadius.circular(10),
+                  child: Stack(
+                    children: [
+                      Image.network(
+                        article.data![itemIndex].bannerURL.toString(),
+                        fit: BoxFit.cover,
+                        width: GetSizeScreen().width(context),
+                      ),
+                      Container(
+                        width: GetSizeScreen().width(context),
+                        color: Colors.black54,
+                      )
                     ],
                   ),
-                ],
-              ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(20.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            article.data![itemIndex].title ?? "",
+                            style: const TextStyle(
+                                fontWeight: FontWeight.bold,
+                                color: Colors.white),
+                          ),
+                          Text(
+                            article.data![itemIndex].subtitle ?? "",
+                            overflow: TextOverflow.ellipsis,
+                            maxLines: 2,
+                            style: const TextStyle(
+                                color: Colors.white, fontSize: 10),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                ),
+              ],
             ),
           ),
         ),
@@ -118,7 +149,9 @@ class ArticleWidget {
                   Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => const ArticleDetail()));
+                          builder: (context) => ArticleDetail(
+                                p: article.data![index].content.toString(),
+                              )));
                 },
                 child: Container(
                   padding: const EdgeInsets.all(10),
@@ -133,6 +166,13 @@ class ArticleWidget {
                         decoration: BoxDecoration(
                             color: GetTheme().backgroundGrey(context),
                             borderRadius: BorderRadius.circular(10)),
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(10),
+                          child: Image.network(
+                            article.data![index].bannerURL.toString(),
+                            fit: BoxFit.cover,
+                          ),
+                        ),
                       ),
                       const SizedBox(
                         width: 20,
@@ -149,10 +189,10 @@ class ArticleWidget {
                               height: 5,
                             ),
                             Text(
-                              article.data![index].body ?? "",
+                              article.data![index].subtitle ?? "",
                               overflow: TextOverflow.ellipsis,
                               maxLines: 2,
-                              style: TextStyle(
+                              style: const TextStyle(
                                   fontSize: 14, fontWeight: FontWeight.w800),
                             ),
                             const SizedBox(
