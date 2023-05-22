@@ -4,8 +4,11 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:zenmind/DB/auth_preference.dart';
+import 'package:zenmind/Main/Authentication/auth_services.dart';
+import 'package:zenmind/Main/MentorMain/home_menu.dart';
 import 'package:zenmind/Main/Start/start_menu.dart';
 import 'package:zenmind/Main/UserMain/navigation_menu.dart';
+import 'package:zenmind/Models/user_model.dart';
 import 'package:zenmind/settings_all.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -27,11 +30,23 @@ class _MyAppState extends State<MyApp> {
 
   String tokenLocalUsers = "";
 
+  UserModel users = UserModel();
+
+  bool isLoad = true;
+
   void getData() async {
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
     setState(() {
       tokenLocalUsers =
           sharedPreferences.getString(AuthPreferences.tokenKey) ?? "";
+    });
+
+    var res = await AuthServices().getUsers(token: tokenLocalUsers);
+    setState(() {
+      if (res.error == null) {
+        users = res.data as UserModel;
+        isLoad = false;
+      } else {}
     });
   }
 
@@ -62,7 +77,18 @@ class _MyAppState extends State<MyApp> {
                 ThemeData(brightness: Brightness.light).textTheme,
               ),
               primarySwatch: GetTheme().themeColor),
-          home: tokenLocalUsers != "" ? const Navigation() : const StartedUI(),
+          home: isLoad
+              ? Container(
+                  color: Colors.white,
+                  child: const Center(
+                    child: CircularProgressIndicator(),
+                  ),
+                )
+              : tokenLocalUsers != ""
+                  ? users.data!.role.toString() == "mentor"
+                      ? const HomeMenuMentor()
+                      : const Navigation()
+                  : const StartedUI(),
         );
       }),
     );
