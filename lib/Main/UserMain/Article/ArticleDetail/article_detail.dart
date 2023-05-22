@@ -73,7 +73,7 @@ class _ArticleDetailState extends State<ArticleDetail> {
             ),
             Container(
               margin: const EdgeInsets.only(top: 420, left: 24),
-              child: const Row(
+              child: Row(
                 children: [
                   Text(
                     'Trending',
