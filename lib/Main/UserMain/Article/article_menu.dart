@@ -44,6 +44,7 @@ class _ArticleMenuState extends State<ArticleMenu> {
                 child: Column(
                   children: [
                     ArticleWidget().header(
+                        article: article,
                         onChangeCarosuel: (p0, p1) {
                           setState(() {
                             indexSlider = p0!;
