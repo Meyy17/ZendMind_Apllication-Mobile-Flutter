@@ -1,20 +1,37 @@
 import 'package:flutter/material.dart';
-import 'package:zenmind/Main/UserMain/Account/EditAccount/profile_edit.dart';
+import 'package:zenmind/Func/date_fromated.dart';
+import 'package:zenmind/Models/user_model.dart';
 import 'package:zenmind/Widget/Button.dart';
 import 'package:zenmind/Widget/InputText.dart';
+import 'package:zenmind/env.dart';
 import 'package:zenmind/settings_all.dart';
 
 class ProfileWidget {
-  Widget cardDrawer() {
-    return const Card(
+  Widget cardDrawer(
+      {required String title,
+      required Function()? onPressed,
+      required IconData icon,
+      required Color contentColors,
+      required Color background}) {
+    return Card(
+      color: background,
       child: ListTile(
-        leading: Icon(Icons.light_mode_outlined),
-        title: Text("Change Theme"),
+        leading: Icon(
+          icon,
+          color: contentColors,
+        ),
+        title: Text(title, style: TextStyle(color: contentColors)),
+        onTap: onPressed,
       ),
     );
   }
 
-  Widget header({required context, required Function() onTapSetting}) {
+  Widget header(
+      {required context,
+      required Function() onTapSetting,
+      required Function() tapPhotosProfile,
+      required Function() onTapEditProfile,
+      required UserModel userdata}) {
     return Row(
       children: [
         SizedBox(
@@ -27,25 +44,44 @@ class ProfileWidget {
                 decoration: BoxDecoration(
                     color: GetTheme().backgroundGrey(context),
                     borderRadius: BorderRadius.circular(100)),
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(100),
+                  child: userdata.data!.imgProfileURL != null
+                      ? Image.network(
+                          Environment().zendmindBASEURL +
+                              userdata.data!.imgProfileURL.toString(),
+                          fit: BoxFit.cover,
+                        )
+                      : const Center(
+                          child: Icon(
+                            Icons.person,
+                            color: Colors.white,
+                            size: 32,
+                          ),
+                        ),
+                ),
               ),
               Positioned(
                 bottom: 0,
                 child: SizedBox(
                   width: 115,
                   child: Center(
-                    child: Container(
-                      padding: const EdgeInsets.all(4),
-                      decoration: BoxDecoration(
-                          color: GetTheme().cardColors(context),
-                          borderRadius: BorderRadius.circular(100)),
+                    child: InkWell(
+                      onTap: tapPhotosProfile,
                       child: Container(
-                        padding: const EdgeInsets.all(8),
+                        padding: const EdgeInsets.all(4),
                         decoration: BoxDecoration(
-                            color: GetTheme().primaryColor(context),
+                            color: GetTheme().cardColors(context),
                             borderRadius: BorderRadius.circular(100)),
-                        child: const Icon(
-                          Icons.camera_alt_rounded,
-                          color: Colors.white,
+                        child: Container(
+                          padding: const EdgeInsets.all(8),
+                          decoration: BoxDecoration(
+                              color: GetTheme().primaryColor(context),
+                              borderRadius: BorderRadius.circular(100)),
+                          child: const Icon(
+                            Icons.camera_alt_rounded,
+                            color: Colors.white,
+                          ),
                         ),
                       ),
                     ),
@@ -64,12 +100,13 @@ class ProfileWidget {
             children: [
               Row(
                 children: [
-                  const Expanded(
+                  Expanded(
                       child: Text(
-                    "Andika Setya Eka Natha",
+                    userdata.data!.name ?? "Error",
                     maxLines: 2,
                     overflow: TextOverflow.ellipsis,
-                    style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
+                    style: const TextStyle(
+                        fontSize: 15, fontWeight: FontWeight.bold),
                   )),
                   const SizedBox(
                     width: 10,
@@ -78,9 +115,9 @@ class ProfileWidget {
                       onTap: onTapSetting, child: const Icon(Icons.settings)),
                 ],
               ),
-              const Text(
-                "Joined at dd/mm/yyyy",
-                style: TextStyle(
+              Text(
+                "Joined at ${formatDateToSlash(date: userdata.data!.createdAt.toString())}",
+                style: const TextStyle(
                   fontSize: 10,
                 ),
               ),
@@ -91,10 +128,9 @@ class ProfileWidget {
                 width: 120,
                 height: 40,
                 child: flatButtonPrimaryRounded(
-                    context: context, text: "Edit Profile", onPressed: () {
-                      Navigator.push(context, MaterialPageRoute(builder: (context) => ProfileEdit()),
-                    );
-                }),
+                    context: context,
+                    text: "Edit Profile",
+                    onPressed: onTapEditProfile),
               )
             ],
           ),
@@ -103,7 +139,10 @@ class ProfileWidget {
     );
   }
 
-  Widget generalView({required context, required TextEditingController email}) {
+  Widget generalView(
+      {required context,
+      required TextEditingController email,
+      required UserModel userdata}) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -112,8 +151,9 @@ class ProfileWidget {
           height: 10,
         ),
         inputStyleFillWithIcons(
+            readOnly: true,
             context: context,
-            hintText: "Andika@gmail.com",
+            hintText: userdata.data!.email ?? "",
             prefixIcons: const Icon(Icons.email),
             controller: email,
             validator: null),
@@ -123,19 +163,21 @@ class ProfileWidget {
           height: 10,
         ),
         inputStyleFillWithIcons(
+            readOnly: true,
             context: context,
-            hintText: "Andika Setya Natha",
+            hintText: userdata.data!.name ?? "",
             prefixIcons: const Icon(Icons.email),
             controller: email,
             validator: null),
         const Spacer(),
-        titleGeneralView(text: "Username"),
+        titleGeneralView(text: "Gender"),
         const SizedBox(
           height: 10,
         ),
         inputStyleFillWithIcons(
+            readOnly: true,
             context: context,
-            hintText: "Andika",
+            hintText: userdata.data!.gender ?? "",
             prefixIcons: const Icon(Icons.email),
             controller: email,
             validator: null),

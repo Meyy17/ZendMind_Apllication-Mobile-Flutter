@@ -58,11 +58,13 @@ class _NavigationState extends State<Navigation> {
       body: screen[screenindex],
       bottomNavigationBar: BottomNavigationBar(
         items: const <BottomNavigationBarItem>[
-          BottomNavigationBarItem(icon: Icon(Icons.home), label: "None"),
-          BottomNavigationBarItem(icon: Icon(Icons.home), label: "None"),
-          BottomNavigationBarItem(icon: Icon(Icons.home), label: "None"),
-          BottomNavigationBarItem(icon: Icon(Icons.home), label: "None"),
-          BottomNavigationBarItem(icon: Icon(Icons.home), label: "None"),
+          BottomNavigationBarItem(icon: Icon(Icons.home), label: "Home"),
+          BottomNavigationBarItem(icon: Icon(Icons.book), label: "None"),
+          BottomNavigationBarItem(
+              icon: Icon(Icons.people_sharp), label: "None"),
+          BottomNavigationBarItem(
+              icon: Icon(Icons.stacked_line_chart_rounded), label: "None"),
+          BottomNavigationBarItem(icon: Icon(Icons.person), label: "None"),
         ],
         unselectedItemColor: GetTheme().accentCardColors(context),
         selectedItemColor: GetTheme().buttonColors,

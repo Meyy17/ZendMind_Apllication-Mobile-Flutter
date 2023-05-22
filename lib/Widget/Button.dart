@@ -72,31 +72,33 @@ Widget googleLoginBtn(
 }
 
 Widget dateCard(
-{required String day, required String date, required Function()? onPressed}){
+    {required String day,
+    required String date,
+    required Function()? onPressed}) {
   return Container(
     width: 50,
     height: 75,
     decoration: BoxDecoration(
-      color: Color(0xFFF1F6F7),
-      borderRadius: BorderRadius.circular(15),
-      border: Border.all(color: Color(0xFFE3E3E3),
-        width: 1,
-      )
-    ),
+        color: const Color(0xFFF1F6F7),
+        borderRadius: BorderRadius.circular(15),
+        border: Border.all(
+          color: const Color(0xFFE3E3E3),
+          width: 1,
+        )),
     child: Column(
       crossAxisAlignment: CrossAxisAlignment.center,
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         Text(
-            day,
-          style: TextStyle(
+          day,
+          style: const TextStyle(
             fontSize: 15,
             color: Color(0xFF5C5C5C),
           ),
         ),
         Text(
           date,
-          style: TextStyle(
+          style: const TextStyle(
             fontWeight: FontWeight.w600,
             fontSize: 15,
           ),
@@ -106,15 +108,15 @@ Widget dateCard(
   );
 }
 
-Widget TimePicker(
-{required String time, required Function()? onPressed}) {
+Widget timePicker({required String time, required Function()? onPressed}) {
   return Container(
     height: 50,
     width: 125,
     decoration: BoxDecoration(
-      color: Color(0xFFF1F6F7),
+      color: const Color(0xFFF1F6F7),
       borderRadius: BorderRadius.circular(15),
-      border: Border.all(color: Color(0xFFE3E3E3),
+      border: Border.all(
+        color: const Color(0xFFE3E3E3),
         width: 1,
       ),
     ),
@@ -123,8 +125,8 @@ Widget TimePicker(
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         Text(
-            time,
-          style: TextStyle(
+          time,
+          style: const TextStyle(
             fontWeight: FontWeight.w600,
             fontSize: 15,
           ),

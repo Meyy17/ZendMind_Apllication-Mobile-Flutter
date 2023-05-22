@@ -1,5 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:zenmind/DB/auth_preference.dart';
+import 'package:zenmind/Func/Services/article_services.dart';
+import 'package:zenmind/Main/Authentication/auth_services.dart';
 import 'package:zenmind/Main/UserMain/Home/widget_home.dart';
+import 'package:zenmind/Models/articles_model.dart';
+import 'package:zenmind/Models/user_model.dart';
 import 'package:zenmind/settings_all.dart';
 
 class HomeMenu extends StatefulWidget {
@@ -13,6 +19,32 @@ class _HomeMenuState extends State<HomeMenu> {
   int hoursnow = 0;
   String greeting = "";
   double paddingScreen = GetSizeScreen().paddingScreen;
+
+  UserModel users = UserModel();
+  ArticlesModel article = ArticlesModel();
+  AuthPreferences authPreferences = AuthPreferences();
+
+  String tokenLocalUsers = "";
+  bool isLoad = true;
+
+  void getData() async {
+    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+    getCurrentDate();
+    setState(() {
+      tokenLocalUsers =
+          sharedPreferences.getString(AuthPreferences.tokenKey) ?? "";
+    });
+
+    var res = await AuthServices().getUsers(token: tokenLocalUsers);
+    var resArticle = await getArticle();
+    setState(() {
+      if (res.error == null) {
+        users = res.data as UserModel;
+        article = resArticle.data as ArticlesModel;
+        isLoad = false;
+      } else {}
+    });
+  }
 
   getCurrentDate() {
     var date = DateTime.now();
@@ -39,43 +71,47 @@ class _HomeMenuState extends State<HomeMenu> {
   @override
   void initState() {
     super.initState();
-    getCurrentDate();
+    getData();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SafeArea(
-        child: SingleChildScrollView(
-          child: Column(
-            children: [
-              SizedBox(
-                height: paddingScreen,
+      body: isLoad
+          ? const Center(
+              child: CircularProgressIndicator(),
+            )
+          : SafeArea(
+              child: SingleChildScrollView(
+                child: Column(
+                  children: [
+                    SizedBox(
+                      height: paddingScreen,
+                    ),
+                    HomeWidget().header(
+                        username: users.data!.name ?? "",
+                        context: context,
+                        greeting: greeting,
+                        paddingScreen: paddingScreen),
+                    HomeWidget()
+                        .action(context: context, paddingScreen: paddingScreen),
+                    HomeWidget().featMentalHealth(
+                        context: context, paddingScreen: paddingScreen),
+                    HomeWidget().aboutMentalHealth(
+                        context: context, paddingScreen: paddingScreen),
+                    SizedBox(
+                      height: paddingScreen,
+                    ),
+                    HomeWidget().recomendationMeditasi(
+                        context: context, paddingScreen: paddingScreen),
+                    HomeWidget().finishMeditasi(
+                        context: context, paddingScreen: paddingScreen),
+                    HomeWidget()
+                        .article(context: context, paddingScreen: paddingScreen)
+                  ],
+                ),
               ),
-              HomeWidget().header(
-                  username: "Mey",
-                  context: context,
-                  greeting: greeting,
-                  paddingScreen: paddingScreen),
-              HomeWidget()
-                  .action(context: context, paddingScreen: paddingScreen),
-              HomeWidget().featMentalHealth(
-                  context: context, paddingScreen: paddingScreen),
-              HomeWidget().aboutMentalHealth(
-                  context: context, paddingScreen: paddingScreen),
-              SizedBox(
-                height: paddingScreen,
-              ),
-              HomeWidget().recomendationMeditasi(
-                  context: context, paddingScreen: paddingScreen),
-              HomeWidget().finishMeditasi(
-                  context: context, paddingScreen: paddingScreen),
-              HomeWidget()
-                  .article(context: context, paddingScreen: paddingScreen)
-            ],
-          ),
-        ),
-      ),
+            ),
     );
   }
 }
