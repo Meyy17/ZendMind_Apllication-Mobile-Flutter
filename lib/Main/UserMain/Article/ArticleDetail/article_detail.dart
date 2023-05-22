@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:zenmind/settings_all.dart';
 
 class ArticleDetail extends StatefulWidget {
   const ArticleDetail({Key? key}) : super(key: key);
@@ -16,8 +17,7 @@ class _ArticleDetailState extends State<ArticleDetail> {
           children: [
             SizedBox(
               width: double.infinity,
-              child:
-                  Image.asset('Assets/Picture/Svg/ArticleDetailFill.png'),
+              child: Image.asset('Assets/Picture/Svg/ArticleDetailFill.png'),
             ),
             Container(
               width: double.infinity,
@@ -71,8 +71,8 @@ class _ArticleDetailState extends State<ArticleDetail> {
             ),
             Container(
               margin: const EdgeInsets.only(top: 420, left: 24),
-              child: Row(
-                children: const [
+              child: const Row(
+                children: [
                   Text(
                     'Trending',
                     style: TextStyle(
@@ -103,65 +103,106 @@ class _ArticleDetailState extends State<ArticleDetail> {
                 ],
               ),
             ),
-            Padding(
-              padding: const EdgeInsets.only(top: 470),
-              child: Container(
-                padding: const EdgeInsets.only(top: 36, left: 40, right: 40),
-                alignment: Alignment.topLeft,
-                height: 330,
-                decoration: const BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.only(
-                      topLeft: Radius.circular(50),
-                      topRight: Radius.circular(50),
-                    )),
-                child: SingleChildScrollView(
-                  child: Column(
-                    children: [
-                      Row(
-                        children: const [
-                          CircleAvatar(
-                            backgroundColor: Colors.grey,
-                            radius: 25,
-                          ),
-                          SizedBox(width: 20,),
-                          Text(
-                              'Source Name',
-                            style: TextStyle(
-                              fontSize: 17,
-                              fontWeight: FontWeight.w800
+            SizedBox(
+              height: GetSizeScreen().height(context),
+              child: SingleChildScrollView(
+                child: Padding(
+                  padding: const EdgeInsets.only(top: 470),
+                  child: Container(
+                    padding:
+                        const EdgeInsets.only(top: 36, left: 40, right: 40),
+                    alignment: Alignment.topLeft,
+                    decoration: const BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.only(
+                          topLeft: Radius.circular(50),
+                          topRight: Radius.circular(50),
+                        )),
+                    child: Column(
+                      children: [
+                        Row(
+                          children: const [
+                            CircleAvatar(
+                              backgroundColor: Colors.grey,
+                              radius: 25,
                             ),
-                          ),
-                          SizedBox(width: 10,),
-                          Icon(
-                            Icons.verified,
-                            size: 30,
-                            color: Colors.blue,
-                          )
-                        ],
-                      ),
-                      const SizedBox(height: 20,),
-                      const Text(
-                        'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras condimentum diam a dui faucibus eleifend vitaenec purus. Mauris dolor nunc, malesuada ut tortor nec,vulputate tempus mauris. Vivamus lacinia nisi tortor,nec vulputate eros iaculis ut. Duis semper at nisi idfringilla. Ut pharetra tincidunt nisl varius hendrerit. Nullamquis sem nec dolor pellentesque maximus et sed purus. Integer fermentum porta odio sit amet aliquet. ',
-                      ),
-                      const SizedBox(height: 20,),
-                      const Text(
-                        'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras condimentum diam a dui faucibus eleifend vitaenec purus. Mauris dolor nunc, malesuada ut tortor nec,vulputate tempus mauris. Vivamus lacinia nisi tortor,nec vulputate eros iaculis ut. Duis semper at nisi idfringilla. Ut pharetra tincidunt nisl varius hendrerit. Nullamquis sem nec dolor pellentesque maximus et sed purus. Integer fermentum porta odio sit amet aliquet. ',
-                      ),
-                      const SizedBox(height: 20,),
-                      const Text(
-                        'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras condimentum diam a dui faucibus eleifend vitaenec purus. Mauris dolor nunc, malesuada ut tortor nec,vulputate tempus mauris. Vivamus lacinia nisi tortor,nec vulputate eros iaculis ut. Duis semper at nisi idfringilla. Ut pharetra tincidunt nisl varius hendrerit. Nullamquis sem nec dolor pellentesque maximus et sed purus. Integer fermentum porta odio sit amet aliquet. ',
-                      ),
-                      const SizedBox(height: 20,),
-                    ],
+                            SizedBox(
+                              width: 20,
+                            ),
+                            Text(
+                              'Source Name',
+                              style: TextStyle(
+                                  fontSize: 17, fontWeight: FontWeight.w800),
+                            ),
+                            SizedBox(
+                              width: 10,
+                            ),
+                            Icon(
+                              Icons.verified,
+                              size: 30,
+                              color: Colors.blue,
+                            )
+                          ],
+                        ),
+                        const SizedBox(
+                          height: 20,
+                        ),
+                        const Text(
+                          'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras condimentum diam a dui faucibus eleifend vitaenec purus. Mauris dolor nunc, malesuada ut tortor nec,vulputate tempus mauris. Vivamus lacinia nisi tortor,nec vulputate eros iaculis ut. Duis semper at nisi idfringilla. Ut pharetra tincidunt nisl varius hendrerit. Nullamquis sem nec dolor pellentesque maximus et sed purus. Integer fermentum porta odio sit amet aliquet. ',
+                        ),
+                        const SizedBox(
+                          height: 20,
+                        ),
+                        const Text(
+                          'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras condimentum diam a dui faucibus eleifend vitaenec purus. Mauris dolor nunc, malesuada ut tortor nec,vulputate tempus mauris. Vivamus lacinia nisi tortor,nec vulputate eros iaculis ut. Duis semper at nisi idfringilla. Ut pharetra tincidunt nisl varius hendrerit. Nullamquis sem nec dolor pellentesque maximus et sed purus. Integer fermentum porta odio sit amet aliquet. ',
+                        ),
+                        const SizedBox(
+                          height: 20,
+                        ),
+                        const Text(
+                          'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras condimentum diam a dui faucibus eleifend vitaenec purus. Mauris dolor nunc, malesuada ut tortor nec,vulputate tempus mauris. Vivamus lacinia nisi tortor,nec vulputate eros iaculis ut. Duis semper at nisi idfringilla. Ut pharetra tincidunt nisl varius hendrerit. Nullamquis sem nec dolor pellentesque maximus et sed purus. Integer fermentum porta odio sit amet aliquet. ',
+                        ),
+                        const SizedBox(
+                          height: 20,
+                        ),
+                        const Text(
+                          'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras condimentum diam a dui faucibus eleifend vitaenec purus. Mauris dolor nunc, malesuada ut tortor nec,vulputate tempus mauris. Vivamus lacinia nisi tortor,nec vulputate eros iaculis ut. Duis semper at nisi idfringilla. Ut pharetra tincidunt nisl varius hendrerit. Nullamquis sem nec dolor pellentesque maximus et sed purus. Integer fermentum porta odio sit amet aliquet. ',
+                        ),
+                        const SizedBox(
+                          height: 20,
+                        ),
+                        const Text(
+                          'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras condimentum diam a dui faucibus eleifend vitaenec purus. Mauris dolor nunc, malesuada ut tortor nec,vulputate tempus mauris. Vivamus lacinia nisi tortor,nec vulputate eros iaculis ut. Duis semper at nisi idfringilla. Ut pharetra tincidunt nisl varius hendrerit. Nullamquis sem nec dolor pellentesque maximus et sed purus. Integer fermentum porta odio sit amet aliquet. ',
+                        ),
+                        const SizedBox(
+                          height: 20,
+                        ),
+                        const Text(
+                          'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras condimentum diam a dui faucibus eleifend vitaenec purus. Mauris dolor nunc, malesuada ut tortor nec,vulputate tempus mauris. Vivamus lacinia nisi tortor,nec vulputate eros iaculis ut. Duis semper at nisi idfringilla. Ut pharetra tincidunt nisl varius hendrerit. Nullamquis sem nec dolor pellentesque maximus et sed purus. Integer fermentum porta odio sit amet aliquet. ',
+                        ),
+                        const SizedBox(
+                          height: 20,
+                        ),
+                        const Text(
+                          'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras condimentum diam a dui faucibus eleifend vitaenec purus. Mauris dolor nunc, malesuada ut tortor nec,vulputate tempus mauris. Vivamus lacinia nisi tortor,nec vulputate eros iaculis ut. Duis semper at nisi idfringilla. Ut pharetra tincidunt nisl varius hendrerit. Nullamquis sem nec dolor pellentesque maximus et sed purus. Integer fermentum porta odio sit amet aliquet. ',
+                        ),
+                        const SizedBox(
+                          height: 20,
+                        ),
+                        const Text(
+                          'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras condimentum diam a dui faucibus eleifend vitaenec purus. Mauris dolor nunc, malesuada ut tortor nec,vulputate tempus mauris. Vivamus lacinia nisi tortor,nec vulputate eros iaculis ut. Duis semper at nisi idfringilla. Ut pharetra tincidunt nisl varius hendrerit. Nullamquis sem nec dolor pellentesque maximus et sed purus. Integer fermentum porta odio sit amet aliquet. ',
+                        ),
+                        const SizedBox(
+                          height: 20,
+                        ),
+                      ],
+                    ),
                   ),
                 ),
               ),
             ),
           ],
-
         ),
-
       ]),
     );
   }

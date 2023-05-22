@@ -1,9 +1,13 @@
-// ignore_for_file: use_build_context_synchronously
+// ignore_for_file: use_build_context_synchronously, deprecated_member_use
+
+import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:zenmind/DB/auth_preference.dart';
+import 'package:zenmind/Func/file_fromated.dart';
 import 'package:zenmind/Main/Authentication/auth_services.dart';
 import 'package:zenmind/Main/Authentication/login_menu.dart';
 import 'package:zenmind/Main/UserMain/Account/EditAccount/profile_edit.dart';
@@ -55,6 +59,71 @@ class _ProfileMenuState extends State<ProfileMenu> {
           PageTransition(child: const LoginUI(), type: PageTransitionType.fade),
           (route) => false);
     } else {}
+  }
+
+  final picker = ImagePicker();
+  File? imageFile;
+
+  void setValuePickImgProfile({required final result}) async {
+    Navigator.pop(context);
+    if (result != null) {
+      setState(() {
+        imageFile = File(result.path);
+        isLoad = true;
+      });
+    }
+
+    var resUploadImg = await AuthServices().uploadImgProfile(
+        token: tokenLocalUsers,
+        img: convertFileToBase64(imageFile).toString(),
+        filename: result.path.split('/').last);
+
+    if (resUploadImg.error == null) {
+      setState(() {
+        getData();
+        isLoad = false;
+      });
+    } else {}
+  }
+
+  void pickImageProfile() async {
+    showModalBottomSheet(
+      context: context,
+      backgroundColor: Colors.transparent,
+      builder: (context) => Container(
+          height: 130,
+          decoration: const BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.all(Radius.circular(10))),
+          margin: const EdgeInsets.all(10),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              ListTile(
+                leading: const Icon(Icons.photo_album),
+                title: const Text("Gallery"),
+                onTap: () async {
+                  final result =
+                      await picker.getImage(source: ImageSource.gallery);
+                  if (result != null) {
+                    setValuePickImgProfile(result: result);
+                  }
+                },
+              ),
+              ListTile(
+                leading: const Icon(Icons.camera_alt),
+                title: const Text("Camera"),
+                onTap: () async {
+                  final result =
+                      await picker.getImage(source: ImageSource.camera);
+                  if (result != null) {
+                    setValuePickImgProfile(result: result);
+                  }
+                },
+              )
+            ],
+          )),
+    );
   }
 
   @override
@@ -111,14 +180,18 @@ class _ProfileMenuState extends State<ProfileMenu> {
                         ProfileWidget().header(
                           userdata: users,
                           context: context,
+                          tapPhotosProfile: () {
+                            pickImageProfile();
+                          },
                           onTapSetting: () {
                             scaffoldKey.currentState!.openEndDrawer();
                           },
                           onTapEditProfile: () async {
                             await Navigator.push(
                               context,
-                              MaterialPageRoute(
-                                  builder: (context) => const ProfileEdit()),
+                              PageTransition(
+                                  child: const ProfileEdit(),
+                                  type: PageTransitionType.fade),
                             );
                             setState(() {
                               isLoad = true;

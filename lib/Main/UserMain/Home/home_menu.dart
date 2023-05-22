@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:zenmind/DB/auth_preference.dart';
+import 'package:zenmind/Func/Services/article_services.dart';
 import 'package:zenmind/Main/Authentication/auth_services.dart';
 import 'package:zenmind/Main/UserMain/Home/widget_home.dart';
+import 'package:zenmind/Models/articles_model.dart';
 import 'package:zenmind/Models/user_model.dart';
 import 'package:zenmind/settings_all.dart';
 
@@ -19,6 +21,7 @@ class _HomeMenuState extends State<HomeMenu> {
   double paddingScreen = GetSizeScreen().paddingScreen;
 
   UserModel users = UserModel();
+  ArticlesModel article = ArticlesModel();
   AuthPreferences authPreferences = AuthPreferences();
 
   String tokenLocalUsers = "";
@@ -33,9 +36,11 @@ class _HomeMenuState extends State<HomeMenu> {
     });
 
     var res = await AuthServices().getUsers(token: tokenLocalUsers);
+    var resArticle = await getArticle();
     setState(() {
       if (res.error == null) {
         users = res.data as UserModel;
+        article = resArticle.data as ArticlesModel;
         isLoad = false;
       } else {}
     });

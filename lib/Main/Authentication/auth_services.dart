@@ -173,6 +173,41 @@ class AuthServices {
     return apiresponse;
   }
 
+  Future<ApiResponse> uploadImgProfile(
+      {required String token,
+      required String img,
+      required String filename}) async {
+    ApiResponse apiresponse = ApiResponse();
+    try {
+      final response = await http.put(
+          Uri.parse(
+              "${Environment().zendmindBASEURL}api/auth/upload/imgProfile"),
+          headers: {
+            'Accept': 'application/json',
+            'Authorization': 'Bearer $token'
+          },
+          body: {
+            'img': img,
+            'imgNamed': filename
+          });
+
+      switch (response.statusCode) {
+        case 200:
+          apiresponse.data = jsonDecode(response.body)['data'];
+          break;
+        case 400:
+          apiresponse.error = jsonDecode(response.body)['data'];
+          break;
+        default:
+          apiresponse.error = somethingWentWrong;
+          break;
+      }
+    } catch (err) {
+      apiresponse.error = serverError;
+    }
+    return apiresponse;
+  }
+
   Future<ApiResponse> checkVerifyEmail({required String email}) async {
     ApiResponse apiresponse = ApiResponse();
     try {

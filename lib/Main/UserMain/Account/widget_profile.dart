@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:zenmind/Func/date_fromated.dart';
 import 'package:zenmind/Models/user_model.dart';
 import 'package:zenmind/Widget/Button.dart';
 import 'package:zenmind/Widget/InputText.dart';
+import 'package:zenmind/env.dart';
 import 'package:zenmind/settings_all.dart';
 
 class ProfileWidget {
@@ -27,6 +29,7 @@ class ProfileWidget {
   Widget header(
       {required context,
       required Function() onTapSetting,
+      required Function() tapPhotosProfile,
       required Function() onTapEditProfile,
       required UserModel userdata}) {
     return Row(
@@ -41,25 +44,44 @@ class ProfileWidget {
                 decoration: BoxDecoration(
                     color: GetTheme().backgroundGrey(context),
                     borderRadius: BorderRadius.circular(100)),
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(100),
+                  child: userdata.data!.imgProfileURL != null
+                      ? Image.network(
+                          Environment().zendmindBASEURL +
+                              userdata.data!.imgProfileURL.toString(),
+                          fit: BoxFit.cover,
+                        )
+                      : const Center(
+                          child: Icon(
+                            Icons.person,
+                            color: Colors.white,
+                            size: 32,
+                          ),
+                        ),
+                ),
               ),
               Positioned(
                 bottom: 0,
                 child: SizedBox(
                   width: 115,
                   child: Center(
-                    child: Container(
-                      padding: const EdgeInsets.all(4),
-                      decoration: BoxDecoration(
-                          color: GetTheme().cardColors(context),
-                          borderRadius: BorderRadius.circular(100)),
+                    child: InkWell(
+                      onTap: tapPhotosProfile,
                       child: Container(
-                        padding: const EdgeInsets.all(8),
+                        padding: const EdgeInsets.all(4),
                         decoration: BoxDecoration(
-                            color: GetTheme().primaryColor(context),
+                            color: GetTheme().cardColors(context),
                             borderRadius: BorderRadius.circular(100)),
-                        child: const Icon(
-                          Icons.camera_alt_rounded,
-                          color: Colors.white,
+                        child: Container(
+                          padding: const EdgeInsets.all(8),
+                          decoration: BoxDecoration(
+                              color: GetTheme().primaryColor(context),
+                              borderRadius: BorderRadius.circular(100)),
+                          child: const Icon(
+                            Icons.camera_alt_rounded,
+                            color: Colors.white,
+                          ),
                         ),
                       ),
                     ),
@@ -94,7 +116,7 @@ class ProfileWidget {
                 ],
               ),
               Text(
-                "Joined at ${userdata.data!.createdAt}",
+                "Joined at ${formatDateToSlash(date: userdata.data!.createdAt.toString())}",
                 style: const TextStyle(
                   fontSize: 10,
                 ),
