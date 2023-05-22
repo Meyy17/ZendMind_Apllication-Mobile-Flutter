@@ -42,12 +42,24 @@ class _MyAppState extends State<MyApp> {
     });
 
     var res = await AuthServices().getUsers(token: tokenLocalUsers);
-    setState(() {
-      if (res.error == null) {
+
+    if (res.error == null) {
+      setState(() {
         users = res.data as UserModel;
         isLoad = false;
-      } else {}
-    });
+      });
+    } else if (res.error == "Invalid Token") {
+      await authPreferences.setToken("");
+      await authPreferences.setId(0);
+
+      SharedPreferences sharedPreferences =
+          await SharedPreferences.getInstance();
+      setState(() {
+        tokenLocalUsers =
+            sharedPreferences.getString(AuthPreferences.tokenKey) ?? "";
+        isLoad = false;
+      });
+    }
   }
 
   @override

@@ -20,8 +20,8 @@ class ArticleWidget {
         Padding(
           padding:
               EdgeInsets.symmetric(horizontal: GetSizeScreen().paddingScreen),
-          child: Row(
-            children: const [
+          child: const Row(
+            children: [
               Text(
                 "Recomendation",
                 style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
@@ -118,7 +118,9 @@ class ArticleWidget {
                   Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => const ArticleDetail()));
+                          builder: (context) => ArticleDetail(
+                                p: article.data![index].content.toString(),
+                              )));
                 },
                 child: Container(
                   padding: const EdgeInsets.all(10),
@@ -149,10 +151,10 @@ class ArticleWidget {
                               height: 5,
                             ),
                             Text(
-                              article.data![index].body ?? "",
+                              article.data![index].subtitle ?? "",
                               overflow: TextOverflow.ellipsis,
                               maxLines: 2,
-                              style: TextStyle(
+                              style: const TextStyle(
                                   fontSize: 14, fontWeight: FontWeight.w800),
                             ),
                             const SizedBox(

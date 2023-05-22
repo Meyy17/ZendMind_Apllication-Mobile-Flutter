@@ -257,12 +257,12 @@ Widget cardHistory({required context}) {
           const SizedBox(
             width: 20,
           ),
-          Expanded(
+          const Expanded(
               child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Row(
-                children: const [
+                children: [
                   Expanded(
                     child: Text(
                       "Lugas Richtigo",
@@ -276,11 +276,11 @@ Widget cardHistory({required context}) {
                   )
                 ],
               ),
-              const Text(
+              Text(
                 'Consultation completed',
                 style: TextStyle(fontSize: 12),
               ),
-              const Text(
+              Text(
                 "13 Feb 15:30",
                 style: TextStyle(
                   fontSize: 10,

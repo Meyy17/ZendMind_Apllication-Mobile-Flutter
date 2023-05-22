@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:zenmind/settings_all.dart';
 
 class ArticleDetail extends StatefulWidget {
-  const ArticleDetail({Key? key}) : super(key: key);
+  const ArticleDetail({Key? key, required this.p}) : super(key: key);
+
+  final String p;
 
   @override
   State<ArticleDetail> createState() => _ArticleDetailState();
@@ -120,8 +122,8 @@ class _ArticleDetailState extends State<ArticleDetail> {
                         )),
                     child: Column(
                       children: [
-                        Row(
-                          children: const [
+                        const Row(
+                          children: [
                             CircleAvatar(
                               backgroundColor: Colors.grey,
                               radius: 25,
@@ -147,53 +149,8 @@ class _ArticleDetailState extends State<ArticleDetail> {
                         const SizedBox(
                           height: 20,
                         ),
-                        const Text(
-                          'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras condimentum diam a dui faucibus eleifend vitaenec purus. Mauris dolor nunc, malesuada ut tortor nec,vulputate tempus mauris. Vivamus lacinia nisi tortor,nec vulputate eros iaculis ut. Duis semper at nisi idfringilla. Ut pharetra tincidunt nisl varius hendrerit. Nullamquis sem nec dolor pellentesque maximus et sed purus. Integer fermentum porta odio sit amet aliquet. ',
-                        ),
-                        const SizedBox(
-                          height: 20,
-                        ),
-                        const Text(
-                          'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras condimentum diam a dui faucibus eleifend vitaenec purus. Mauris dolor nunc, malesuada ut tortor nec,vulputate tempus mauris. Vivamus lacinia nisi tortor,nec vulputate eros iaculis ut. Duis semper at nisi idfringilla. Ut pharetra tincidunt nisl varius hendrerit. Nullamquis sem nec dolor pellentesque maximus et sed purus. Integer fermentum porta odio sit amet aliquet. ',
-                        ),
-                        const SizedBox(
-                          height: 20,
-                        ),
-                        const Text(
-                          'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras condimentum diam a dui faucibus eleifend vitaenec purus. Mauris dolor nunc, malesuada ut tortor nec,vulputate tempus mauris. Vivamus lacinia nisi tortor,nec vulputate eros iaculis ut. Duis semper at nisi idfringilla. Ut pharetra tincidunt nisl varius hendrerit. Nullamquis sem nec dolor pellentesque maximus et sed purus. Integer fermentum porta odio sit amet aliquet. ',
-                        ),
-                        const SizedBox(
-                          height: 20,
-                        ),
-                        const Text(
-                          'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras condimentum diam a dui faucibus eleifend vitaenec purus. Mauris dolor nunc, malesuada ut tortor nec,vulputate tempus mauris. Vivamus lacinia nisi tortor,nec vulputate eros iaculis ut. Duis semper at nisi idfringilla. Ut pharetra tincidunt nisl varius hendrerit. Nullamquis sem nec dolor pellentesque maximus et sed purus. Integer fermentum porta odio sit amet aliquet. ',
-                        ),
-                        const SizedBox(
-                          height: 20,
-                        ),
-                        const Text(
-                          'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras condimentum diam a dui faucibus eleifend vitaenec purus. Mauris dolor nunc, malesuada ut tortor nec,vulputate tempus mauris. Vivamus lacinia nisi tortor,nec vulputate eros iaculis ut. Duis semper at nisi idfringilla. Ut pharetra tincidunt nisl varius hendrerit. Nullamquis sem nec dolor pellentesque maximus et sed purus. Integer fermentum porta odio sit amet aliquet. ',
-                        ),
-                        const SizedBox(
-                          height: 20,
-                        ),
-                        const Text(
-                          'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras condimentum diam a dui faucibus eleifend vitaenec purus. Mauris dolor nunc, malesuada ut tortor nec,vulputate tempus mauris. Vivamus lacinia nisi tortor,nec vulputate eros iaculis ut. Duis semper at nisi idfringilla. Ut pharetra tincidunt nisl varius hendrerit. Nullamquis sem nec dolor pellentesque maximus et sed purus. Integer fermentum porta odio sit amet aliquet. ',
-                        ),
-                        const SizedBox(
-                          height: 20,
-                        ),
-                        const Text(
-                          'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras condimentum diam a dui faucibus eleifend vitaenec purus. Mauris dolor nunc, malesuada ut tortor nec,vulputate tempus mauris. Vivamus lacinia nisi tortor,nec vulputate eros iaculis ut. Duis semper at nisi idfringilla. Ut pharetra tincidunt nisl varius hendrerit. Nullamquis sem nec dolor pellentesque maximus et sed purus. Integer fermentum porta odio sit amet aliquet. ',
-                        ),
-                        const SizedBox(
-                          height: 20,
-                        ),
-                        const Text(
-                          'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras condimentum diam a dui faucibus eleifend vitaenec purus. Mauris dolor nunc, malesuada ut tortor nec,vulputate tempus mauris. Vivamus lacinia nisi tortor,nec vulputate eros iaculis ut. Duis semper at nisi idfringilla. Ut pharetra tincidunt nisl varius hendrerit. Nullamquis sem nec dolor pellentesque maximus et sed purus. Integer fermentum porta odio sit amet aliquet. ',
-                        ),
-                        const SizedBox(
-                          height: 20,
+                        Text(
+                          widget.p,
                         ),
                       ],
                     ),
