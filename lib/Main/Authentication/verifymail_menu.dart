@@ -6,6 +6,7 @@ import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
 import 'package:flutter/material.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:zenmind/DB/auth_preference.dart';
+import 'package:zenmind/Main/MentorMain/home_menu.dart';
 import 'package:zenmind/Main/UserMain/navigation_menu.dart';
 import 'package:zenmind/Models/auth_model.dart';
 
@@ -89,7 +90,11 @@ class _VerifyEmailMenuState extends State<VerifyEmailMenu> {
             Navigator.pushAndRemoveUntil(
                 context,
                 PageTransition(
-                    type: PageTransitionType.fade, child: const Navigation()),
+                    type: PageTransitionType.fade,
+                    child: userDataFromLogin.data!.user!.role.toString() ==
+                            "mentor"
+                        ? const HomeMenuMentor()
+                        : const Navigation()),
                 (route) => false);
             timer?.cancel();
           }

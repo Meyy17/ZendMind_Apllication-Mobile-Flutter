@@ -30,16 +30,30 @@ class ArticlesModel {
 class Data {
   int? id;
   String? title;
-  String? body;
+  String? subtitle;
+  int? viewsCount;
+  String? bannerURL;
+  String? content;
   String? createdAt;
   String? updatedAt;
 
-  Data({this.id, this.title, this.body, this.createdAt, this.updatedAt});
+  Data(
+      {this.id,
+      this.title,
+      this.subtitle,
+      this.viewsCount,
+      this.bannerURL,
+      this.content,
+      this.createdAt,
+      this.updatedAt});
 
   Data.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     title = json['title'];
-    body = json['body'];
+    subtitle = json['subtitle'];
+    viewsCount = json['viewsCount'];
+    bannerURL = json['bannerURL'];
+    content = json['content'];
     createdAt = json['createdAt'];
     updatedAt = json['updatedAt'];
   }
@@ -48,7 +62,10 @@ class Data {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['id'] = this.id;
     data['title'] = this.title;
-    data['body'] = this.body;
+    data['subtitle'] = this.subtitle;
+    data['viewsCount'] = this.viewsCount;
+    data['bannerURL'] = this.bannerURL;
+    data['content'] = this.content;
     data['createdAt'] = this.createdAt;
     data['updatedAt'] = this.updatedAt;
     return data;
