@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:zenmind/Main/UserMain/Article/article_menu.dart';
 import 'package:zenmind/settings_all.dart';
 
 class ArticleDetail extends StatefulWidget {
@@ -26,20 +27,6 @@ class _ArticleDetailState extends State<ArticleDetail> {
               height: 570,
               decoration: BoxDecoration(
                 color: Colors.black.withOpacity(0.4),
-              ),
-            ),
-            Container(
-              margin: const EdgeInsets.only(top: 24, left: 24),
-              padding: const EdgeInsets.only(left: 10),
-              decoration: BoxDecoration(
-                color: Colors.white.withOpacity(0.2),
-                borderRadius: BorderRadius.circular(100),
-              ),
-              width: 50,
-              height: 50,
-              child: const Icon(
-                Icons.arrow_back_ios,
-                color: Colors.white,
               ),
             ),
             Container(
@@ -155,6 +142,25 @@ class _ArticleDetailState extends State<ArticleDetail> {
                       ],
                     ),
                   ),
+                ),
+              ),
+            ),
+            GestureDetector(
+              onTap: (){
+                Navigator.pop(context);
+              },
+              child: Container(
+                margin: const EdgeInsets.only(top: 24, left: 24),
+                padding: const EdgeInsets.only(left: 10),
+                decoration: BoxDecoration(
+                  color: Colors.white.withOpacity(0.2),
+                  borderRadius: BorderRadius.circular(100),
+                ),
+                width: 50,
+                height: 50,
+                child: const Icon(
+                  Icons.arrow_back_ios,
+                  color: Colors.white,
                 ),
               ),
             ),

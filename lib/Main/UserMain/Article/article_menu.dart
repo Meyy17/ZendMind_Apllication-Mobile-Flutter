@@ -22,7 +22,9 @@ class _ArticleMenuState extends State<ArticleMenu> {
       if (resArticle.error == null) {
         article = resArticle.data as ArticlesModel;
         isLoad = false;
-      } else {}
+      } else {
+        print(resArticle.error);
+      }
     });
   }
 
