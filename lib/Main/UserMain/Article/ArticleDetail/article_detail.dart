@@ -109,7 +109,7 @@ class _ArticleDetailState extends State<ArticleDetail> {
                         )),
                     child: Column(
                       children: [
-                        const Row(
+                        Row(
                           children: [
                             CircleAvatar(
                               backgroundColor: Colors.grey,

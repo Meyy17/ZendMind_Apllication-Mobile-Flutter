@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:zenmind/Main/MentorMain/Account/edit_mentor.dart';
 import 'package:zenmind/Main/MentorMain/home_menu.dart';
 
 class ProfileMentor extends StatefulWidget {
@@ -99,20 +100,25 @@ class _ProfileMentorState extends State<ProfileMentor> {
                       ),
                     ),
                     SizedBox(height: 10,),
-                    Container(
-                      alignment: Alignment.center,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(10),
-                        color: Color(0xFF505AB7),
-                      ),
-                      width: 100,
-                      height: 40,
-                      child: Text(
-                        'Edit Profile',
-                        style: TextStyle(
-                          fontSize: 12,
-                          fontWeight: FontWeight.w600,
-                          color: Colors.white,
+                    GestureDetector(
+                      onTap: (){
+                        Navigator.push(context, MaterialPageRoute(builder: (context) => EditMentor(),));
+                      },
+                      child: Container(
+                        alignment: Alignment.center,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(10),
+                          color: Color(0xFF505AB7),
+                        ),
+                        width: 100,
+                        height: 40,
+                        child: Text(
+                          'Edit Profile',
+                          style: TextStyle(
+                            fontSize: 12,
+                            fontWeight: FontWeight.w600,
+                            color: Colors.white,
+                          ),
                         ),
                       ),
                     ),
