@@ -143,9 +143,23 @@ class _ProfileMenuState extends State<ProfileMenu> {
             borderRadius: const BorderRadius.only(topLeft: Radius.circular(12)),
             child: Drawer(
               child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 10),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 10, vertical: 20),
                 child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
+                    Column(
+                      children: [
+                        ProfileWidget().cardDrawer(
+                            title: 'Change Theme',
+                            onPressed: () {
+                              logOut();
+                            },
+                            background: Colors.white70,
+                            contentColors: Colors.black,
+                            icon: Icons.sunny)
+                      ],
+                    ),
                     ProfileWidget().cardDrawer(
                         title: 'Logout',
                         onPressed: () {

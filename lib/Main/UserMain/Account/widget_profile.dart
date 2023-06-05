@@ -151,6 +151,7 @@ class ProfileWidget {
           height: 10,
         ),
         inputStyleFillWithIcons(
+            inputVisibilty: false,
             readOnly: true,
             context: context,
             hintText: userdata.data!.email ?? "",
@@ -163,6 +164,7 @@ class ProfileWidget {
           height: 10,
         ),
         inputStyleFillWithIcons(
+            inputVisibilty: false,
             readOnly: true,
             context: context,
             hintText: userdata.data!.name ?? "",
@@ -170,17 +172,17 @@ class ProfileWidget {
             controller: email,
             validator: null),
         const Spacer(),
-        titleGeneralView(text: "Gender"),
-        const SizedBox(
-          height: 10,
-        ),
-        inputStyleFillWithIcons(
-            readOnly: true,
-            context: context,
-            hintText: userdata.data!.gender ?? "",
-            prefixIcons: const Icon(Icons.email),
-            controller: email,
-            validator: null),
+        // titleGeneralView(text: "Gender"),
+        // const SizedBox(
+        //   height: 10,
+        // ),
+        // inputStyleFillWithIcons(
+        //     readOnly: true,
+        //     context: context,
+        //     hintText: userdata.data!.gender ?? "",
+        //     prefixIcons: const Icon(Icons.email),
+        //     controller: email,
+        //     validator: null),
         const Spacer(
           flex: 5,
         ),
@@ -257,7 +259,7 @@ Widget cardHistory({required context}) {
           const SizedBox(
             width: 20,
           ),
-           Expanded(
+          Expanded(
               child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [

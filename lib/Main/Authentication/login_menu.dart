@@ -35,6 +35,7 @@ class _LoginUIState extends State<LoginUI> {
   TextEditingController passwordController = TextEditingController();
 
   bool isLoad = false;
+  bool passwordInputVisibilty = true;
 
   void orderLogin() async {
     var res = await AuthServices()
@@ -188,6 +189,7 @@ class _LoginUIState extends State<LoginUI> {
         children: [
           inputStyleFillWithIcons(
               readOnly: false,
+              inputVisibilty: false,
               prefixIcons: const Icon(Icons.email),
               validator: (p0) =>
                   p0!.isEmpty ? 'Mohon masukkan email anda' : null,
@@ -198,6 +200,7 @@ class _LoginUIState extends State<LoginUI> {
             height: 20,
           ),
           inputStyleFillWithIcons(
+            inputVisibilty:   passwordInputVisibilty,
               readOnly: false,
               prefixIcons: const Icon(Icons.lock),
               validator: (p0) => p0!.length < 6

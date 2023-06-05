@@ -142,6 +142,7 @@ class _RegisterUIState extends State<RegisterUI> {
       child: Column(
         children: [
           inputStyleFillWithIcons(
+             inputVisibilty: false,
               readOnly: false,
               prefixIcons: const Icon(Icons.person),
               validator: (p0) =>
@@ -153,6 +154,7 @@ class _RegisterUIState extends State<RegisterUI> {
             height: 20,
           ),
           inputStyleFillWithIcons(
+             inputVisibilty: false,
               readOnly: false,
               prefixIcons: const Icon(Icons.email),
               validator: (p0) =>
@@ -163,7 +165,7 @@ class _RegisterUIState extends State<RegisterUI> {
           const SizedBox(
             height: 20,
           ),
-          inputStyleFillWithIcons(
+          inputStyleFillWithIcons( inputVisibilty: false,
               readOnly: false,
               prefixIcons: const Icon(Icons.lock),
               validator: (p0) => p0!.length < 6

@@ -260,6 +260,7 @@ class _ProfileEditState extends State<ProfileEdit> {
                           height: 10,
                         ),
                         inputStyleFillWithIcons(
+                           inputVisibilty: false,
                           readOnly: false,
                           context: context,
                           hintText: "Insert Email",
@@ -282,6 +283,7 @@ class _ProfileEditState extends State<ProfileEdit> {
                           height: 10,
                         ),
                         inputStyleFillWithIcons(
+                           inputVisibilty: false,
                           readOnly: false,
                           context: context,
                           hintText: "Insert Name",
