@@ -170,6 +170,41 @@ class _HomeMenuMentorState extends State<HomeMenuMentor> {
                         ),
                         SizedBox(width: 7,),
                         GestureDetector(
+                          onTap: () {
+                            showDialog(context: context, builder: (context) => AlertDialog(
+                              title: Text("Handling Fee",
+                              style: TextStyle(
+                                fontWeight: FontWeight.w600,
+                              ),),
+                              content:TextField(
+                                decoration: InputDecoration(hintText: "Enter your custom fee here"),
+                              ),
+                              actions: [
+                                GestureDetector(
+                                  child: Padding(
+                                    padding: EdgeInsets.symmetric(horizontal: 24.0).copyWith(bottom: 16),
+                                    child: Container(
+                                      alignment: Alignment.center,
+                                      decoration: BoxDecoration(
+                                        color: Color(0xFF1E2754),
+                                        borderRadius: BorderRadius.circular(15),
+                                      ),
+                                      width: 300,
+                                      height: 50,
+                                      child: Text(
+                                        "Set Fee",
+                                        style: TextStyle(
+                                          fontWeight: FontWeight.w600,
+                                          fontSize: 15,
+                                          color: Colors.white,
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ));
+                          },
                           child: Container(
                             alignment: Alignment.center,
                             decoration: BoxDecoration(

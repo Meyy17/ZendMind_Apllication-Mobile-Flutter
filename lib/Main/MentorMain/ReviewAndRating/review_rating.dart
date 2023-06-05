@@ -72,7 +72,7 @@ class _ReviewRatingState extends State<ReviewRating> {
                   padding: EdgeInsets.only(left: 29),
                   alignment: Alignment.centerLeft,
                   child: Text(
-                    'Your total rating:',
+                    'Your rating:',
                     style: TextStyle(
                       fontSize: 15,
                       fontWeight: FontWeight.w600,
