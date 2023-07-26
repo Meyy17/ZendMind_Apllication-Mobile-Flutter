@@ -76,7 +76,6 @@ String formatDateToIdOnlyMonthAndYears({required String date}) {
   DateTime dateTime = DateFormat("yyyy-MM-dd").parse(date);
 
   var m = DateFormat('MM').format(dateTime);
-  var d = DateFormat('dd').format(dateTime).toString();
   var Y = DateFormat('yyyy').format(dateTime).toString();
   var month = "";
   switch (m) {

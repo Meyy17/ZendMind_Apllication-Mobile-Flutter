@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:zenmind/Func/Services/consultation_services.dart';
 import 'package:zenmind/Main/UserMain/Consultation/widget_consultation.dart';
+import 'package:zenmind/Models/listmentor_model.dart';
 import 'package:zenmind/settings_all.dart';
 
 class ConsultationMenu extends StatefulWidget {
@@ -10,6 +12,43 @@ class ConsultationMenu extends StatefulWidget {
 }
 
 class _ConsultationMenuState extends State<ConsultationMenu> {
+  bool isLoad = true;
+  ListMentorModel mentorList = ListMentorModel();
+
+  void getData() async {
+    var res = await ConsultationService().getFreeMentor();
+    setState(() {
+      if (res.error == null) {
+        mentorList = res.data as ListMentorModel;
+        isLoad = false;
+      } else {}
+    });
+  }
+
+  void setData(int tab) async {
+    setState(() {
+      isLoad = true;
+    });
+    var res = await ConsultationService().getFreeMentor();
+
+    if (tab == 1) {
+      res = await ConsultationService().getPaidMentor();
+    }
+    setState(() {
+      if (res.error == null) {
+        mentorList = res.data as ListMentorModel;
+        isLoad = false;
+      } else {}
+    });
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    getData();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -44,6 +83,9 @@ class _ConsultationMenuState extends State<ConsultationMenu> {
                           borderRadius: BorderRadius.circular(10),
                           color: GetTheme().backgroundGrey(context)),
                       child: TabBar(
+                        onTap: (value) {
+                          setData(value);
+                        },
                         indicator: BoxDecoration(
                             color: GetTheme().primaryColor(context),
                             borderRadius: BorderRadius.circular(10)),
@@ -63,11 +105,21 @@ class _ConsultationMenuState extends State<ConsultationMenu> {
                     const SizedBox(
                       height: 20,
                     ),
-                    ConsultationWidget().needHandleList(context: context),
-                    const SizedBox(
-                      height: 20,
-                    ),
-                    ConsultationWidget().recomendation()
+                    isLoad
+                        ? Center(
+                            child: CircularProgressIndicator(),
+                          )
+                        : Column(
+                            children: [
+                              ConsultationWidget()
+                                  .needHandleList(context: context),
+                              const SizedBox(
+                                height: 20,
+                              ),
+                              ConsultationWidget()
+                                  .recomendation(mentorList: mentorList)
+                            ],
+                          ),
                   ],
                 ),
               ),

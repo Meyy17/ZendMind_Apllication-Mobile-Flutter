@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:zenmind/Models/listmentor_model.dart';
 import 'package:zenmind/Widget/Button.dart';
 import 'package:zenmind/settings_all.dart';
 
@@ -42,7 +43,7 @@ class ConsultationWidget {
     );
   }
 
-  Widget recomendation() {
+  Widget recomendation({required ListMentorModel mentorList}) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -54,10 +55,11 @@ class ConsultationWidget {
           height: 20,
         ),
         ListView.separated(
-          itemCount: 3,
+          itemCount: mentorList.data!.length,
           shrinkWrap: true,
           physics: const NeverScrollableScrollPhysics(),
           itemBuilder: (BuildContext context, int index) {
+            var dataMentor = mentorList.data![index];
             return Container(
               padding: const EdgeInsets.all(20),
               decoration: BoxDecoration(
@@ -82,9 +84,9 @@ class ConsultationWidget {
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          const Text(
-                            "Lugas Richtigo",
-                            style: TextStyle(
+                          Text(
+                            dataMentor.user!.name.toString(),
+                            style: const TextStyle(
                                 fontWeight: FontWeight.w900, fontSize: 15),
                           ),
                           Text(
@@ -93,7 +95,7 @@ class ConsultationWidget {
                                 fontSize: 10,
                                 color: GetTheme().unselectedWidget(context)),
                           ),
-                          Text("Anxiety",
+                          Text(dataMentor.specialist.toString(),
                               style: TextStyle(
                                   fontSize: 10,
                                   color: GetTheme().unselectedWidget(context)))
@@ -136,7 +138,12 @@ class ConsultationWidget {
                             context: context,
                             text: "Book now",
                             onPressed: () {
-                              Navigator.push(context, MaterialPageRoute(builder: (context) => const BookConsultation()),
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => BookConsultation(
+                                          idMentor: dataMentor.id ?? 0,
+                                        )),
                               );
                             }),
                       )

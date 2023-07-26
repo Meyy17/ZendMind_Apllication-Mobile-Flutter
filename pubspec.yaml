@@ -43,6 +43,7 @@ dependencies:
   provider: ^6.0.5
   readmore: ^2.1.0
   shared_preferences: ^2.1.0
+  socket_io_client: ^2.0.2
   syncfusion_flutter_charts: ^21.2.8
   
 

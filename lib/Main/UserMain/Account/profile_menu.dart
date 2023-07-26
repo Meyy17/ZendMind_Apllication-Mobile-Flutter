@@ -7,11 +7,13 @@ import 'package:image_picker/image_picker.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:zenmind/DB/auth_preference.dart';
+import 'package:zenmind/Func/Services/consultation_services.dart';
 import 'package:zenmind/Func/file_fromated.dart';
 import 'package:zenmind/Main/Authentication/auth_services.dart';
 import 'package:zenmind/Main/Authentication/login_menu.dart';
 import 'package:zenmind/Main/UserMain/Account/EditAccount/profile_edit.dart';
 import 'package:zenmind/Main/UserMain/Account/widget_profile.dart';
+import 'package:zenmind/Models/bookhistory_model.dart';
 import 'package:zenmind/Models/user_model.dart';
 import 'package:zenmind/settings_all.dart';
 
@@ -24,6 +26,7 @@ class ProfileMenu extends StatefulWidget {
 
 class _ProfileMenuState extends State<ProfileMenu> {
   UserModel users = UserModel();
+  BookingHistoryModel freehistory = BookingHistoryModel();
 
   TextEditingController emailController = TextEditingController();
   final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
@@ -40,9 +43,12 @@ class _ProfileMenuState extends State<ProfileMenu> {
     });
 
     var res = await AuthServices().getUsers(token: tokenLocalUsers);
+    var freeBookres =
+        await ConsultationService().getHistoryBookFree(token: tokenLocalUsers);
     setState(() {
       if (res.error == null) {
         users = res.data as UserModel;
+        freehistory = freeBookres.data as BookingHistoryModel;
         isLoad = false;
       } else {}
     });
@@ -248,7 +254,8 @@ class _ProfileMenuState extends State<ProfileMenu> {
                                   userdata: users,
                                   context: context,
                                   email: emailController),
-                              ProfileWidget().historyView(context: context)
+                              ProfileWidget().historyView(
+                                  context: context, bookfreeData: freehistory)
                             ],
                           ),
                         )

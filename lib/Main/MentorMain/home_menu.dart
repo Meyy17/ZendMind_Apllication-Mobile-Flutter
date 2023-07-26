@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:zenmind/Func/Services/mentor_services.dart';
+import 'package:zenmind/Main/AllRoleMain/Messages/chat_screen.dart';
+import 'package:zenmind/Main/AllRoleMain/Messages/listroom_screen.dart';
 import 'package:zenmind/Main/MentorMain/Account/profile_mentor.dart';
 import 'package:zenmind/Main/MentorMain/AllMentoring/all_mentoring.dart';
 import 'package:zenmind/Main/MentorMain/EarningHistory/earning_history.dart';
@@ -8,7 +11,7 @@ import 'package:zenmind/Main/MentorMain/MentoringHistory/mentoring_history.dart'
 import 'package:zenmind/Main/MentorMain/ReviewAndRating/review_rating.dart';
 import 'package:zenmind/Main/MentorMain/SetSchedule/set_schedule.dart';
 import 'package:zenmind/Main/MentorMain/TodaysSchedule/todays_schedule.dart';
-import 'package:zenmind/Main/UserMain/Account/profile_menu.dart';
+import 'package:zenmind/Models/profilementor_model.dart';
 import '../../DB/auth_preference.dart';
 import '../Authentication/auth_services.dart';
 import '../Authentication/login_menu.dart';
@@ -21,12 +24,28 @@ class HomeMenuMentor extends StatefulWidget {
 }
 
 class _HomeMenuMentorState extends State<HomeMenuMentor> {
-  @override
-
   AuthPreferences authPreferences = AuthPreferences();
 
   String tokenLocalUsers = "";
   bool isLoad = true;
+
+  MentorProfileModel users = MentorProfileModel();
+
+  void getData() async {
+    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+    setState(() {
+      tokenLocalUsers =
+          sharedPreferences.getString(AuthPreferences.tokenKey) ?? "";
+    });
+
+    var res = await MentorServices().getProfileMentor(token: tokenLocalUsers);
+    setState(() {
+      if (res.error == null) {
+        users = res.data as MentorProfileModel;
+        isLoad = false;
+      } else {}
+    });
+  }
 
   void logOut() async {
     var res = await AuthServices().logOut(token: tokenLocalUsers);
@@ -37,20 +56,12 @@ class _HomeMenuMentorState extends State<HomeMenuMentor> {
       Navigator.pushAndRemoveUntil(
           context,
           PageTransition(child: const LoginUI(), type: PageTransitionType.fade),
-              (route) => false);
+          (route) => false);
     } else {
       print(res.error);
       authPreferences.setToken("");
       authPreferences.setId(0);
     }
-  }
-
-  void getData() async {
-    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-    setState(() {
-      tokenLocalUsers =
-          sharedPreferences.getString(AuthPreferences.tokenKey) ?? "";
-    });
   }
 
   @override
@@ -65,7 +76,8 @@ class _HomeMenuMentorState extends State<HomeMenuMentor> {
       body: SingleChildScrollView(
         child: SafeArea(
           child: Padding(
-            padding: const EdgeInsets.only(left: 29, bottom: 50).copyWith(top: 33),
+            padding:
+                const EdgeInsets.only(left: 29, bottom: 50).copyWith(top: 33),
             child: Column(
               children: [
                 Row(
@@ -73,22 +85,28 @@ class _HomeMenuMentorState extends State<HomeMenuMentor> {
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
                     GestureDetector(
-                      onTap: (){
-                        Navigator.push(context, MaterialPageRoute(builder: (context) => ProfileMentor(),));
+                      onTap: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => ProfileMentor(),
+                            ));
                       },
                       child: CircleAvatar(
                         backgroundColor: Color(0xFF000000),
                       ),
                     ),
-                    SizedBox(width: 15,),
+                    SizedBox(
+                      width: 15,
+                    ),
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          'Good morning, doctors',
+                          'Good morning, ${users.data!.name}',
                           style: TextStyle(
-                              fontWeight: FontWeight.w700,
-                              fontSize: 20,
+                            fontWeight: FontWeight.w700,
+                            fontSize: 20,
                           ),
                         ),
                         Text(
@@ -102,19 +120,24 @@ class _HomeMenuMentorState extends State<HomeMenuMentor> {
                     Spacer(),
                     Container(
                       decoration: BoxDecoration(
-                        borderRadius: BorderRadius.only(topLeft: Radius.circular(15), bottomLeft: Radius.circular(15)),
+                        borderRadius: BorderRadius.only(
+                            topLeft: Radius.circular(15),
+                            bottomLeft: Radius.circular(15)),
                         color: Color(0xFF42CCC9),
                       ),
                       width: 52,
                       height: 52,
-                      child: Icon(Icons.notifications_none_rounded,
+                      child: Icon(
+                        Icons.notifications_none_rounded,
                         color: Colors.white,
                         size: 30,
                       ),
                     ),
                   ],
                 ),
-                SizedBox(height: 40,),
+                SizedBox(
+                  height: 40,
+                ),
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -128,7 +151,9 @@ class _HomeMenuMentorState extends State<HomeMenuMentor> {
                         ),
                       ),
                     ),
-                    SizedBox(height: 15,),
+                    SizedBox(
+                      height: 15,
+                    ),
                     Container(
                       padding: EdgeInsets.only(left: 20),
                       alignment: Alignment.centerLeft,
@@ -147,7 +172,9 @@ class _HomeMenuMentorState extends State<HomeMenuMentor> {
                         ),
                       ),
                     ),
-                    SizedBox(height: 10,),
+                    SizedBox(
+                      height: 10,
+                    ),
                     Row(
                       children: [
                         GestureDetector(
@@ -168,42 +195,53 @@ class _HomeMenuMentorState extends State<HomeMenuMentor> {
                             ),
                           ),
                         ),
-                        SizedBox(width: 7,),
+                        SizedBox(
+                          width: 7,
+                        ),
                         GestureDetector(
                           onTap: () {
-                            showDialog(context: context, builder: (context) => AlertDialog(
-                              title: Text("Handling Fee",
-                              style: TextStyle(
-                                fontWeight: FontWeight.w600,
-                              ),),
-                              content:TextField(
-                                decoration: InputDecoration(hintText: "Enter your custom fee here"),
-                              ),
-                              actions: [
-                                GestureDetector(
-                                  child: Padding(
-                                    padding: EdgeInsets.symmetric(horizontal: 24.0).copyWith(bottom: 16),
-                                    child: Container(
-                                      alignment: Alignment.center,
-                                      decoration: BoxDecoration(
-                                        color: Color(0xFF1E2754),
-                                        borderRadius: BorderRadius.circular(15),
-                                      ),
-                                      width: 300,
-                                      height: 50,
-                                      child: Text(
-                                        "Set Fee",
+                            showDialog(
+                                context: context,
+                                builder: (context) => AlertDialog(
+                                      title: Text(
+                                        "Handling Fee",
                                         style: TextStyle(
                                           fontWeight: FontWeight.w600,
-                                          fontSize: 15,
-                                          color: Colors.white,
                                         ),
                                       ),
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ));
+                                      content: TextField(
+                                        decoration: InputDecoration(
+                                            hintText:
+                                                "Enter your custom fee here"),
+                                      ),
+                                      actions: [
+                                        GestureDetector(
+                                          child: Padding(
+                                            padding: EdgeInsets.symmetric(
+                                                    horizontal: 24.0)
+                                                .copyWith(bottom: 16),
+                                            child: Container(
+                                              alignment: Alignment.center,
+                                              decoration: BoxDecoration(
+                                                color: Color(0xFF1E2754),
+                                                borderRadius:
+                                                    BorderRadius.circular(15),
+                                              ),
+                                              width: 300,
+                                              height: 50,
+                                              child: Text(
+                                                "Set Fee",
+                                                style: TextStyle(
+                                                  fontWeight: FontWeight.w600,
+                                                  fontSize: 15,
+                                                  color: Colors.white,
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    ));
                           },
                           child: Container(
                             alignment: Alignment.center,
@@ -226,7 +264,9 @@ class _HomeMenuMentorState extends State<HomeMenuMentor> {
                     ),
                   ],
                 ),
-                SizedBox(height: 20,),
+                SizedBox(
+                  height: 20,
+                ),
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -240,7 +280,9 @@ class _HomeMenuMentorState extends State<HomeMenuMentor> {
                         ),
                       ),
                     ),
-                    SizedBox(height: 15,),
+                    SizedBox(
+                      height: 15,
+                    ),
                     Row(
                       children: [
                         Container(
@@ -269,7 +311,9 @@ class _HomeMenuMentorState extends State<HomeMenuMentor> {
                             ],
                           ),
                         ),
-                        SizedBox(width: 35,),
+                        SizedBox(
+                          width: 35,
+                        ),
                         Container(
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(10),
@@ -296,7 +340,9 @@ class _HomeMenuMentorState extends State<HomeMenuMentor> {
                             ],
                           ),
                         ),
-                        SizedBox(width: 35,),
+                        SizedBox(
+                          width: 35,
+                        ),
                         Container(
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(10),
@@ -323,7 +369,9 @@ class _HomeMenuMentorState extends State<HomeMenuMentor> {
                             ],
                           ),
                         ),
-                        SizedBox(width: 35,),
+                        SizedBox(
+                          width: 35,
+                        ),
                         Container(
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(10),
@@ -352,12 +400,18 @@ class _HomeMenuMentorState extends State<HomeMenuMentor> {
                         ),
                       ],
                     ),
-                    SizedBox(height: 10,),
+                    SizedBox(
+                      height: 10,
+                    ),
                     Column(
                       children: [
                         GestureDetector(
-                          onTap: (){
-                            Navigator.push(context, MaterialPageRoute(builder: (context) => SetSchedule(),));
+                          onTap: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => SetSchedule(),
+                                ));
                           },
                           child: Container(
                             alignment: Alignment.center,
@@ -378,7 +432,9 @@ class _HomeMenuMentorState extends State<HomeMenuMentor> {
                         ),
                       ],
                     ),
-                    SizedBox(height: 20,),
+                    SizedBox(
+                      height: 20,
+                    ),
                     Column(
                       children: [
                         Row(
@@ -393,8 +449,12 @@ class _HomeMenuMentorState extends State<HomeMenuMentor> {
                             ),
                             Spacer(),
                             GestureDetector(
-                              onTap: (){
-                                Navigator.push(context, MaterialPageRoute(builder: (context) => TodaysSchedule(),));
+                              onTap: () {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => TodaysSchedule(),
+                                    ));
                               },
                               child: Padding(
                                 padding: const EdgeInsets.only(right: 50),
@@ -409,7 +469,9 @@ class _HomeMenuMentorState extends State<HomeMenuMentor> {
                             ),
                           ],
                         ),
-                        SizedBox(height: 15,),
+                        SizedBox(
+                          height: 15,
+                        ),
                         Padding(
                           padding: const EdgeInsets.only(right: 45),
                           child: Row(
@@ -424,19 +486,24 @@ class _HomeMenuMentorState extends State<HomeMenuMentor> {
                                 width: 170,
                                 height: 80,
                                 child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
                                   children: [
                                     Container(
                                       decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.only(topLeft: Radius.circular(15), bottomLeft: Radius.circular(15)),
+                                        borderRadius: BorderRadius.only(
+                                            topLeft: Radius.circular(15),
+                                            bottomLeft: Radius.circular(15)),
                                         color: Color(0xFFACD8FE),
                                       ),
                                       width: 21,
                                       height: 80,
                                     ),
                                     Column(
-                                      crossAxisAlignment: CrossAxisAlignment.start,
-                                      mainAxisAlignment: MainAxisAlignment.center,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
                                       children: [
                                         Text(
                                           'Adam',
@@ -445,14 +512,18 @@ class _HomeMenuMentorState extends State<HomeMenuMentor> {
                                             fontWeight: FontWeight.w600,
                                           ),
                                         ),
-                                        SizedBox(height: 3,),
+                                        SizedBox(
+                                          height: 3,
+                                        ),
                                         Text(
                                           '12 March 2022',
                                           style: TextStyle(
                                             fontSize: 12,
                                           ),
                                         ),
-                                        SizedBox(height: 3,),
+                                        SizedBox(
+                                          height: 3,
+                                        ),
                                         Text(
                                           '18:00',
                                           style: TextStyle(
@@ -461,7 +532,8 @@ class _HomeMenuMentorState extends State<HomeMenuMentor> {
                                         ),
                                       ],
                                     ),
-                                    Icon(Icons.add,
+                                    Icon(
+                                      Icons.add,
                                       size: 30,
                                     ),
                                   ],
@@ -476,19 +548,24 @@ class _HomeMenuMentorState extends State<HomeMenuMentor> {
                                 width: 170,
                                 height: 80,
                                 child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
                                   children: [
                                     Container(
                                       decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.only(topLeft: Radius.circular(15), bottomLeft: Radius.circular(15)),
+                                        borderRadius: BorderRadius.only(
+                                            topLeft: Radius.circular(15),
+                                            bottomLeft: Radius.circular(15)),
                                         color: Color(0xFFFF92CA),
                                       ),
                                       width: 21,
                                       height: 80,
                                     ),
                                     Column(
-                                      crossAxisAlignment: CrossAxisAlignment.start,
-                                      mainAxisAlignment: MainAxisAlignment.center,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
                                       children: [
                                         Text(
                                           'Vierra',
@@ -497,14 +574,18 @@ class _HomeMenuMentorState extends State<HomeMenuMentor> {
                                             fontWeight: FontWeight.w600,
                                           ),
                                         ),
-                                        SizedBox(height: 3,),
+                                        SizedBox(
+                                          height: 3,
+                                        ),
                                         Text(
                                           '12 March 2022',
                                           style: TextStyle(
                                             fontSize: 12,
                                           ),
                                         ),
-                                        SizedBox(height: 3,),
+                                        SizedBox(
+                                          height: 3,
+                                        ),
                                         Text(
                                           '18:00',
                                           style: TextStyle(
@@ -513,7 +594,8 @@ class _HomeMenuMentorState extends State<HomeMenuMentor> {
                                         ),
                                       ],
                                     ),
-                                    Icon(Icons.add,
+                                    Icon(
+                                      Icons.add,
                                       size: 30,
                                     ),
                                   ],
@@ -522,7 +604,9 @@ class _HomeMenuMentorState extends State<HomeMenuMentor> {
                             ],
                           ),
                         ),
-                        SizedBox(height: 20,),
+                        SizedBox(
+                          height: 20,
+                        ),
                         Row(
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
@@ -535,8 +619,12 @@ class _HomeMenuMentorState extends State<HomeMenuMentor> {
                             ),
                             Spacer(),
                             GestureDetector(
-                              onTap: (){
-                                Navigator.push(context, MaterialPageRoute(builder: (context) => AllMentoring(),));
+                              onTap: () {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => AllMentoring(),
+                                    ));
                               },
                               child: Padding(
                                 padding: const EdgeInsets.only(right: 50),
@@ -551,7 +639,9 @@ class _HomeMenuMentorState extends State<HomeMenuMentor> {
                             ),
                           ],
                         ),
-                        SizedBox(height: 15,),
+                        SizedBox(
+                          height: 15,
+                        ),
                         Padding(
                           padding: const EdgeInsets.only(right: 45),
                           child: Row(
@@ -566,19 +656,24 @@ class _HomeMenuMentorState extends State<HomeMenuMentor> {
                                 width: 170,
                                 height: 80,
                                 child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
                                   children: [
                                     Container(
                                       decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.only(topLeft: Radius.circular(15), bottomLeft: Radius.circular(15)),
+                                        borderRadius: BorderRadius.only(
+                                            topLeft: Radius.circular(15),
+                                            bottomLeft: Radius.circular(15)),
                                         color: Color(0xFFACD8FE),
                                       ),
                                       width: 21,
                                       height: 80,
                                     ),
                                     Column(
-                                      crossAxisAlignment: CrossAxisAlignment.start,
-                                      mainAxisAlignment: MainAxisAlignment.center,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
                                       children: [
                                         Text(
                                           'Mich',
@@ -587,14 +682,18 @@ class _HomeMenuMentorState extends State<HomeMenuMentor> {
                                             fontWeight: FontWeight.w600,
                                           ),
                                         ),
-                                        SizedBox(height: 3,),
+                                        SizedBox(
+                                          height: 3,
+                                        ),
                                         Text(
                                           '12 March 2022',
                                           style: TextStyle(
                                             fontSize: 12,
                                           ),
                                         ),
-                                        SizedBox(height: 3,),
+                                        SizedBox(
+                                          height: 3,
+                                        ),
                                         Text(
                                           '18:00',
                                           style: TextStyle(
@@ -603,7 +702,8 @@ class _HomeMenuMentorState extends State<HomeMenuMentor> {
                                         ),
                                       ],
                                     ),
-                                    Icon(Icons.add,
+                                    Icon(
+                                      Icons.add,
                                       size: 30,
                                     ),
                                   ],
@@ -618,19 +718,24 @@ class _HomeMenuMentorState extends State<HomeMenuMentor> {
                                 width: 170,
                                 height: 80,
                                 child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
                                   children: [
                                     Container(
                                       decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.only(topLeft: Radius.circular(15), bottomLeft: Radius.circular(15)),
+                                        borderRadius: BorderRadius.only(
+                                            topLeft: Radius.circular(15),
+                                            bottomLeft: Radius.circular(15)),
                                         color: Color(0xFFFF92CA),
                                       ),
                                       width: 21,
                                       height: 80,
                                     ),
                                     Column(
-                                      crossAxisAlignment: CrossAxisAlignment.start,
-                                      mainAxisAlignment: MainAxisAlignment.center,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
                                       children: [
                                         Text(
                                           'Olsen',
@@ -639,14 +744,18 @@ class _HomeMenuMentorState extends State<HomeMenuMentor> {
                                             fontWeight: FontWeight.w600,
                                           ),
                                         ),
-                                        SizedBox(height: 3,),
+                                        SizedBox(
+                                          height: 3,
+                                        ),
                                         Text(
                                           '12 March 2022',
                                           style: TextStyle(
                                             fontSize: 12,
                                           ),
                                         ),
-                                        SizedBox(height: 3,),
+                                        SizedBox(
+                                          height: 3,
+                                        ),
                                         Text(
                                           '18:00',
                                           style: TextStyle(
@@ -655,7 +764,8 @@ class _HomeMenuMentorState extends State<HomeMenuMentor> {
                                         ),
                                       ],
                                     ),
-                                    Icon(Icons.add,
+                                    Icon(
+                                      Icons.add,
                                       size: 30,
                                     ),
                                   ],
@@ -666,7 +776,9 @@ class _HomeMenuMentorState extends State<HomeMenuMentor> {
                         ),
                       ],
                     ),
-                    SizedBox(height: 20,),
+                    SizedBox(
+                      height: 20,
+                    ),
                     Text(
                       'Feature',
                       style: TextStyle(
@@ -674,49 +786,21 @@ class _HomeMenuMentorState extends State<HomeMenuMentor> {
                         fontSize: 17,
                       ),
                     ),
-                    SizedBox(height: 15,),
+                    SizedBox(
+                      height: 15,
+                    ),
                     Padding(
                       padding: const EdgeInsets.only(right: 45),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Container(
-                            padding: EdgeInsets.only(right: 15),
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(15),
-                              color: Color(0xFFE6E6E6),
-                            ),
-                            width: 170,
-                            height: 80,
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              children: [
-                                Container(
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.only(topLeft: Radius.circular(15), bottomLeft: Radius.circular(15)),
-                                    color: Color(0xFF00CBC8),
-                                  ),
-                                  width: 21,
-                                  height: 80,
-                                ),
-                                SizedBox(width: 10,),
-                                Icon(Icons.chat_outlined,
-                                  size: 30,
-                                ),
-                                SizedBox(width: 10,),
-                                Text(
-                                  'Chat',
-                                  style: TextStyle(
-                                    fontSize: 12,
-                                    fontWeight: FontWeight.w400,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                          GestureDetector(
-                            onTap: (){
-                              Navigator.push(context, MaterialPageRoute(builder: (context) => ReviewRating(),));
+                          InkWell(
+                            onTap: () {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) =>
+                                          ListRoomUserScreen()));
                             },
                             child: Container(
                               padding: EdgeInsets.only(right: 15),
@@ -731,17 +815,74 @@ class _HomeMenuMentorState extends State<HomeMenuMentor> {
                                 children: [
                                   Container(
                                     decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.only(topLeft: Radius.circular(15), bottomLeft: Radius.circular(15)),
+                                      borderRadius: BorderRadius.only(
+                                          topLeft: Radius.circular(15),
+                                          bottomLeft: Radius.circular(15)),
                                       color: Color(0xFF00CBC8),
                                     ),
                                     width: 21,
                                     height: 80,
                                   ),
-                                  SizedBox(width: 10,),
-                                  Icon(Icons.star_border_rounded,
+                                  SizedBox(
+                                    width: 10,
+                                  ),
+                                  Icon(
+                                    Icons.chat_outlined,
                                     size: 30,
                                   ),
-                                  SizedBox(width: 10,),
+                                  SizedBox(
+                                    width: 10,
+                                  ),
+                                  Text(
+                                    'Chat',
+                                    style: TextStyle(
+                                      fontSize: 12,
+                                      fontWeight: FontWeight.w400,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                          GestureDetector(
+                            onTap: () {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => ReviewRating(),
+                                  ));
+                            },
+                            child: Container(
+                              padding: EdgeInsets.only(right: 15),
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(15),
+                                color: Color(0xFFE6E6E6),
+                              ),
+                              width: 170,
+                              height: 80,
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                children: [
+                                  Container(
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.only(
+                                          topLeft: Radius.circular(15),
+                                          bottomLeft: Radius.circular(15)),
+                                      color: Color(0xFF00CBC8),
+                                    ),
+                                    width: 21,
+                                    height: 80,
+                                  ),
+                                  SizedBox(
+                                    width: 10,
+                                  ),
+                                  Icon(
+                                    Icons.star_border_rounded,
+                                    size: 30,
+                                  ),
+                                  SizedBox(
+                                    width: 10,
+                                  ),
                                   Text(
                                     'Review \nand Rating',
                                     style: TextStyle(
@@ -756,15 +897,21 @@ class _HomeMenuMentorState extends State<HomeMenuMentor> {
                         ],
                       ),
                     ),
-                    SizedBox(height: 20,),
+                    SizedBox(
+                      height: 20,
+                    ),
                     Padding(
                       padding: const EdgeInsets.only(right: 45),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           GestureDetector(
-                            onTap: (){
-                              Navigator.push(context, MaterialPageRoute(builder: (context) => MentoringHistory(),));
+                            onTap: () {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => MentoringHistory(),
+                                  ));
                             },
                             child: Container(
                               padding: EdgeInsets.only(right: 15),
@@ -779,17 +926,24 @@ class _HomeMenuMentorState extends State<HomeMenuMentor> {
                                 children: [
                                   Container(
                                     decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.only(topLeft: Radius.circular(15), bottomLeft: Radius.circular(15)),
+                                      borderRadius: BorderRadius.only(
+                                          topLeft: Radius.circular(15),
+                                          bottomLeft: Radius.circular(15)),
                                       color: Color(0xFF00CBC8),
                                     ),
                                     width: 21,
                                     height: 80,
                                   ),
-                                  SizedBox(width: 10,),
-                                  Icon(Icons.timer_sharp,
+                                  SizedBox(
+                                    width: 10,
+                                  ),
+                                  Icon(
+                                    Icons.timer_sharp,
                                     size: 30,
                                   ),
-                                  SizedBox(width: 10,),
+                                  SizedBox(
+                                    width: 10,
+                                  ),
                                   Text(
                                     'History',
                                     style: TextStyle(
@@ -802,8 +956,12 @@ class _HomeMenuMentorState extends State<HomeMenuMentor> {
                             ),
                           ),
                           GestureDetector(
-                            onTap: (){
-                              Navigator.push(context, MaterialPageRoute(builder: (context) => EarningHistory(),));
+                            onTap: () {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => EarningHistory(),
+                                  ));
                             },
                             child: Container(
                               padding: EdgeInsets.only(right: 15),
@@ -818,17 +976,24 @@ class _HomeMenuMentorState extends State<HomeMenuMentor> {
                                 children: [
                                   Container(
                                     decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.only(topLeft: Radius.circular(15), bottomLeft: Radius.circular(15)),
+                                      borderRadius: BorderRadius.only(
+                                          topLeft: Radius.circular(15),
+                                          bottomLeft: Radius.circular(15)),
                                       color: Color(0xFF00CBC8),
                                     ),
                                     width: 21,
                                     height: 80,
                                   ),
-                                  SizedBox(width: 10,),
-                                  Icon(Icons.person,
+                                  SizedBox(
+                                    width: 10,
+                                  ),
+                                  Icon(
+                                    Icons.person,
                                     size: 30,
                                   ),
-                                  SizedBox(width: 10,),
+                                  SizedBox(
+                                    width: 10,
+                                  ),
                                   Text(
                                     'Earning \nhistory',
                                     style: TextStyle(
@@ -845,9 +1010,11 @@ class _HomeMenuMentorState extends State<HomeMenuMentor> {
                     ),
                   ],
                 ),
-                ElevatedButton(onPressed: (){
-                  logOut();
-                }, child: Text('Logout')),
+                ElevatedButton(
+                    onPressed: () {
+                      logOut();
+                    },
+                    child: Text('Logout')),
               ],
             ),
           ),

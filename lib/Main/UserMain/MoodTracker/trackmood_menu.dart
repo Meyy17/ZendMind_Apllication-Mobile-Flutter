@@ -97,11 +97,25 @@ class _MoodTrackerMenuState extends State<MoodTrackerMenu> {
                               kurangiOneDay();
                             },
                             icon: const Icon(Icons.arrow_back_ios_new_rounded)),
-                        Text(
-                          formatDateToIdOnlyMonthAndYears(
-                              date: selectedDate.toString()),
-                          style: TextStyle(
-                              fontWeight: FontWeight.w900, fontSize: 14),
+                        InkWell(
+                          onTap: () async {
+                            final picked = await showDatePicker(
+                                context: context,
+                                initialDate: selectedDate,
+                                firstDate: DateTime(2023),
+                                lastDate: DateTime(2100));
+                            if (picked != null && picked != selectedDate) {
+                              setState(() {
+                                selectedDate = picked;
+                              });
+                            }
+                          },
+                          child: Text(
+                            formatDateToIdOnlyMonthAndYears(
+                                date: selectedDate.toString()),
+                            style: TextStyle(
+                                fontWeight: FontWeight.w900, fontSize: 14),
+                          ),
                         ),
                         IconButton(
                             onPressed: () {

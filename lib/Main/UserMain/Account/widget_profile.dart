@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:zenmind/Func/date_fromated.dart';
+import 'package:zenmind/Models/bookhistory_model.dart';
 import 'package:zenmind/Models/user_model.dart';
 import 'package:zenmind/Widget/Button.dart';
 import 'package:zenmind/Widget/InputText.dart';
@@ -190,7 +191,8 @@ class ProfileWidget {
     );
   }
 
-  Widget historyView({required context}) {
+  Widget historyView(
+      {required context, required BookingHistoryModel bookfreeData}) {
     return DefaultTabController(
       length: 2,
       child: Column(
@@ -210,10 +212,10 @@ class ProfileWidget {
               unselectedLabelColor: GetTheme().unselectedWidget(context),
               tabs: const [
                 Tab(
-                  text: 'General',
+                  text: 'Free',
                 ),
                 Tab(
-                  text: 'History',
+                  text: 'Paid',
                 ),
               ],
             ),
@@ -225,17 +227,24 @@ class ProfileWidget {
               child: TabBarView(
             children: [
               ListView.builder(
-                itemCount: 20,
+                itemCount: bookfreeData.data!.length,
                 shrinkWrap: true,
                 itemBuilder: (BuildContext context, int index) {
-                  return cardHistory(context: context);
+                  var freeData = bookfreeData.data![index];
+                  return cardHistory(
+                      context: context,
+                      date:
+                          "${freeData.dateMentoring} ${freeData.timeMentoring}",
+                      name: "${freeData.mentor!.user!.name}",
+                      type: "Free");
                 },
               ),
               ListView.builder(
                 itemCount: 1,
                 shrinkWrap: true,
                 itemBuilder: (BuildContext context, int index) {
-                  return cardHistory(context: context);
+                  return cardHistory(
+                      context: context, date: "17", name: "ada", type: "ya");
                 },
               ),
             ],
@@ -246,7 +255,11 @@ class ProfileWidget {
   }
 }
 
-Widget cardHistory({required context}) {
+Widget cardHistory(
+    {required context,
+    required String name,
+    required String type,
+    required String date}) {
   return Column(
     children: [
       Row(
@@ -267,13 +280,13 @@ Widget cardHistory({required context}) {
                 children: [
                   Expanded(
                     child: Text(
-                      "Lugas Richtigo",
+                      name,
                       style:
                           TextStyle(fontWeight: FontWeight.bold, fontSize: 15),
                     ),
                   ),
                   Text(
-                    "Free",
+                    type,
                     style: TextStyle(fontWeight: FontWeight.bold),
                   )
                 ],
@@ -283,7 +296,7 @@ Widget cardHistory({required context}) {
                 style: TextStyle(fontSize: 12),
               ),
               Text(
-                "13 Feb 15:30",
+                date,
                 style: TextStyle(
                   fontSize: 10,
                 ),
