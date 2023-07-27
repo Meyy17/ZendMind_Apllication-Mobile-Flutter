@@ -20,7 +20,7 @@ class ArticleWidget {
         Padding(
           padding:
               EdgeInsets.symmetric(horizontal: GetSizeScreen().paddingScreen),
-          child: const Row(
+          child: Row(
             children: [
               Text(
                 "Recomendation",

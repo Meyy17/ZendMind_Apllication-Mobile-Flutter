@@ -257,7 +257,7 @@ Widget cardHistory({required context}) {
           const SizedBox(
             width: 20,
           ),
-          const Expanded(
+          Expanded(
               child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [

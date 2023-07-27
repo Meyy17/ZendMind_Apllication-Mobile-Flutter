@@ -73,7 +73,7 @@ class _ArticleDetailState extends State<ArticleDetail> {
             ),
             Container(
               margin: const EdgeInsets.only(top: 420, left: 24),
-              child: const Row(
+              child: Row(
                 children: [
                   Text(
                     'Trending',
@@ -122,7 +122,7 @@ class _ArticleDetailState extends State<ArticleDetail> {
                         )),
                     child: Column(
                       children: [
-                        const Row(
+                        Row(
                           children: [
                             CircleAvatar(
                               backgroundColor: Colors.grey,

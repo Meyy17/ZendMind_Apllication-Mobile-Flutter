@@ -6,6 +6,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:zenmind/DB/auth_preference.dart';
 import 'package:zenmind/Main/Authentication/auth_services.dart';
 import 'package:zenmind/Main/MentorMain/home_menu.dart';
+import 'package:zenmind/Main/Start/Onboarding/OnboardingOne.dart';
 import 'package:zenmind/Main/Start/start_menu.dart';
 import 'package:zenmind/Main/UserMain/navigation_menu.dart';
 import 'package:zenmind/Models/user_model.dart';
@@ -100,7 +101,7 @@ class _MyAppState extends State<MyApp> {
                   ? users.data!.role.toString() == "mentor"
                       ? const HomeMenuMentor()
                       : const Navigation()
-                  : const StartedUI(),
+                  : const OnboardingOne(),
         );
       }),
     );
