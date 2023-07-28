@@ -99,21 +99,21 @@ class _RegisterUIState extends State<RegisterUI> {
                 ),
                 const Spacer(),
                 form(formkey: formKey),
-                SizedBox(
-                    width: double.infinity,
-                    child: Align(
-                      alignment: Alignment.center,
-                      child: Text(
-                        "Or",
-                        style: TextStyle(
-                            color: GetTheme().unselectedWidget(context)),
-                      ),
-                    )),
-                const SizedBox(
-                  height: 10,
-                ),
-                googleLoginBtn(
-                    context: context, onPressed: () {}, text: "Google"),
+                // SizedBox(
+                //     width: double.infinity,
+                //     child: Align(
+                //       alignment: Alignment.center,
+                //       child: Text(
+                //         "Or",
+                //         style: TextStyle(
+                //             color: GetTheme().unselectedWidget(context)),
+                //       ),
+                //     )),
+                // const SizedBox(
+                //   height: 10,
+                // ),
+                // googleLoginBtn(
+                //     context: context, onPressed: () {}, text: "Google"),
                 const SizedBox(
                   height: 10,
                 ),
@@ -142,7 +142,7 @@ class _RegisterUIState extends State<RegisterUI> {
       child: Column(
         children: [
           inputStyleFillWithIcons(
-             inputVisibilty: false,
+              inputVisibilty: false,
               readOnly: false,
               prefixIcons: const Icon(Icons.person),
               validator: (p0) =>
@@ -154,7 +154,7 @@ class _RegisterUIState extends State<RegisterUI> {
             height: 20,
           ),
           inputStyleFillWithIcons(
-             inputVisibilty: false,
+              inputVisibilty: false,
               readOnly: false,
               prefixIcons: const Icon(Icons.email),
               validator: (p0) =>
@@ -165,7 +165,8 @@ class _RegisterUIState extends State<RegisterUI> {
           const SizedBox(
             height: 20,
           ),
-          inputStyleFillWithIcons( inputVisibilty: false,
+          inputStyleFillWithIcons(
+              inputVisibilty: false,
               readOnly: false,
               prefixIcons: const Icon(Icons.lock),
               validator: (p0) => p0!.length < 6

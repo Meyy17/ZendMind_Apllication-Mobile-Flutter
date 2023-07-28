@@ -149,7 +149,7 @@ class ArticleWidget {
                       context,
                       MaterialPageRoute(
                           builder: (context) => ArticleDetail(
-                                p: article.data![index].content.toString(),
+                                p: article.data![index],
                               )));
                 },
                 child: Container(
