@@ -8,7 +8,7 @@ class MentorProfileModel {
   MentorProfileModel.fromJson(Map<String, dynamic> json) {
     status = json['status'];
     message = json['message'];
-    data = json['data'] != null ? Data.fromJson(json['data']) : null;
+    data = json['data'] != null ? new Data.fromJson(json['data']) : null;
   }
 
   Map<String, dynamic> toJson() {
@@ -25,12 +25,12 @@ class MentorProfileModel {
 class Data {
   int? id;
   String? email;
-  String? imgProfileURL;
+  Null? imgProfileURL;
   String? name;
   String? verifyToken;
   String? role;
   String? isVerify;
-  String? gender;
+  Null? gender;
   String? createdAt;
   String? updatedAt;
   MentorProfile? mentorProfile;
@@ -95,6 +95,7 @@ class MentorProfile {
   String? status;
   String? createdAt;
   String? updatedAt;
+  List<ScheduleMentor>? scheduleMentor;
 
   MentorProfile(
       {this.id,
@@ -107,7 +108,8 @@ class MentorProfile {
       this.about,
       this.status,
       this.createdAt,
-      this.updatedAt});
+      this.updatedAt,
+      this.scheduleMentor});
 
   MentorProfile.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -121,6 +123,12 @@ class MentorProfile {
     status = json['status'];
     createdAt = json['createdAt'];
     updatedAt = json['updatedAt'];
+    if (json['ScheduleMentor'] != null) {
+      scheduleMentor = <ScheduleMentor>[];
+      json['ScheduleMentor'].forEach((v) {
+        scheduleMentor!.add(new ScheduleMentor.fromJson(v));
+      });
+    }
   }
 
   Map<String, dynamic> toJson() {
@@ -134,6 +142,39 @@ class MentorProfile {
     data['specialist'] = this.specialist;
     data['about'] = this.about;
     data['status'] = this.status;
+    data['createdAt'] = this.createdAt;
+    data['updatedAt'] = this.updatedAt;
+    if (this.scheduleMentor != null) {
+      data['ScheduleMentor'] =
+          this.scheduleMentor!.map((v) => v.toJson()).toList();
+    }
+    return data;
+  }
+}
+
+class ScheduleMentor {
+  int? id;
+  int? idMentor;
+  String? date;
+  String? createdAt;
+  String? updatedAt;
+
+  ScheduleMentor(
+      {this.id, this.idMentor, this.date, this.createdAt, this.updatedAt});
+
+  ScheduleMentor.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    idMentor = json['id_mentor'];
+    date = json['date'];
+    createdAt = json['createdAt'];
+    updatedAt = json['updatedAt'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['id'] = this.id;
+    data['id_mentor'] = this.idMentor;
+    data['date'] = this.date;
     data['createdAt'] = this.createdAt;
     data['updatedAt'] = this.updatedAt;
     return data;

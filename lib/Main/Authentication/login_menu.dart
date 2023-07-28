@@ -145,21 +145,21 @@ class _LoginUIState extends State<LoginUI> {
                       ),
                       const Spacer(),
                       form(formkey: formKey),
-                      SizedBox(
-                          width: double.infinity,
-                          child: Align(
-                            alignment: Alignment.center,
-                            child: Text(
-                              "Or",
-                              style: TextStyle(
-                                  color: GetTheme().unselectedWidget(context)),
-                            ),
-                          )),
-                      const SizedBox(
-                        height: 10,
-                      ),
-                      googleLoginBtn(
-                          context: context, onPressed: () {}, text: "Google"),
+                      // SizedBox(
+                      //     width: double.infinity,
+                      //     child: Align(
+                      //       alignment: Alignment.center,
+                      //       child: Text(
+                      //         "Or",
+                      //         style: TextStyle(
+                      //             color: GetTheme().unselectedWidget(context)),
+                      //       ),
+                      //     )),
+                      // const SizedBox(
+                      //   height: 10,
+                      // ),
+                      // googleLoginBtn(
+                      //     context: context, onPressed: () {}, text: "Google"),
                       const SizedBox(
                         height: 10,
                       ),
@@ -200,7 +200,7 @@ class _LoginUIState extends State<LoginUI> {
             height: 20,
           ),
           inputStyleFillWithIcons(
-            inputVisibilty:   passwordInputVisibilty,
+              inputVisibilty: passwordInputVisibilty,
               readOnly: false,
               prefixIcons: const Icon(Icons.lock),
               validator: (p0) => p0!.length < 6

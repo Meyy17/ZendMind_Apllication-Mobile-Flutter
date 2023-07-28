@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:zenmind/Main/UserMain/Article/article_menu.dart';
+import 'package:zenmind/Models/articles_model.dart';
 import 'package:zenmind/settings_all.dart';
 
 class ArticleDetail extends StatefulWidget {
   const ArticleDetail({Key? key, required this.p}) : super(key: key);
 
-  final String p;
+  final Data p;
 
   @override
   State<ArticleDetail> createState() => _ArticleDetailState();
@@ -18,15 +19,15 @@ class _ArticleDetailState extends State<ArticleDetail> {
       body: Column(children: [
         Stack(
           children: [
-            SizedBox(
-              width: double.infinity,
-              child: Image.asset('Assets/Picture/Svg/ArticleDetailFill.png'),
-            ),
             Container(
               width: double.infinity,
               height: 570,
               decoration: BoxDecoration(
                 color: Colors.black.withOpacity(0.4),
+              ),
+              child: Image.network(
+                widget.p.bannerURL.toString(),
+                fit: BoxFit.cover,
               ),
             ),
             Container(
@@ -49,8 +50,8 @@ class _ArticleDetailState extends State<ArticleDetail> {
             ),
             Container(
               margin: const EdgeInsets.only(top: 350, left: 24),
-              child: const Text(
-                'Taking care of your Mental Health is important.',
+              child: Text(
+                widget.p.title.toString(),
                 style: TextStyle(
                   color: Colors.white,
                   fontSize: 20,
@@ -137,7 +138,7 @@ class _ArticleDetailState extends State<ArticleDetail> {
                           height: 20,
                         ),
                         Text(
-                          widget.p,
+                          widget.p.content.toString(),
                         ),
                       ],
                     ),
@@ -146,7 +147,7 @@ class _ArticleDetailState extends State<ArticleDetail> {
               ),
             ),
             GestureDetector(
-              onTap: (){
+              onTap: () {
                 Navigator.pop(context);
               },
               child: Container(
