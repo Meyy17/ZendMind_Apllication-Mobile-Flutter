@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:zenmind/Main/UserMain/Home/OngoingConsultation/ongoing_consultation.dart';
 import 'package:zenmind/Widget/CustomLeading.dart';
 import 'package:zenmind/settings_all.dart';
 
@@ -96,10 +97,15 @@ class HomeWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                templateFeatList(
-                    context: context,
-                    title: "Consultation",
-                    locationSvgAssets: "ConsultationIcons.svg"),
+                InkWell(
+                  onTap: (){
+                    Navigator.push(context, MaterialPageRoute(builder: (context) => OngoingConsul(),));
+                  },
+                  child: templateFeatList(
+                      context: context,
+                      title: "Consultation",
+                      locationSvgAssets: "ConsultationIcons.svg"),
+                ),
                 templateFeatList(
                     context: context,
                     title: "Meditasi",
