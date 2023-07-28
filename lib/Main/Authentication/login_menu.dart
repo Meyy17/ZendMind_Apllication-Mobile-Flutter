@@ -7,6 +7,7 @@ import 'package:zenmind/Main/Authentication/auth_services.dart';
 import 'package:zenmind/Main/Authentication/register_menu.dart';
 import 'package:zenmind/Main/Authentication/verifymail_menu.dart';
 import 'package:zenmind/Main/MentorMain/home_menu.dart';
+import 'package:zenmind/Main/MentorMain/navigation_menu.dart';
 import 'package:zenmind/Main/UserMain/navigation_menu.dart';
 import 'package:zenmind/Models/auth_model.dart';
 import 'package:zenmind/Models/response_model.dart';
@@ -57,7 +58,7 @@ class _LoginUIState extends State<LoginUI> {
                     type: PageTransitionType.fade,
                     child: userDataFromLogin.data!.user!.role.toString() ==
                             "mentor"
-                        ? const HomeMenuMentor()
+                        ? const NavigationMentor()
                         : const Navigation()),
                 (route) => false);
           }

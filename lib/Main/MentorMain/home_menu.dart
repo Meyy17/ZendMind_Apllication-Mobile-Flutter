@@ -14,6 +14,7 @@ import 'package:zenmind/Main/MentorMain/TodaysSchedule/todays_schedule.dart';
 import 'package:zenmind/Models/profilementor_model.dart';
 import '../../DB/auth_preference.dart';
 import '../../Func/money_formated.dart';
+import '../../Models/listsmentoring_model.dart';
 import '../Authentication/auth_services.dart';
 import '../Authentication/login_menu.dart';
 
@@ -31,6 +32,8 @@ class _HomeMenuMentorState extends State<HomeMenuMentor> {
   bool isLoad = true;
 
   MentorProfileModel users = MentorProfileModel();
+  ListScheduleMentoring allSch = ListScheduleMentoring();
+  ListScheduleMentoring todaySch = ListScheduleMentoring();
 
   int formattoDay(String dateR) {
     DateTime date = DateTime.parse(dateR);
@@ -46,9 +49,16 @@ class _HomeMenuMentorState extends State<HomeMenuMentor> {
     });
 
     var res = await MentorServices().getProfileMentor(token: tokenLocalUsers);
+    var resAllSch =
+        await MentorServices().getAllScheduleMentoring(token: tokenLocalUsers);
+    var resTodaySch = await MentorServices()
+        .getTodayScheduleMentoring(token: tokenLocalUsers);
     setState(() {
       if (res.error == null) {
         users = res.data as MentorProfileModel;
+        allSch = resAllSch.data as ListScheduleMentoring;
+        todaySch = resTodaySch.data as ListScheduleMentoring;
+
         isLoad = false;
       } else {}
     });
@@ -632,11 +642,17 @@ class _HomeMenuMentorState extends State<HomeMenuMentor> {
                               ),
                               Padding(
                                 padding: const EdgeInsets.only(right: 45),
-                                child: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Container(
+                                child: ListView.separated(
+                                  itemCount: 5,
+                                  separatorBuilder:
+                                      (BuildContext context, int index) {
+                                    return SizedBox(
+                                      width: 10,
+                                    );
+                                  },
+                                  itemBuilder:
+                                      (BuildContext context, int index) {
+                                    return Container(
                                       padding: EdgeInsets.only(right: 15),
                                       decoration: BoxDecoration(
                                         borderRadius: BorderRadius.circular(15),
@@ -698,316 +714,14 @@ class _HomeMenuMentorState extends State<HomeMenuMentor> {
                                           ),
                                         ],
                                       ),
-                                    ),
-                                    Container(
-                                      padding: EdgeInsets.only(right: 15),
-                                      decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.circular(15),
-                                        color: Color(0xFFE6E6E6),
-                                      ),
-                                      width: 170,
-                                      height: 80,
-                                      child: Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
-                                        children: [
-                                          Container(
-                                            decoration: BoxDecoration(
-                                              borderRadius: BorderRadius.only(
-                                                  topLeft: Radius.circular(15),
-                                                  bottomLeft:
-                                                      Radius.circular(15)),
-                                              color: Color(0xFFFF92CA),
-                                            ),
-                                            width: 21,
-                                            height: 80,
-                                          ),
-                                          Column(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.center,
-                                            children: [
-                                              Text(
-                                                'Olsen',
-                                                style: TextStyle(
-                                                  fontSize: 12,
-                                                  fontWeight: FontWeight.w600,
-                                                ),
-                                              ),
-                                              SizedBox(
-                                                height: 3,
-                                              ),
-                                              Text(
-                                                '12 March 2022',
-                                                style: TextStyle(
-                                                  fontSize: 12,
-                                                ),
-                                              ),
-                                              SizedBox(
-                                                height: 3,
-                                              ),
-                                              Text(
-                                                '18:00',
-                                                style: TextStyle(
-                                                  fontSize: 12,
-                                                ),
-                                              ),
-                                            ],
-                                          ),
-                                          Icon(
-                                            Icons.add,
-                                            size: 30,
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                  ],
+                                    );
+                                  },
                                 ),
                               ),
                             ],
                           ),
                           SizedBox(
                             height: 20,
-                          ),
-                          Text(
-                            'Feature',
-                            style: TextStyle(
-                              fontWeight: FontWeight.w600,
-                              fontSize: 17,
-                            ),
-                          ),
-                          SizedBox(
-                            height: 15,
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.only(right: 45),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                InkWell(
-                                  onTap: () {
-                                    Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                            builder: (context) =>
-                                                ListRoomUserScreen()));
-                                  },
-                                  child: Container(
-                                    padding: EdgeInsets.only(right: 15),
-                                    decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(15),
-                                      color: Color(0xFFE6E6E6),
-                                    ),
-                                    width: 170,
-                                    height: 80,
-                                    child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.start,
-                                      children: [
-                                        Container(
-                                          decoration: BoxDecoration(
-                                            borderRadius: BorderRadius.only(
-                                                topLeft: Radius.circular(15),
-                                                bottomLeft:
-                                                    Radius.circular(15)),
-                                            color: Color(0xFF00CBC8),
-                                          ),
-                                          width: 21,
-                                          height: 80,
-                                        ),
-                                        SizedBox(
-                                          width: 10,
-                                        ),
-                                        Icon(
-                                          Icons.chat_outlined,
-                                          size: 30,
-                                        ),
-                                        SizedBox(
-                                          width: 10,
-                                        ),
-                                        Text(
-                                          'Chat',
-                                          style: TextStyle(
-                                            fontSize: 12,
-                                            fontWeight: FontWeight.w400,
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                ),
-                                GestureDetector(
-                                  onTap: () {
-                                    Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                          builder: (context) => ReviewRating(),
-                                        ));
-                                  },
-                                  child: Container(
-                                    padding: EdgeInsets.only(right: 15),
-                                    decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(15),
-                                      color: Color(0xFFE6E6E6),
-                                    ),
-                                    width: 170,
-                                    height: 80,
-                                    child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.start,
-                                      children: [
-                                        Container(
-                                          decoration: BoxDecoration(
-                                            borderRadius: BorderRadius.only(
-                                                topLeft: Radius.circular(15),
-                                                bottomLeft:
-                                                    Radius.circular(15)),
-                                            color: Color(0xFF00CBC8),
-                                          ),
-                                          width: 21,
-                                          height: 80,
-                                        ),
-                                        SizedBox(
-                                          width: 10,
-                                        ),
-                                        Icon(
-                                          Icons.star_border_rounded,
-                                          size: 30,
-                                        ),
-                                        SizedBox(
-                                          width: 10,
-                                        ),
-                                        Text(
-                                          'Review \nand Rating',
-                                          style: TextStyle(
-                                            fontSize: 12,
-                                            fontWeight: FontWeight.w400,
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                          SizedBox(
-                            height: 20,
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.only(right: 45),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                GestureDetector(
-                                  onTap: () {
-                                    Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                          builder: (context) =>
-                                              MentoringHistory(),
-                                        ));
-                                  },
-                                  child: Container(
-                                    padding: EdgeInsets.only(right: 15),
-                                    decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(15),
-                                      color: Color(0xFFE6E6E6),
-                                    ),
-                                    width: 170,
-                                    height: 80,
-                                    child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.start,
-                                      children: [
-                                        Container(
-                                          decoration: BoxDecoration(
-                                            borderRadius: BorderRadius.only(
-                                                topLeft: Radius.circular(15),
-                                                bottomLeft:
-                                                    Radius.circular(15)),
-                                            color: Color(0xFF00CBC8),
-                                          ),
-                                          width: 21,
-                                          height: 80,
-                                        ),
-                                        SizedBox(
-                                          width: 10,
-                                        ),
-                                        Icon(
-                                          Icons.timer_sharp,
-                                          size: 30,
-                                        ),
-                                        SizedBox(
-                                          width: 10,
-                                        ),
-                                        Text(
-                                          'History',
-                                          style: TextStyle(
-                                            fontSize: 12,
-                                            fontWeight: FontWeight.w400,
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                ),
-                                GestureDetector(
-                                  onTap: () {
-                                    Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                          builder: (context) =>
-                                              EarningHistory(),
-                                        ));
-                                  },
-                                  child: Container(
-                                    padding: EdgeInsets.only(right: 15),
-                                    decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(15),
-                                      color: Color(0xFFE6E6E6),
-                                    ),
-                                    width: 170,
-                                    height: 80,
-                                    child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.start,
-                                      children: [
-                                        Container(
-                                          decoration: BoxDecoration(
-                                            borderRadius: BorderRadius.only(
-                                                topLeft: Radius.circular(15),
-                                                bottomLeft:
-                                                    Radius.circular(15)),
-                                            color: Color(0xFF00CBC8),
-                                          ),
-                                          width: 21,
-                                          height: 80,
-                                        ),
-                                        SizedBox(
-                                          width: 10,
-                                        ),
-                                        Icon(
-                                          Icons.person,
-                                          size: 30,
-                                        ),
-                                        SizedBox(
-                                          width: 10,
-                                        ),
-                                        Text(
-                                          'Earning \nhistory',
-                                          style: TextStyle(
-                                            fontSize: 12,
-                                            fontWeight: FontWeight.w400,
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
                           ),
                         ],
                       ),

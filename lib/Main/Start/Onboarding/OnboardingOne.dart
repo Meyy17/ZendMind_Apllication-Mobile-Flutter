@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:page_transition/page_transition.dart';
 import 'package:zenmind/Main/Start/Onboarding/OnboardingTwo.dart';
 import 'package:zenmind/Main/Start/start_menu.dart';
 
@@ -17,47 +18,69 @@ class _OnboardingOneState extends State<OnboardingOne> {
       backgroundColor: Color(0xFF4DCCC1),
       body: Column(
         children: [
-          SizedBox(height: 40,),
-          Center(child: Image.asset("Assets/Picture/Svg/OnboardingOne.png", height: 350, width: 350,)),
-          SizedBox(height: 40,),
+          SizedBox(
+            height: 40,
+          ),
+          Center(
+              child: Image.asset(
+            "Assets/Picture/Svg/OnboardingOne.png",
+            height: 350,
+            width: 350,
+          )),
+          SizedBox(
+            height: 40,
+          ),
           Text(
-              "ZenMind",
+            "ZenMind",
             style: TextStyle(
               color: Colors.white,
               fontWeight: FontWeight.w600,
               fontSize: 15,
             ),
           ),
-          SizedBox(height: 30,),
+          SizedBox(
+            height: 30,
+          ),
           Container(
             decoration: BoxDecoration(
               color: Colors.white,
-              borderRadius: BorderRadius.only(topLeft: Radius.circular(40), topRight: Radius.circular(40)),
+              borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(40), topRight: Radius.circular(40)),
             ),
             height: 317,
             width: double.infinity,
             child: Column(
               children: [
-                SizedBox(height: 35,),
+                SizedBox(
+                  height: 35,
+                ),
                 Text(
-                    "Lorem Ipsum",
+                  "Lorem Ipsum",
                   style: TextStyle(
                     fontSize: 20,
                     fontWeight: FontWeight.w600,
                   ),
                 ),
-                SizedBox(height: 35,),
+                SizedBox(
+                  height: 35,
+                ),
                 Text(
                   textAlign: TextAlign.center,
-                    "Lorem ipsum dolor sit amet, consectetur adipiscing\n elit. Donec rutrum eros eu fringilla euismod.",
+                  "Lorem ipsum dolor sit amet, consectetur adipiscing\n elit. Donec rutrum eros eu fringilla euismod.",
                   style: TextStyle(
                     color: Color(0xFF5C5C5C),
                   ),
                 ),
-                SizedBox(height: 35,),
+                SizedBox(
+                  height: 35,
+                ),
                 GestureDetector(
-                  onTap: (){
-                    Navigator.push(context, MaterialPageRoute(builder: (context) => StartedUI(),));
+                  onTap: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => StartedUI(),
+                        ));
                   },
                   child: Container(
                     alignment: Alignment.center,
@@ -68,7 +91,7 @@ class _OnboardingOneState extends State<OnboardingOne> {
                     height: 50,
                     width: 150,
                     child: Text(
-                        "Get Started",
+                      "Get Started",
                       style: TextStyle(
                         color: Colors.white,
                         fontWeight: FontWeight.w600,
@@ -77,16 +100,23 @@ class _OnboardingOneState extends State<OnboardingOne> {
                     ),
                   ),
                 ),
-                SizedBox(height: 35,),
+                SizedBox(
+                  height: 35,
+                ),
                 GestureDetector(
-                  onTap: (){
-                    Navigator.push(context, MaterialPageRoute(builder: (context) => OnboardingTwo(),));
+                  onTap: () {
+                    Navigator.push(
+                        context,
+                        PageTransition(
+                            child: OnboardingTwo(),
+                            childCurrent: OnboardingOne(),
+                            type: PageTransitionType.rightToLeftJoined));
                   },
                   child: Container(
                     alignment: Alignment.centerRight,
                     padding: EdgeInsets.symmetric(horizontal: 50),
                     child: Text(
-                        "Next",
+                      "Next",
                       style: TextStyle(
                         color: Color(0xFF1A8FE3),
                         fontWeight: FontWeight.w600,

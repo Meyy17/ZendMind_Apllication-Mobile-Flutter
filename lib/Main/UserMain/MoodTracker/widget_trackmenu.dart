@@ -125,17 +125,22 @@ class LineChartWidget extends StatelessWidget {
       height: 300,
       padding: EdgeInsets.all(16),
       child: SfCartesianChart(
-        primaryXAxis: CategoryAxis(),
+        primaryXAxis: CategoryAxis(), // Use CategoryAxis for string values
         primaryYAxis: NumericAxis(),
-        series: <LineSeries<MoodData, int>>[
-          LineSeries<MoodData, int>(
-              dataSource: data,
-              xValueMapper: (MoodData moodData, _) =>
-                  DateTime.parse(moodData.createdAt.toString()).day,
-              xAxisName: 'Date',
-              yValueMapper: (MoodData moodData, _) =>
-                  getMoodValue(moodData.mood.toString()),
-              yAxisName: 'Mood'),
+        series: <LineSeries<MoodData, String>>[
+          // Change the type to String
+          LineSeries<MoodData, String>(
+            // Change the type to String
+            dataSource: data,
+            xValueMapper: (MoodData moodData, _) =>
+                DateTime.parse(moodData.monthYear.toString())
+                    .day
+                    .toString(), // Use monthYear as the x-value
+            xAxisName: 'Month-Year',
+            yValueMapper: (MoodData moodData, _) =>
+                getMoodValue(moodData.mood.toString()),
+            yAxisName: 'Mood',
+          ),
         ],
       ),
     );
