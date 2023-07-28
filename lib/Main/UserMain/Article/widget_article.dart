@@ -111,7 +111,7 @@ class ArticleWidget {
         ),
         DotsIndicator(
           dotsCount: 3,
-          position: indexSlider.toDouble(),
+          position: indexSlider.toInt(),
           decorator: DotsDecorator(
               activeColor: GetTheme().themeColor,
               size: const Size.square(9.0),
