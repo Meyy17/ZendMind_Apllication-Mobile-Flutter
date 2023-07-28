@@ -32,11 +32,11 @@ dependencies:
   awesome_snackbar_content: 
   carousel_slider: ^4.2.1
   cupertino_icons: ^1.0.2
-  dots_indicator: ^2.1.0
+  dots_indicator: ^3.0.0
   flutter:
     sdk: flutter
   flutter_svg: ^2.0.4
-  google_fonts: ^4.0.3
+  google_fonts: ^5.1.0
   image_picker: ^0.8.7+5
   intl: 
   page_transition: ^2.0.9
@@ -44,7 +44,7 @@ dependencies:
   readmore: ^2.1.0
   shared_preferences: ^2.1.0
   socket_io_client: ^2.0.2
-  syncfusion_flutter_charts: ^21.2.8
+  syncfusion_flutter_charts: ^22.2.5
   
 
 dev_dependencies:
