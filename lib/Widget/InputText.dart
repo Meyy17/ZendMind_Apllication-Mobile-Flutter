@@ -9,10 +9,12 @@ Widget inputStyleFillWithIcons(
     required Icon prefixIcons,
     required TextEditingController controller,
     required bool readOnly,
+    required bool inputVisibilty,
     required String? Function(String?)? validator}) {
   return TextFormField(
     readOnly: readOnly,
     validator: validator,
+    obscureText: inputVisibilty,
     controller: controller,
     decoration: InputDecoration(
         border: const OutlineInputBorder(

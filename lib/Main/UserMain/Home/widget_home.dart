@@ -57,38 +57,17 @@ class HomeWidget {
   }) {
     return Padding(
       padding: EdgeInsets.all(paddingScreen),
-      child: SizedBox(
+      child: const SizedBox(
         width: double.infinity,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
+          children: const [
             const Text(
               "What do you feel today?",
               style: TextStyle(fontSize: 15, fontWeight: FontWeight.w500),
             ),
             const SizedBox(
               height: 10,
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                templateFeelIcons(
-                    caption: 'Happy',
-                    bgColor: const Color(0xffEF5DA8),
-                    svgIconsName: 'FeelHappyIcons.svg'),
-                templateFeelIcons(
-                    caption: 'Normal',
-                    bgColor: const Color(0xff00CE90),
-                    svgIconsName: 'FeelNormalIcons.svg'),
-                templateFeelIcons(
-                    caption: 'Sad',
-                    bgColor: const Color(0xff4DCCC1),
-                    svgIconsName: 'FeelSadIcons.svg'),
-                templateFeelIcons(
-                    caption: 'Angry',
-                    bgColor: const Color(0xffFF696B),
-                    svgIconsName: 'FeelAngryIcons.svg'),
-              ],
             ),
           ],
         ),

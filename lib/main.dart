@@ -60,6 +60,8 @@ class _MyAppState extends State<MyApp> {
             sharedPreferences.getString(AuthPreferences.tokenKey) ?? "";
         isLoad = false;
       });
+    } else {
+      print(res.error);
     }
   }
 

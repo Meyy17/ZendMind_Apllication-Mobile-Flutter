@@ -69,10 +69,17 @@ packages:
     dependency: transitive
     description:
       name: collection
+<<<<<<< HEAD
       sha256: cfc915e6923fe5ce6e153b0723c753045de46de1b4d63771530504004a45fae0
       url: "https://pub.dev"
     source: hosted
     version: "1.17.0"
+=======
+      sha256: "4a07be6cb69c84d677a6c3096fcf960cc3285a8330b4603e0d463d15d9bd934c"
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.17.1"
+>>>>>>> 6ee896d5d0490320221e64607177c0f09ffa384f
   cross_file:
     dependency: transitive
     description:
@@ -241,10 +248,17 @@ packages:
     dependency: "direct main"
     description:
       name: intl
+<<<<<<< HEAD
       sha256: "910f85bce16fb5c6f614e117efa303e85a1731bb0081edf3604a2ae6e9a3cc91"
       url: "https://pub.dev"
     source: hosted
     version: "0.17.0"
+=======
+      sha256: a3715e3bc90294e971cb7dc063fbf3cd9ee0ebf8604ffeafabd9e6f16abbdbe6
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.18.0"
+>>>>>>> 6ee896d5d0490320221e64607177c0f09ffa384f
   js:
     dependency: transitive
     description:
@@ -261,14 +275,32 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.0.1"
+<<<<<<< HEAD
+=======
+  logging:
+    dependency: transitive
+    description:
+      name: logging
+      sha256: "623a88c9594aa774443aa3eb2d41807a48486b5613e67599fb4c41c0ad47c340"
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.2.0"
+>>>>>>> 6ee896d5d0490320221e64607177c0f09ffa384f
   matcher:
     dependency: transitive
     description:
       name: matcher
+<<<<<<< HEAD
       sha256: "16db949ceee371e9b99d22f88fa3a73c4e59fd0afed0bd25fc336eb76c198b72"
       url: "https://pub.dev"
     source: hosted
     version: "0.12.13"
+=======
+      sha256: "6501fbd55da300384b768785b83e5ce66991266cec21af89ab9ae7f5ce1c4cbb"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.12.15"
+>>>>>>> 6ee896d5d0490320221e64607177c0f09ffa384f
   material_color_utilities:
     dependency: transitive
     description:
@@ -474,6 +506,22 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.99"
+  socket_io_client:
+    dependency: "direct main"
+    description:
+      name: socket_io_client
+      sha256: "5d2a0a12c2a4a5f48d14e5b6aef7db78d3b425a9b084071059fa54bd12d2576c"
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.0.2"
+  socket_io_common:
+    dependency: transitive
+    description:
+      name: socket_io_common
+      sha256: "2ab92f8ff3ebbd4b353bf4a98bee45cc157e3255464b2f90f66e09c4472047eb"
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.0.3"
   source_span:
     dependency: transitive
     description:
@@ -506,6 +554,22 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.2.0"
+  syncfusion_flutter_charts:
+    dependency: "direct main"
+    description:
+      name: syncfusion_flutter_charts
+      sha256: "85bac56da967d6943d742b3c75a4a1bd4d4d017f03b4016042898d9de6c36284"
+      url: "https://pub.dev"
+    source: hosted
+    version: "21.2.8"
+  syncfusion_flutter_core:
+    dependency: transitive
+    description:
+      name: syncfusion_flutter_core
+      sha256: c71208a5bbcdcad64f08264d6cd6d6ed9c0ee95ae3f4dea9d33a0f84134ccf99
+      url: "https://pub.dev"
+    source: hosted
+    version: "21.2.8"
   term_glyph:
     dependency: transitive
     description:
@@ -518,10 +582,17 @@ packages:
     dependency: transitive
     description:
       name: test_api
+<<<<<<< HEAD
       sha256: ad540f65f92caa91bf21dfc8ffb8c589d6e4dc0c2267818b4cc2792857706206
       url: "https://pub.dev"
     source: hosted
     version: "0.4.16"
+=======
+      sha256: eb6ac1540b26de412b3403a163d919ba86f6a973fe6cc50ae3541b80092fdcfb
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.5.1"
+>>>>>>> 6ee896d5d0490320221e64607177c0f09ffa384f
   typed_data:
     dependency: transitive
     description:

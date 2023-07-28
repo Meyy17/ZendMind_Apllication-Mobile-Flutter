@@ -71,10 +71,11 @@ Widget googleLoginBtn(
   });
 }
 
-Widget dateCard(
-    {required String day,
-    required String date,
-    required Function()? onPressed}) {
+Widget dateCard({
+  required String day,
+  required String date,
+  required bool isSelected,
+}) {
   return Container(
     width: 50,
     height: 75,
@@ -82,7 +83,7 @@ Widget dateCard(
         color: const Color(0xFFF1F6F7),
         borderRadius: BorderRadius.circular(15),
         border: Border.all(
-          color: const Color(0xFFE3E3E3),
+          color: isSelected ? Colors.black : Color(0xFFE3E3E3),
           width: 1,
         )),
     child: Column(
@@ -108,7 +109,7 @@ Widget dateCard(
   );
 }
 
-Widget timePicker({required String time, required Function()? onPressed}) {
+Widget timePicker({required String time, required bool isSelected}) {
   return Container(
     height: 50,
     width: 125,
@@ -116,7 +117,7 @@ Widget timePicker({required String time, required Function()? onPressed}) {
       color: const Color(0xFFF1F6F7),
       borderRadius: BorderRadius.circular(15),
       border: Border.all(
-        color: const Color(0xFFE3E3E3),
+        color: isSelected ? Colors.black : Color(0xFFE3E3E3),
         width: 1,
       ),
     ),
