@@ -13,7 +13,9 @@ import 'package:zenmind/Main/MentorMain/SetSchedule/set_schedule.dart';
 import 'package:zenmind/Main/MentorMain/TodaysSchedule/todays_schedule.dart';
 import 'package:zenmind/Models/profilementor_model.dart';
 import '../../DB/auth_preference.dart';
+import '../../Func/date_fromated.dart';
 import '../../Func/money_formated.dart';
+import '../../Func/time_formated.dart';
 import '../../Models/listsmentoring_model.dart';
 import '../Authentication/auth_services.dart';
 import '../Authentication/login_menu.dart';
@@ -27,6 +29,8 @@ class HomeMenuMentor extends StatefulWidget {
 
 class _HomeMenuMentorState extends State<HomeMenuMentor> {
   AuthPreferences authPreferences = AuthPreferences();
+
+  TextEditingController ctrlFee = TextEditingController();
 
   String tokenLocalUsers = "";
   bool isLoad = true;
@@ -62,6 +66,22 @@ class _HomeMenuMentorState extends State<HomeMenuMentor> {
         isLoad = false;
       } else {}
     });
+  }
+
+  void setfee(int fee) async {
+    showDialog(
+      context: context,
+      builder: (context) => Center(child: CircularProgressIndicator()),
+    );
+    var res = await MentorServices().setfee(token: tokenLocalUsers, fee: fee);
+
+    if (res.error == null) {
+      Navigator.pop(context);
+      Navigator.pop(context);
+      getData();
+    } else {
+      print(res.error);
+    }
   }
 
   void logOut() async {
@@ -258,8 +278,10 @@ class _HomeMenuMentorState extends State<HomeMenuMentor> {
                                 width: 7,
                               ),
                               GestureDetector(
-                                onTap: () {
-                                  showDialog(
+                                onTap: () async {
+                                  ctrlFee.text =
+                                      users.data!.mentorProfile!.fee.toString();
+                                  await showDialog(
                                       context: context,
                                       builder: (context) => AlertDialog(
                                             title: Text(
@@ -269,12 +291,19 @@ class _HomeMenuMentorState extends State<HomeMenuMentor> {
                                               ),
                                             ),
                                             content: TextField(
+                                              controller: ctrlFee,
+                                              keyboardType:
+                                                  TextInputType.number,
                                               decoration: InputDecoration(
                                                   hintText:
                                                       "Enter your custom fee here"),
                                             ),
                                             actions: [
                                               GestureDetector(
+                                                onTap: () {
+                                                  setfee(
+                                                      int.parse(ctrlFee.text));
+                                                },
                                                 child: Padding(
                                                   padding: EdgeInsets.symmetric(
                                                           horizontal: 24.0)
@@ -303,6 +332,8 @@ class _HomeMenuMentorState extends State<HomeMenuMentor> {
                                               ),
                                             ],
                                           ));
+                                  ctrlFee.text =
+                                      users.data!.mentorProfile!.fee.toString();
                                 },
                                 child: Container(
                                   alignment: Alignment.center,
@@ -466,13 +497,22 @@ class _HomeMenuMentorState extends State<HomeMenuMentor> {
                               SizedBox(
                                 height: 15,
                               ),
-                              Padding(
-                                padding: const EdgeInsets.only(right: 45),
-                                child: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Container(
+                              SizedBox(
+                                height: 80,
+                                child: ListView.separated(
+                                  shrinkWrap: true,
+                                  scrollDirection: Axis.horizontal,
+                                  itemCount: todaySch.data!.length,
+                                  separatorBuilder:
+                                      (BuildContext context, int index) {
+                                    return SizedBox(
+                                      width: 10,
+                                    );
+                                  },
+                                  itemBuilder:
+                                      (BuildContext context, int index) {
+                                    var dataschNow = todaySch.data![index];
+                                    return Container(
                                       padding: EdgeInsets.only(right: 15),
                                       decoration: BoxDecoration(
                                         borderRadius: BorderRadius.circular(15),
@@ -502,7 +542,7 @@ class _HomeMenuMentorState extends State<HomeMenuMentor> {
                                                 MainAxisAlignment.center,
                                             children: [
                                               Text(
-                                                'Adam',
+                                                '${dataschNow.user!.name}',
                                                 style: TextStyle(
                                                   fontSize: 12,
                                                   fontWeight: FontWeight.w600,
@@ -512,7 +552,8 @@ class _HomeMenuMentorState extends State<HomeMenuMentor> {
                                                 height: 3,
                                               ),
                                               Text(
-                                                '12 March 2022',
+                                                formatDateEnglish(
+                                                    '${dataschNow.dateMentoring}'),
                                                 style: TextStyle(
                                                   fontSize: 12,
                                                 ),
@@ -521,7 +562,8 @@ class _HomeMenuMentorState extends State<HomeMenuMentor> {
                                                 height: 3,
                                               ),
                                               Text(
-                                                '18:00',
+                                                timeFormatToHAndM(
+                                                    '${dataschNow.timeMentoring}'),
                                                 style: TextStyle(
                                                   fontSize: 12,
                                                 ),
@@ -534,71 +576,8 @@ class _HomeMenuMentorState extends State<HomeMenuMentor> {
                                           ),
                                         ],
                                       ),
-                                    ),
-                                    Container(
-                                      padding: EdgeInsets.only(right: 15),
-                                      decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.circular(15),
-                                        color: Color(0xFFE6E6E6),
-                                      ),
-                                      width: 170,
-                                      height: 80,
-                                      child: Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
-                                        children: [
-                                          Container(
-                                            decoration: BoxDecoration(
-                                              borderRadius: BorderRadius.only(
-                                                  topLeft: Radius.circular(15),
-                                                  bottomLeft:
-                                                      Radius.circular(15)),
-                                              color: Color(0xFFFF92CA),
-                                            ),
-                                            width: 21,
-                                            height: 80,
-                                          ),
-                                          Column(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.center,
-                                            children: [
-                                              Text(
-                                                'Vierra',
-                                                style: TextStyle(
-                                                  fontSize: 12,
-                                                  fontWeight: FontWeight.w600,
-                                                ),
-                                              ),
-                                              SizedBox(
-                                                height: 3,
-                                              ),
-                                              Text(
-                                                '12 March 2022',
-                                                style: TextStyle(
-                                                  fontSize: 12,
-                                                ),
-                                              ),
-                                              SizedBox(
-                                                height: 3,
-                                              ),
-                                              Text(
-                                                '18:00',
-                                                style: TextStyle(
-                                                  fontSize: 12,
-                                                ),
-                                              ),
-                                            ],
-                                          ),
-                                          Icon(
-                                            Icons.add,
-                                            size: 30,
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                  ],
+                                    );
+                                  },
                                 ),
                               ),
                               SizedBox(
@@ -640,10 +619,12 @@ class _HomeMenuMentorState extends State<HomeMenuMentor> {
                               SizedBox(
                                 height: 15,
                               ),
-                              Padding(
-                                padding: const EdgeInsets.only(right: 45),
+                              SizedBox(
+                                height: 80,
                                 child: ListView.separated(
-                                  itemCount: 5,
+                                  shrinkWrap: true,
+                                  scrollDirection: Axis.horizontal,
+                                  itemCount: allSch.data!.length,
                                   separatorBuilder:
                                       (BuildContext context, int index) {
                                     return SizedBox(
@@ -652,6 +633,7 @@ class _HomeMenuMentorState extends State<HomeMenuMentor> {
                                   },
                                   itemBuilder:
                                       (BuildContext context, int index) {
+                                    var dataSchAll = allSch.data![index];
                                     return Container(
                                       padding: EdgeInsets.only(right: 15),
                                       decoration: BoxDecoration(
@@ -682,7 +664,7 @@ class _HomeMenuMentorState extends State<HomeMenuMentor> {
                                                 MainAxisAlignment.center,
                                             children: [
                                               Text(
-                                                'Mich',
+                                                '${dataSchAll.user!.name}',
                                                 style: TextStyle(
                                                   fontSize: 12,
                                                   fontWeight: FontWeight.w600,
@@ -692,7 +674,8 @@ class _HomeMenuMentorState extends State<HomeMenuMentor> {
                                                 height: 3,
                                               ),
                                               Text(
-                                                '12 March 2022',
+                                                formatDateEnglish(
+                                                    '${dataSchAll.dateMentoring}'),
                                                 style: TextStyle(
                                                   fontSize: 12,
                                                 ),
@@ -701,7 +684,8 @@ class _HomeMenuMentorState extends State<HomeMenuMentor> {
                                                 height: 3,
                                               ),
                                               Text(
-                                                '18:00',
+                                                timeFormatToHAndM(
+                                                    '${dataSchAll.timeMentoring}'),
                                                 style: TextStyle(
                                                   fontSize: 12,
                                                 ),

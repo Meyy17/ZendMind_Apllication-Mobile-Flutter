@@ -192,4 +192,95 @@ class ConsultationService {
     }
     return apiresponse;
   }
+
+  Future<ApiResponse> cancelBook({required int idBook}) async {
+    ApiResponse apiresponse = ApiResponse();
+    try {
+      final response = await http.get(
+        Uri.parse(
+            "${Environment().zendmindBASEURL}api/mentor/book/cancel/$idBook"),
+        headers: {'Accept': 'application/json'},
+      );
+
+      print(response.body);
+      switch (response.statusCode) {
+        case 200:
+          apiresponse.data = jsonDecode(response.body)['data'];
+          break;
+        case 400:
+          apiresponse.error = jsonDecode(response.body)['data'];
+          break;
+        default:
+          apiresponse.error = somethingWentWrong;
+          break;
+      }
+    } catch (err) {
+      apiresponse.error = serverError;
+    }
+    return apiresponse;
+  }
+
+  Future<ApiResponse> confirmBook({required int idBook}) async {
+    ApiResponse apiresponse = ApiResponse();
+    try {
+      final response = await http.get(
+        Uri.parse(
+            "${Environment().zendmindBASEURL}api/mentor/book/confirm/$idBook"),
+        headers: {'Accept': 'application/json'},
+      );
+
+      print(response.body);
+      switch (response.statusCode) {
+        case 200:
+          apiresponse.data = jsonDecode(response.body)['data'];
+          break;
+        case 400:
+          apiresponse.error = jsonDecode(response.body)['data'];
+          break;
+        default:
+          apiresponse.error = somethingWentWrong;
+          break;
+      }
+    } catch (err) {
+      apiresponse.error = serverError;
+    }
+    return apiresponse;
+  }
+
+  Future<ApiResponse> reschedule({
+    required String idmentoring,
+    required String newDate,
+    required String newTime,
+  }) async {
+    ApiResponse apiresponse = ApiResponse();
+    try {
+      final response = await http.post(
+          Uri.parse(
+              "${Environment().zendmindBASEURL}api/mentor/book/reschedule"),
+          headers: {
+            'Accept': 'application/json'
+          },
+          body: {
+            'id_mentoring': "1",
+            'new_date': newDate,
+            'new_time': newTime,
+          });
+
+      print(response.body);
+      switch (response.statusCode) {
+        case 200:
+          apiresponse.data = jsonDecode(response.body)['data'];
+          break;
+        case 400:
+          apiresponse.error = jsonDecode(response.body)['data'];
+          break;
+        default:
+          apiresponse.error = somethingWentWrong;
+          break;
+      }
+    } catch (err) {
+      apiresponse.error = serverError;
+    }
+    return apiresponse;
+  }
 }

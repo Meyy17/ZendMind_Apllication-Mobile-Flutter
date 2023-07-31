@@ -12,36 +12,35 @@ class _TodaysScheduleState extends State<TodaysSchedule> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        leading: IconButton(
+            onPressed: () {
+              Navigator.pop(context);
+            },
+            icon: Icon(
+              Icons.arrow_circle_left_rounded,
+              size: 30,
+              color: Color(0xFFFF4DCCC1),
+            )),
+        title: Text(
+          'Today\'s schedule',
+          style: TextStyle(
+            fontWeight: FontWeight.w600,
+            fontSize: 17,
+          ),
+        ),
+        backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+        elevation: 0,
+      ),
       body: Column(
         children: [
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 29).copyWith(top: 111),
-            child: Row(
-              children: [
-                IconButton(onPressed: (){
-                  Navigator.push(context, MaterialPageRoute(builder: (context) => HomeMenuMentor(),));
-                }, icon: Icon(
-                    Icons.arrow_circle_left_rounded,
-                  size: 30,
-                  color: Color(0xFFFF4DCCC1),
-                )),
-                SizedBox(width: 20,),
-                Text(
-                  'Today\'s schedule',
-                  style: TextStyle(
-                    fontWeight: FontWeight.w600,
-                    fontSize: 17,
-                  ),
-                ),
-              ],
-            ),
-          ),
-          SizedBox(height: 35,),
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Container(
-                padding: EdgeInsets.only(left: 29,),
+                padding: EdgeInsets.only(
+                  left: 29,
+                ),
                 alignment: Alignment.centerLeft,
                 child: Text(
                   'Good morning, doctors',
@@ -56,14 +55,14 @@ class _TodaysScheduleState extends State<TodaysSchedule> {
                 alignment: Alignment.centerLeft,
                 child: Text(
                   'This is your schedules',
-                  style: TextStyle(
-                      fontSize: 15
-                  ),
+                  style: TextStyle(fontSize: 15),
                 ),
               ),
             ],
           ),
-          SizedBox(height: 35,),
+          SizedBox(
+            height: 35,
+          ),
           Container(
             padding: EdgeInsets.symmetric(horizontal: 20).copyWith(top: 20),
             decoration: BoxDecoration(
@@ -78,10 +77,12 @@ class _TodaysScheduleState extends State<TodaysSchedule> {
                 Row(
                   children: [
                     Icon(
-                        Icons.lock_outline,
+                      Icons.lock_outline,
                       size: 35,
                     ),
-                    SizedBox(width: 15,),
+                    SizedBox(
+                      width: 15,
+                    ),
                     Text(
                       'Meet with Adam',
                       style: TextStyle(
@@ -91,12 +92,14 @@ class _TodaysScheduleState extends State<TodaysSchedule> {
                     ),
                     Spacer(),
                     Icon(
-                        Icons.close_rounded,
+                      Icons.close_rounded,
                       size: 35,
                     ),
                   ],
                 ),
-                SizedBox(height: 15,),
+                SizedBox(
+                  height: 15,
+                ),
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -112,14 +115,18 @@ class _TodaysScheduleState extends State<TodaysSchedule> {
                         fontSize: 15,
                       ),
                     ),
-                    SizedBox(height: 15,),
+                    SizedBox(
+                      height: 15,
+                    ),
                     Text(
                       'Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet.',
                       style: TextStyle(
                         fontSize: 15,
                       ),
                     ),
-                    SizedBox(height: 15,),
+                    SizedBox(
+                      height: 15,
+                    ),
                     Text(
                       'Adam@gmail.com',
                       style: TextStyle(
@@ -127,7 +134,9 @@ class _TodaysScheduleState extends State<TodaysSchedule> {
                         fontWeight: FontWeight.w600,
                       ),
                     ),
-                    SizedBox(height: 20,),
+                    SizedBox(
+                      height: 20,
+                    ),
                     Row(
                       children: [
                         Container(
@@ -147,7 +156,9 @@ class _TodaysScheduleState extends State<TodaysSchedule> {
                             ),
                           ),
                         ),
-                        SizedBox(width: 12,),
+                        SizedBox(
+                          width: 12,
+                        ),
                         Container(
                           alignment: Alignment.center,
                           decoration: BoxDecoration(

@@ -126,7 +126,7 @@ class LineChartWidget extends StatelessWidget {
       padding: EdgeInsets.all(16),
       child: SfCartesianChart(
         primaryXAxis: CategoryAxis(), // Use CategoryAxis for string values
-        primaryYAxis: NumericAxis(),
+        primaryYAxis: NumericAxis(maximum: 4, minimum: 1),
         series: <LineSeries<MoodData, String>>[
           // Change the type to String
           LineSeries<MoodData, String>(
@@ -150,9 +150,9 @@ class LineChartWidget extends StatelessWidget {
 int getMoodValue(String mood) {
   switch (mood) {
     case "happy":
-      return 1;
-    case "normal":
       return 2;
+    case "normal":
+      return 1;
     case "sad":
       return 3;
     case "angry":

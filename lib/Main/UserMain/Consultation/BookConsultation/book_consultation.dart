@@ -562,7 +562,26 @@ class _BookConsultationState extends State<BookConsultation> {
                         child: ElevatedButton(
                           style: const ButtonStyle(),
                           onPressed: () {
-                            handleBookNow();
+                            showDialog(
+                              context: context,
+                              builder: (context) => AlertDialog(
+                                content: Text(
+                                    "Are you sure to cancel mentoring with ${mentorData.data!.username}?"),
+                                actions: [
+                                  TextButton(
+                                      onPressed: () {
+                                        Navigator.pop(context);
+                                      },
+                                      child: Text("No")),
+                                  TextButton(
+                                      onPressed: () {
+                                        Navigator.pop(context);
+                                        handleBookNow();
+                                      },
+                                      child: Text("Yes"))
+                                ],
+                              ),
+                            );
                           },
                           child: const Text(
                             'Book now',
