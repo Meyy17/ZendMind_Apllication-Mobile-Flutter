@@ -1,6 +1,7 @@
 // ignore_for_file: deprecated_member_use, must_be_immutable, unnecessary_null_comparison
 
 import 'package:flutter/material.dart';
+import 'package:month_year_picker/month_year_picker.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:zenmind/DB/auth_preference.dart';
@@ -13,6 +14,7 @@ import 'package:zenmind/Main/UserMain/navigation_menu.dart';
 import 'package:zenmind/Models/user_model.dart';
 import 'package:zenmind/settings_all.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 
 void main() {
   runApp(const MyApp());
@@ -82,6 +84,10 @@ class _MyAppState extends State<MyApp> {
           title: 'ZenMind',
           debugShowCheckedModeBanner: false,
           themeMode: themeNotifier.isDark ? ThemeMode.dark : ThemeMode.light,
+          localizationsDelegates: [
+            GlobalMaterialLocalizations.delegate,
+            MonthYearPickerLocalizations.delegate,
+          ],
           darkTheme: ThemeData(
               textTheme: GoogleFonts.poppinsTextTheme(
                 ThemeData(brightness: Brightness.dark).textTheme,

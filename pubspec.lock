@@ -174,6 +174,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.0.2"
+  flutter_localization:
+    dependency: "direct main"
+    description:
+      name: flutter_localization
+      sha256: b2b0fe87f4608f5a3e78ed570d5f85ba9f55c746a6aca4981c0ea4bb894d5d00
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.1.13"
   flutter_localizations:
     dependency: transitive
     description: flutter
@@ -357,6 +365,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.0.4"
+  month_year_picker:
+    dependency: "direct main"
+    description:
+      name: month_year_picker
+      sha256: a9af8179b6519960a4261147f20b87e0da0794e4dd9db49a079b79aedd14b7f1
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.3.0+1"
   nested:
     dependency: transitive
     description:
@@ -658,6 +674,38 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.1.4"
+  webview_flutter:
+    dependency: "direct main"
+    description:
+      name: webview_flutter
+      sha256: "789d52bd789373cc1e100fb634af2127e86c99cf9abde09499743270c5de8d00"
+      url: "https://pub.dev"
+    source: hosted
+    version: "4.2.2"
+  webview_flutter_android:
+    dependency: transitive
+    description:
+      name: webview_flutter_android
+      sha256: d936a09fbfd08cb78f7329e0bbacf6158fbdfe24ffc908b22444c07d295eb193
+      url: "https://pub.dev"
+    source: hosted
+    version: "3.9.2"
+  webview_flutter_platform_interface:
+    dependency: transitive
+    description:
+      name: webview_flutter_platform_interface
+      sha256: "564ef378cafc1a0e29f1d76ce175ef517a0a6115875dff7b43fccbef2b0aeb30"
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.4.0"
+  webview_flutter_wkwebview:
+    dependency: transitive
+    description:
+      name: webview_flutter_wkwebview
+      sha256: "5fa098f28b606f699e8ca52d9e4e11edbbfef65189f5f77ae92703ba5408fd25"
+      url: "https://pub.dev"
+    source: hosted
+    version: "3.7.2"
   win32:
     dependency: transitive
     description:
@@ -684,4 +732,4 @@ packages:
     version: "6.3.0"
 sdks:
   dart: ">=3.0.0 <4.0.0"
-  flutter: ">=3.7.0-0"
+  flutter: ">=3.10.0"
