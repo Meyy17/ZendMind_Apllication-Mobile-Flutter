@@ -155,25 +155,12 @@ class _OngoingConsulState extends State<OngoingConsul> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SingleChildScrollView(
-        padding: const EdgeInsets.symmetric(horizontal: 20),
-        child: Column(
-          children: [
-            Container(
-              padding: const EdgeInsets.only(top: 60),
-              child: Row(
-                children: [
-                  GestureDetector(
-                    child: const Icon(
-                        Icons.arrow_circle_left_rounded,
-                      color: Color(0xFF4DCCC1),
-                      size: 35,
       body: isLoad
           ? Center(
               child: CircularProgressIndicator(),
             )
-          : SingleChildScrollView(
-              padding: EdgeInsets.symmetric(horizontal: 20),
+          : Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20),
               child: Column(
                 children: [
                   Container(
@@ -203,20 +190,20 @@ class _OngoingConsulState extends State<OngoingConsul> {
                       ],
                     ),
                   ),
-                  ),
                   ListView.separated(
                     itemCount: dataOngoing.data!.length,
                     shrinkWrap: true,
-                    physics: const NeverScrollableScrollPhysics(),
+                    physics: NeverScrollableScrollPhysics(),
                     itemBuilder: (BuildContext context, int index) {
                       var dataMentor = dataOngoing.data![index];
                       return Container(
                         padding: const EdgeInsets.all(20),
                         decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(10),
-                            color: index % 2 != 0
-                                ? const Color(0xffF5F5DA)
-                                : const Color(0xffACD8FE)),
+                          borderRadius: BorderRadius.circular(10),
+                          color: index % 2 != 0
+                              ? Color(0xffF5F5DA)
+                              : Color(0xffACD8FE),
+                        ),
                         child: Column(
                           children: [
                             Row(
@@ -225,11 +212,11 @@ class _OngoingConsulState extends State<OngoingConsul> {
                                   height: 72,
                                   width: 72,
                                   decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(8),
-                                      color:
-                                          GetTheme().backgroundGrey(context)),
+                                    borderRadius: BorderRadius.circular(8),
+                                    color: GetTheme().backgroundGrey(context),
+                                  ),
                                 ),
-                                const SizedBox(
+                                SizedBox(
                                   width: 20,
                                 ),
                                 Column(
@@ -237,9 +224,10 @@ class _OngoingConsulState extends State<OngoingConsul> {
                                   children: [
                                     Text(
                                       dataMentor.mentor!.user!.name.toString(),
-                                      style: const TextStyle(
-                                          fontWeight: FontWeight.w900,
-                                          fontSize: 15),
+                                      style: TextStyle(
+                                        fontWeight: FontWeight.w900,
+                                        fontSize: 15,
+                                      ),
                                     ),
                                     SizedBox(
                                       height: 5,
@@ -247,22 +235,24 @@ class _OngoingConsulState extends State<OngoingConsul> {
                                     Text(
                                       "• Specialist : ${dataMentor.mentor!.specialist.toString()}",
                                       style: TextStyle(
-                                          fontSize: 10,
-                                          color: GetTheme()
-                                              .unselectedWidget(context)),
+                                        fontSize: 10,
+                                        color: GetTheme()
+                                            .unselectedWidget(context),
+                                      ),
                                     ),
                                     Text(
                                       '• Date : ${formatDateEnglish(dataMentor.dateMentoring.toString())}, ${timeFormatToHAndM(dataMentor.timeMentoring.toString())}',
                                       style: TextStyle(
-                                          fontSize: 10,
-                                          color: GetTheme()
-                                              .unselectedWidget(context)),
+                                        fontSize: 10,
+                                        color: GetTheme()
+                                            .unselectedWidget(context),
+                                      ),
                                     ),
                                   ],
                                 ),
                               ],
                             ),
-                            const SizedBox(
+                            SizedBox(
                               height: 10,
                             ),
                             Container(
@@ -276,7 +266,7 @@ class _OngoingConsulState extends State<OngoingConsul> {
                                       ),
                                       height: 45,
                                       width: 110,
-                                      child: const Center(
+                                      child: Center(
                                         child: Text(
                                           "Chat",
                                           style: TextStyle(
@@ -289,13 +279,14 @@ class _OngoingConsulState extends State<OngoingConsul> {
                                     ),
                                     onTap: () {
                                       Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                            builder: (context) => ChatRoom(
-                                                id_SecondUser: dataMentor
-                                                    .mentor!.id
-                                                    .toString()),
-                                          ));
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) => ChatRoom(
+                                            id_SecondUser: dataMentor.mentor!.id
+                                                .toString(),
+                                          ),
+                                        ),
+                                      );
                                     },
                                   ),
                                   SizedBox(
@@ -309,7 +300,7 @@ class _OngoingConsulState extends State<OngoingConsul> {
                                       ),
                                       height: 45,
                                       width: 110,
-                                      child: const Center(
+                                      child: Center(
                                         child: Text(
                                           "Reschedule",
                                           style: TextStyle(
@@ -322,8 +313,9 @@ class _OngoingConsulState extends State<OngoingConsul> {
                                     ),
                                     onTap: () {
                                       reschedule(
-                                          "${formatDateEnglish(dataMentor.dateMentoring.toString())}, ${timeFormatToHAndM(dataMentor.timeMentoring.toString())}",
-                                          dataMentor.id.toString());
+                                        "${formatDateEnglish(dataMentor.dateMentoring.toString())}, ${timeFormatToHAndM(dataMentor.timeMentoring.toString())}",
+                                        dataMentor.id.toString(),
+                                      );
                                     },
                                   ),
                                   SizedBox(
@@ -337,7 +329,7 @@ class _OngoingConsulState extends State<OngoingConsul> {
                                       ),
                                       height: 45,
                                       width: 110,
-                                      child: const Center(
+                                      child: Center(
                                         child: Text(
                                           "Cancel",
                                           style: TextStyle(
@@ -350,7 +342,8 @@ class _OngoingConsulState extends State<OngoingConsul> {
                                     ),
                                     onTap: () {
                                       cancelBook(
-                                          int.parse(dataMentor.id.toString()));
+                                        int.parse(dataMentor.id.toString()),
+                                      );
                                     },
                                   ),
                                 ],
@@ -360,7 +353,7 @@ class _OngoingConsulState extends State<OngoingConsul> {
                         ),
                       );
                     },
-                    separatorBuilder: (context, index) => const SizedBox(
+                    separatorBuilder: (context, index) => SizedBox(
                       height: 30,
                     ),
                   ),
