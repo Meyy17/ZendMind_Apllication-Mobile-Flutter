@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:zenmind/Main/UserMain/Home/OngoingConsultation/ongoing_consultation.dart';
+import 'package:zenmind/Main/UserMain/bubbleb_menu.dart';
 import 'package:zenmind/Widget/CustomLeading.dart';
 import 'package:zenmind/settings_all.dart';
 
@@ -110,10 +111,15 @@ class HomeWidget {
                     context: context,
                     title: "Meditasi",
                     locationSvgAssets: "ConsultationIcons.svg"),
-                templateFeatList(
-                    context: context,
-                    title: "Bubble Breath",
-                    locationSvgAssets: "ConsultationIcons.svg"),
+                InkWell(
+                   onTap: (){
+                    Navigator.push(context, MaterialPageRoute(builder: (context) => BubbleBreathe(),));
+                  },
+                  child: templateFeatList(
+                      context: context,
+                      title: "Bubble Breath",
+                      locationSvgAssets: "ConsultationIcons.svg"),
+                ),
                 templateFeatList(
                     context: context,
                     title: "Article",
