@@ -384,7 +384,7 @@ class _OngoingConsulState extends State<OngoingConsul> {
                                       style: TextStyle(
                                         fontWeight: FontWeight.w600,
                                         fontSize: 15,
-                                        color: Colors.white,
+                                        color: Colors.white
                                       ),
                                     ),
                                   ),
