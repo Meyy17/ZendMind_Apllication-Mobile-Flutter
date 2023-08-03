@@ -17,7 +17,7 @@ class _OngoingConsulState extends State<OngoingConsul> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: SingleChildScrollView(
-        padding: EdgeInsets.symmetric(horizontal: 20),
+        padding: const EdgeInsets.symmetric(horizontal: 20),
         child: Column(
           children: [
             Container(
@@ -25,7 +25,7 @@ class _OngoingConsulState extends State<OngoingConsul> {
               child: Row(
                 children: [
                   GestureDetector(
-                    child: Icon(
+                    child: const Icon(
                         Icons.arrow_circle_left_rounded,
                       color: Color(0xFF4DCCC1),
                       size: 35,
@@ -34,8 +34,8 @@ class _OngoingConsulState extends State<OngoingConsul> {
                       Navigator.push(context, MaterialPageRoute(builder: (context) => HomeMenu(),));
                     },
                   ),
-                  SizedBox(width: 15,),
-                  Text(
+                  const SizedBox(width: 15,),
+                  const Text(
                       "Ongoing",
                     style: TextStyle(
                       fontSize: 20,
