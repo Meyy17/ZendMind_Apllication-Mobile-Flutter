@@ -155,6 +155,19 @@ class _OngoingConsulState extends State<OngoingConsul> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      body: SingleChildScrollView(
+        padding: const EdgeInsets.symmetric(horizontal: 20),
+        child: Column(
+          children: [
+            Container(
+              padding: const EdgeInsets.only(top: 60),
+              child: Row(
+                children: [
+                  GestureDetector(
+                    child: const Icon(
+                        Icons.arrow_circle_left_rounded,
+                      color: Color(0xFF4DCCC1),
+                      size: 35,
       body: isLoad
           ? Center(
               child: CircularProgressIndicator(),
@@ -190,8 +203,6 @@ class _OngoingConsulState extends State<OngoingConsul> {
                       ],
                     ),
                   ),
-                  const SizedBox(
-                    height: 20,
                   ),
                   ListView.separated(
                     itemCount: dataOngoing.data!.length,
