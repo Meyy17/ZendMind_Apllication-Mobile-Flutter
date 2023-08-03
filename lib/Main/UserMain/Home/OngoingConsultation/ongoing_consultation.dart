@@ -348,7 +348,49 @@ class _OngoingConsulState extends State<OngoingConsul> {
                                   ),
                                 ],
                               ),
-                            )
+                            ),
+                            SizedBox(height: 10,),
+                            Row(
+                              children: [
+                                Container(
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(10),
+                                    color: Color(0xFF4DCCC1),
+                                  ),
+                                  height: 45,
+                                  width: 180,
+                                  child: Center(
+                                    child: Text(
+                                      "Rate mentor",
+                                      style: TextStyle(
+                                        fontWeight: FontWeight.w600,
+                                        fontSize: 15,
+                                        color: Colors.white,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                                Spacer(),
+                                Container(
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(10),
+                                    color: Color(0xFF589FDC),
+                                  ),
+                                  height: 45,
+                                  width: 180,
+                                  child: Center(
+                                    child: Text(
+                                      "Join meet",
+                                      style: TextStyle(
+                                        fontWeight: FontWeight.w600,
+                                        fontSize: 15,
+                                        color: Colors.white,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
                           ],
                         ),
                       );
