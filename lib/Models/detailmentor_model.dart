@@ -35,7 +35,6 @@ class Data {
   String? createdAt;
   String? updatedAt;
   User? user;
-  List<ScheduleMentor>? scheduleMentor;
 
   Data(
       {this.id,
@@ -49,8 +48,7 @@ class Data {
       this.status,
       this.createdAt,
       this.updatedAt,
-      this.user,
-      this.scheduleMentor});
+      this.user});
 
   Data.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -65,12 +63,6 @@ class Data {
     createdAt = json['createdAt'];
     updatedAt = json['updatedAt'];
     user = json['User'] != null ? new User.fromJson(json['User']) : null;
-    if (json['ScheduleMentor'] != null) {
-      scheduleMentor = <ScheduleMentor>[];
-      json['ScheduleMentor'].forEach((v) {
-        scheduleMentor!.add(new ScheduleMentor.fromJson(v));
-      });
-    }
   }
 
   Map<String, dynamic> toJson() {
@@ -89,10 +81,6 @@ class Data {
     if (this.user != null) {
       data['User'] = this.user!.toJson();
     }
-    if (this.scheduleMentor != null) {
-      data['ScheduleMentor'] =
-          this.scheduleMentor!.map((v) => v.toJson()).toList();
-    }
     return data;
   }
 }
@@ -100,12 +88,12 @@ class Data {
 class User {
   int? id;
   String? email;
-  String? imgProfileURL;
+  Null? imgProfileURL;
   String? name;
   String? verifyToken;
   String? role;
   String? isVerify;
-  String? gender;
+  Null? gender;
   String? createdAt;
   String? updatedAt;
 
@@ -144,35 +132,6 @@ class User {
     data['role'] = this.role;
     data['isVerify'] = this.isVerify;
     data['gender'] = this.gender;
-    data['createdAt'] = this.createdAt;
-    data['updatedAt'] = this.updatedAt;
-    return data;
-  }
-}
-
-class ScheduleMentor {
-  int? id;
-  int? idMentor;
-  String? date;
-  String? createdAt;
-  String? updatedAt;
-
-  ScheduleMentor(
-      {this.id, this.idMentor, this.date, this.createdAt, this.updatedAt});
-
-  ScheduleMentor.fromJson(Map<String, dynamic> json) {
-    id = json['id'];
-    idMentor = json['id_mentor'];
-    date = json['date'];
-    createdAt = json['createdAt'];
-    updatedAt = json['updatedAt'];
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    data['id_mentor'] = this.idMentor;
-    data['date'] = this.date;
     data['createdAt'] = this.createdAt;
     data['updatedAt'] = this.updatedAt;
     return data;

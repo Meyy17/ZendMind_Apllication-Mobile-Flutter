@@ -260,7 +260,7 @@ class _ProfileEditState extends State<ProfileEdit> {
                           height: 10,
                         ),
                         inputStyleFillWithIcons(
-                           inputVisibilty: false,
+                          inputVisibilty: false,
                           readOnly: false,
                           context: context,
                           hintText: "Insert Email",
@@ -283,7 +283,7 @@ class _ProfileEditState extends State<ProfileEdit> {
                           height: 10,
                         ),
                         inputStyleFillWithIcons(
-                           inputVisibilty: false,
+                          inputVisibilty: false,
                           readOnly: false,
                           context: context,
                           hintText: "Insert Name",
@@ -295,19 +295,20 @@ class _ProfileEditState extends State<ProfileEdit> {
                         const SizedBox(
                           height: 20,
                         ),
-                        const Text(
-                          "Gender",
-                          style: TextStyle(
-                              color: Colors.black,
-                              fontSize: 15,
-                              fontWeight: FontWeight.w600),
-                        ),
+                        // const Text(
+                        //   "Gender",
+                        //   style: TextStyle(
+                        //       color: Colors.black,
+                        //       fontSize: 15,
+                        //       fontWeight: FontWeight.w600),
+                        // ),
                         const SizedBox(
                           height: 10,
                         ),
                         const SizedBox(
                           height: 30,
                         ),
+
                         SizedBox(
                           height: 60,
                           width: double.infinity,

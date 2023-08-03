@@ -1,15 +1,23 @@
 import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
+import 'package:month_year_picker/month_year_picker.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:zenmind/DB/auth_preference.dart';
 import 'package:zenmind/Func/Services/consultation_services.dart';
+import 'package:zenmind/Func/time_formated.dart';
 import 'package:zenmind/Main/AllRoleMain/Messages/chat_screen.dart';
+import 'package:zenmind/Main/UserMain/Consultation/BookConsultation/paymentgateway_menu.dart';
 import 'package:zenmind/Main/UserMain/Consultation/consultation_menu.dart';
 import 'package:readmore/readmore.dart';
 import 'package:zenmind/Main/UserMain/navigation_menu.dart';
 import 'package:zenmind/Models/detailmentor_model.dart';
+import 'package:zenmind/Models/profilementor_model.dart';
+import 'package:zenmind/Models/schedulementor_model.dart';
 import 'package:zenmind/Models/timeschedule_model.dart';
 import 'package:zenmind/Widget/Button.dart';
+
+import '../../../../Func/date_fromated.dart';
 
 class BookConsultation extends StatefulWidget {
   const BookConsultation({Key? key, required this.idMentor}) : super(key: key);
@@ -21,12 +29,15 @@ class BookConsultation extends StatefulWidget {
 
 class _BookConsultationState extends State<BookConsultation> {
   bool isLoad = true;
+  bool isValidate = false;
   DetailMentorModel mentorData = DetailMentorModel();
+  ScheduleMentorModel scheduleMentor = ScheduleMentorModel();
   bool isLoadTimeSchedule = false;
   TimeScheduleModel timeSchedule = TimeScheduleModel();
   String idDateSelected = "";
   String idTimeDateSelected = "";
   String tokenLocalUsers = "";
+  DateTime selectedDate = DateTime.now();
 
   void handleBookNow() async {
     if (idDateSelected == "") {
@@ -60,70 +71,57 @@ class _BookConsultationState extends State<BookConsultation> {
         ..hideCurrentSnackBar()
         ..showSnackBar(snackBar);
     } else {
-      if (mentorData.data!.fee! > 0) {
-        final snackBar = SnackBar(
-          elevation: 0,
-          behavior: SnackBarBehavior.floating,
-          backgroundColor: Colors.transparent,
-          content: AwesomeSnackbarContent(
-            title: 'On Snap!',
-            message: "Payment gateway sedang tahap pengembangan",
-            contentType: ContentType.warning,
-          ),
-        );
+      setState(() {
+        isLoad = true;
+      });
+      var res = await ConsultationService().createBook(
+          fee: mentorData.data!.fee ?? 0,
+          id_date_mentoring: idDateSelected,
+          id_time_mentoring: idTimeDateSelected,
+          id_mentor: mentorData.data!.id.toString(),
+          token: tokenLocalUsers);
 
-        ScaffoldMessenger.of(context)
-          ..hideCurrentSnackBar()
-          ..showSnackBar(snackBar);
-      } else {
-        setState(() {
-          isLoad = true;
-        });
-        var res = await ConsultationService().createBook(
-            fee: mentorData.data!.fee ?? 0,
-            id_date_mentoring: idDateSelected,
-            id_time_mentoring: idTimeDateSelected,
-            id_mentor: mentorData.data!.id.toString(),
-            token: tokenLocalUsers);
-
-        if (res.error == null) {
+      if (res.error == null) {
+        if (res.type == 'Free') {
           Navigator.push(
               context,
               MaterialPageRoute(
                 builder: (context) => ChatRoom(
                     id_SecondUser: mentorData.data!.user!.id.toString()),
               ));
-
-          final snackBar = SnackBar(
-            elevation: 0,
-            behavior: SnackBarBehavior.floating,
-            backgroundColor: Colors.transparent,
-            content: AwesomeSnackbarContent(
-              title: 'On Snap!',
-              message: res.data.toString(),
-              contentType: ContentType.success,
-            ),
-          );
-
-          ScaffoldMessenger.of(context)
-            ..hideCurrentSnackBar()
-            ..showSnackBar(snackBar);
+          setState(() {
+            isLoad = false;
+          });
         } else {
-          final snackBar = SnackBar(
-            elevation: 0,
-            behavior: SnackBarBehavior.floating,
-            backgroundColor: Colors.transparent,
-            content: AwesomeSnackbarContent(
-              title: 'On Snap!',
-              message: res.error.toString(),
-              contentType: ContentType.failure,
-            ),
-          );
-
-          ScaffoldMessenger.of(context)
-            ..hideCurrentSnackBar()
-            ..showSnackBar(snackBar);
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => PaymentGatewayWebView(
+                  urlWebsite: res.data.toString(),
+                ),
+              ));
+          setState(() {
+            isLoad = false;
+          });
         }
+
+        print(res.data);
+      } else if (res.type == 'Paid') {
+        final snackBar = SnackBar(
+          elevation: 0,
+          behavior: SnackBarBehavior.floating,
+          backgroundColor: Colors.transparent,
+          content: AwesomeSnackbarContent(
+            title: 'On Snap!',
+            message: res.error.toString(),
+            contentType: ContentType.failure,
+          ),
+        );
+
+        ScaffoldMessenger.of(context)
+          ..hideCurrentSnackBar()
+          ..showSnackBar(snackBar);
+        // }
       }
     }
   }
@@ -142,6 +140,25 @@ class _BookConsultationState extends State<BookConsultation> {
     });
   }
 
+  void getDateSchedule() async {
+    setState(() {
+      isLoad = true;
+    });
+    DateTime dateTime = DateFormat("yyyy-MM-dd").parse(selectedDate.toString());
+
+    var m = DateFormat('MM').format(dateTime);
+    var Y = DateFormat('yyyy').format(dateTime).toString();
+    var res = await ConsultationService().getDateSchedule(
+        idMentor: mentorData.data!.id.toString(), monthYear: '$Y-$m');
+    setState(() {
+      if (res.error == null) {
+        scheduleMentor = res.data as ScheduleMentorModel;
+        isLoadTimeSchedule = false;
+        isLoad = false;
+      } else {}
+    });
+  }
+
   void getData() async {
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
     var res =
@@ -151,7 +168,7 @@ class _BookConsultationState extends State<BookConsultation> {
           sharedPreferences.getString(AuthPreferences.tokenKey) ?? "";
       if (res.error == null) {
         mentorData = res.data as DetailMentorModel;
-        isLoad = false;
+        getDateSchedule();
       } else {}
     });
   }
@@ -443,52 +460,91 @@ class _BookConsultationState extends State<BookConsultation> {
                         children: [
                           Container(
                             alignment: Alignment.topLeft,
-                            child: const Text(
-                              'Schedules',
-                              style: TextStyle(
-                                fontSize: 16,
-                                fontWeight: FontWeight.w600,
-                              ),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                const Text(
+                                  'Schedules',
+                                  style: TextStyle(
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.w600,
+                                  ),
+                                ),
+                                InkWell(
+                                  onTap: () async {
+                                    final picked = await showMonthYearPicker(
+                                        context: context,
+                                        initialDate: selectedDate,
+                                        firstDate: DateTime.now(),
+                                        lastDate: DateTime(2100));
+                                    if (picked != null &&
+                                        picked != selectedDate) {
+                                      setState(() {
+                                        selectedDate = picked;
+                                        idDateSelected = "";
+                                        idTimeDateSelected = "";
+                                        getDateSchedule();
+                                        getTimeSchedule(0);
+                                      });
+                                    }
+                                  },
+                                  child: Text(
+                                    formatDateToIdOnlyMonthAndYears(
+                                        date: selectedDate.toString()),
+                                    style: TextStyle(
+                                        fontWeight: FontWeight.w900,
+                                        fontSize: 14),
+                                  ),
+                                ),
+                              ],
                             ),
                           ),
                           const SizedBox(
                             height: 10,
                           ),
                           SizedBox(
-                            height: 80,
-                            child: ListView.separated(
-                              itemCount:
-                                  mentorData.data!.scheduleMentor!.length,
-                              scrollDirection: Axis.horizontal,
-                              shrinkWrap: true,
-                              separatorBuilder: (context, index) => SizedBox(
-                                width: 10,
-                              ),
-                              itemBuilder: (BuildContext context, int index) {
-                                var dataSch =
-                                    mentorData.data!.scheduleMentor![index];
-                                return InkWell(
-                                  onTap: () {
-                                    setState(() {
-                                      idDateSelected = dataSch.id.toString();
-                                      idTimeDateSelected = "";
-                                      getTimeSchedule(dataSch.id ?? 0);
-                                    });
-                                  },
-                                  child: dateCard(
-                                    isSelected:
-                                        idDateSelected == dataSch.id.toString()
-                                            ? true
-                                            : false,
-                                    day: formatDayName(dataSch.date.toString())
-                                        .toString(),
-                                    date: formattoDay(dataSch.date.toString())
-                                        .toString(),
-                                  ),
-                                );
-                              },
-                            ),
-                          ),
+                              height: 80,
+                              child: scheduleMentor.data!.length <= 0
+                                  ? Center(
+                                      child: Text("schedule not available"))
+                                  : Wrap(
+                                      alignment: WrapAlignment.start,
+                                      runSpacing: 10,
+                                      spacing: 10,
+                                      children: List.generate(
+                                          scheduleMentor.data!.length, (index) {
+                                        var dataSch =
+                                            scheduleMentor.data![index];
+                                        return InkWell(
+                                          onTap: () {
+                                            setState(() {
+                                              idDateSelected =
+                                                  dataSch.id.toString();
+                                              idTimeDateSelected = "";
+                                              getTimeSchedule(dataSch.id ?? 0);
+                                              if (idDateSelected != "" &&
+                                                  idTimeDateSelected != "") {
+                                                isValidate = true;
+                                              } else {
+                                                isValidate = false;
+                                              }
+                                            });
+                                          },
+                                          child: dateCard(
+                                            isSelected: idDateSelected ==
+                                                    dataSch.id.toString()
+                                                ? true
+                                                : false,
+                                            day: formatDayName(
+                                                    dataSch.date.toString())
+                                                .toString(),
+                                            date: formattoDay(
+                                                    dataSch.date.toString())
+                                                .toString(),
+                                          ),
+                                        );
+                                      }),
+                                    )),
                         ],
                       ),
                       const SizedBox(
@@ -516,41 +572,50 @@ class _BookConsultationState extends State<BookConsultation> {
                                       child: CircularProgressIndicator(),
                                     )
                                   : idDateSelected != ""
-                                      ? ListView.separated(
-                                          itemCount: timeSchedule.data!.length,
-                                          scrollDirection: Axis.horizontal,
-                                          shrinkWrap: true,
-                                          separatorBuilder: (context, index) =>
-                                              SizedBox(
-                                            width: 10,
-                                          ),
-                                          itemBuilder: (BuildContext context,
-                                              int index) {
-                                            return InkWell(
-                                              onTap: () {
-                                                setState(() {
-                                                  idTimeDateSelected =
-                                                      timeSchedule
-                                                          .data![index].id
-                                                          .toString();
-                                                });
-                                              },
-                                              child: timePicker(
-                                                  time: timeSchedule
-                                                      .data![index].time
-                                                      .toString(),
-                                                  isSelected:
-                                                      idTimeDateSelected ==
-                                                              timeSchedule
-                                                                  .data![index]
-                                                                  .id
-                                                                  .toString()
-                                                          ? true
-                                                          : false),
-                                            );
-                                          },
+                                      ? Wrap(
+                                          alignment: WrapAlignment.center,
+                                          spacing: 10,
+                                          runSpacing: 10,
+                                          children: List.generate(
+                                              timeSchedule.data!.length,
+                                              (index) => InkWell(
+                                                    onTap: () {
+                                                      setState(() {
+                                                        idTimeDateSelected =
+                                                            timeSchedule
+                                                                .data![index].id
+                                                                .toString();
+                                                        if (idDateSelected !=
+                                                                "" &&
+                                                            idTimeDateSelected !=
+                                                                "") {
+                                                          isValidate = true;
+                                                        } else {
+                                                          isValidate = false;
+                                                        }
+                                                      });
+                                                    },
+                                                    child: timePicker(
+                                                        time: timeFormatToHAndM(
+                                                            timeSchedule
+                                                                .data![index]
+                                                                .time
+                                                                .toString()),
+                                                        isSelected:
+                                                            idTimeDateSelected ==
+                                                                    timeSchedule
+                                                                        .data![
+                                                                            index]
+                                                                        .id
+                                                                        .toString()
+                                                                ? true
+                                                                : false),
+                                                  )),
                                         )
-                                      : Text("-")),
+                                      : Center(
+                                          child: Text(
+                                              "please select a date in advance"),
+                                        )),
                         ],
                       ),
                       const SizedBox(
@@ -561,28 +626,30 @@ class _BookConsultationState extends State<BookConsultation> {
                         width: double.infinity,
                         child: ElevatedButton(
                           style: const ButtonStyle(),
-                          onPressed: () {
-                            showDialog(
-                              context: context,
-                              builder: (context) => AlertDialog(
-                                content: Text(
-                                    "Are you sure to cancel mentoring with ${mentorData.data!.username}?"),
-                                actions: [
-                                  TextButton(
-                                      onPressed: () {
-                                        Navigator.pop(context);
-                                      },
-                                      child: Text("No")),
-                                  TextButton(
-                                      onPressed: () {
-                                        Navigator.pop(context);
-                                        handleBookNow();
-                                      },
-                                      child: Text("Yes"))
-                                ],
-                              ),
-                            );
-                          },
+                          onPressed: isValidate
+                              ? () {
+                                  showDialog(
+                                    context: context,
+                                    builder: (context) => AlertDialog(
+                                      content: Text(
+                                          "Are you sure to cancel mentoring with ${mentorData.data!.username}?"),
+                                      actions: [
+                                        TextButton(
+                                            onPressed: () {
+                                              Navigator.pop(context);
+                                            },
+                                            child: Text("No")),
+                                        TextButton(
+                                            onPressed: () {
+                                              Navigator.pop(context);
+                                              handleBookNow();
+                                            },
+                                            child: Text("Yes"))
+                                      ],
+                                    ),
+                                  );
+                                }
+                              : null,
                           child: const Text(
                             'Book now',
                             style: TextStyle(

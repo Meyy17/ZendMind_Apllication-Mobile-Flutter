@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:month_year_picker/month_year_picker.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:zenmind/DB/auth_preference.dart';
 import 'package:zenmind/Func/Services/trackmood_service.dart';
@@ -23,7 +24,7 @@ class _MoodTrackerMenuState extends State<MoodTrackerMenu> {
 
   void addOneDay() {
     setState(() {
-      isLoad = true;
+      // isLoad = true;
       selectedDate = DateTime(selectedDate.year, selectedDate.month + 1);
       getData();
     });
@@ -31,7 +32,7 @@ class _MoodTrackerMenuState extends State<MoodTrackerMenu> {
 
   void kurangiOneDay() {
     setState(() {
-      isLoad = true;
+      // isLoad = true;
       selectedDate = DateTime(selectedDate.year, selectedDate.month - 1);
       getData();
     });
@@ -64,77 +65,81 @@ class _MoodTrackerMenuState extends State<MoodTrackerMenu> {
   Widget build(BuildContext context) {
     return Scaffold(
         body: SafeArea(
-      child: isLoad
-          ? Center(
-              child: CircularProgressIndicator(),
-            )
-          : SingleChildScrollView(
-              child: Padding(
-                padding: EdgeInsets.symmetric(
-                    horizontal: GetSizeScreen().paddingScreen),
-                child: Column(
-                  children: [
-                    const SizedBox(
-                      height: 50,
-                    ),
-                    Row(
-                      children: const [
-                        Text(
-                          "Your mood tracker",
-                          style: TextStyle(
-                              fontSize: 20, fontWeight: FontWeight.bold),
-                        ),
-                      ],
-                    ),
-                    const SizedBox(
-                      height: 20,
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        IconButton(
-                            onPressed: () {
-                              kurangiOneDay();
-                            },
-                            icon: const Icon(Icons.arrow_back_ios_new_rounded)),
-                        InkWell(
-                          onTap: () async {
-                            final picked = await showDatePicker(
-                                context: context,
-                                initialDate: selectedDate,
-                                firstDate: DateTime(2023),
-                                lastDate: DateTime(2100));
-                            if (picked != null && picked != selectedDate) {
-                              setState(() {
-                                selectedDate = picked;
-                              });
-                            }
-                          },
-                          child: Text(
-                            formatDateToIdOnlyMonthAndYears(
-                                date: selectedDate.toString()),
-                            style: TextStyle(
-                                fontWeight: FontWeight.w900, fontSize: 14),
-                          ),
-                        ),
-                        IconButton(
-                            onPressed: () {
-                              addOneDay();
-                            },
-                            icon: const Icon(Icons.arrow_forward_ios_rounded))
-                      ],
-                    ),
-                    const SizedBox(
-                      height: 20,
-                    ),
-                    TrackerMoodWidget()
-                        .chartMood(context: context, moodData: moodData),
-                    TrackerMoodWidget()
-                        .listMood(context: context, moodData: moodData)
-                  ],
-                ),
+      child: SingleChildScrollView(
+        child: Padding(
+          padding:
+              EdgeInsets.symmetric(horizontal: GetSizeScreen().paddingScreen),
+          child: Column(
+            children: [
+              const SizedBox(
+                height: 50,
               ),
-            ),
+              Row(
+                children: const [
+                  Text(
+                    "Your mood tracker",
+                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                  ),
+                ],
+              ),
+              const SizedBox(
+                height: 20,
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  IconButton(
+                      onPressed: () {
+                        kurangiOneDay();
+                      },
+                      icon: const Icon(Icons.arrow_back_ios_new_rounded)),
+                  InkWell(
+                    onTap: () async {
+                      final picked = await showMonthYearPicker(
+                          context: context,
+                          initialDate: selectedDate,
+                          firstDate: DateTime(2023),
+                          lastDate: DateTime(2100));
+                      if (picked != null && picked != selectedDate) {
+                        setState(() {
+                          selectedDate = picked;
+                          getData();
+                        });
+                      }
+                    },
+                    child: Text(
+                      formatDateToIdOnlyMonthAndYears(
+                          date: selectedDate.toString()),
+                      style:
+                          TextStyle(fontWeight: FontWeight.w900, fontSize: 14),
+                    ),
+                  ),
+                  IconButton(
+                      onPressed: () {
+                        addOneDay();
+                      },
+                      icon: const Icon(Icons.arrow_forward_ios_rounded))
+                ],
+              ),
+              const SizedBox(
+                height: 20,
+              ),
+              isLoad
+                  ? Center(
+                      child: CircularProgressIndicator(),
+                    )
+                  : Column(
+                      children: [
+                        TrackerMoodWidget()
+                            .chartMood(context: context, moodData: moodData),
+                        TrackerMoodWidget()
+                            .listMood(context: context, moodData: moodData)
+                      ],
+                    ),
+            ],
+          ),
+        ),
+      ),
     ));
   }
 }

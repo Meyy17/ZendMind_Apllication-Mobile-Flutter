@@ -3,7 +3,10 @@ import 'dart:convert';
 import 'package:zenmind/Models/bookhistory_model.dart';
 import 'package:zenmind/Models/detailmentor_model.dart';
 import 'package:zenmind/Models/listmentor_model.dart';
+import 'package:zenmind/Models/listsmentoring_model.dart';
+import 'package:zenmind/Models/resbookconsultation_model.dart';
 import 'package:zenmind/Models/response_model.dart';
+import 'package:zenmind/Models/schedulementor_model.dart';
 import 'package:zenmind/Models/timeschedule_model.dart';
 import 'package:zenmind/env.dart';
 import 'package:http/http.dart' as http;
@@ -123,6 +126,66 @@ class ConsultationService {
     return apiresponse;
   }
 
+  Future<ApiResponse> getDateSchedule(
+      {required String idMentor, required String monthYear}) async {
+    ApiResponse apiresponse = ApiResponse();
+
+    try {
+      final response = await http.get(
+          Uri.parse(
+              "${Environment().zendmindBASEURL}api/mentor/get/schedule/$idMentor/$monthYear"),
+          headers: {
+            'Accept': 'application/json',
+          });
+
+      print(response.body);
+
+      switch (response.statusCode) {
+        case 200:
+          apiresponse.data =
+              ScheduleMentorModel.fromJson(jsonDecode(response.body));
+          break;
+        case 400:
+          apiresponse.error = jsonDecode(response.body)['data'];
+          break;
+        default:
+          apiresponse.error = somethingWentWrong;
+          break;
+      }
+    } catch (err) {
+      apiresponse.error = serverError;
+    }
+    return apiresponse;
+  }
+
+  Future<ApiResponse> getAllBookOngoing({required String? token}) async {
+    ApiResponse apiresponse = ApiResponse();
+    try {
+      final response = await http.get(
+          Uri.parse("${Environment().zendmindBASEURL}api/mentor/book/ongoing"),
+          headers: {
+            'Accept': 'application/json',
+            'Authorization': 'Bearer $token'
+          });
+      print(response.body);
+      switch (response.statusCode) {
+        case 200:
+          apiresponse.data =
+              ListScheduleMentoring.fromJson(jsonDecode(response.body));
+          break;
+        case 400:
+          apiresponse.error = jsonDecode(response.body)['data'];
+          break;
+        default:
+          apiresponse.error = somethingWentWrong;
+          break;
+      }
+    } catch (err) {
+      apiresponse.error = serverError;
+    }
+    return apiresponse;
+  }
+
   Future<ApiResponse> getHistoryBookFree({required String token}) async {
     ApiResponse apiresponse = ApiResponse();
 
@@ -154,13 +217,14 @@ class ConsultationService {
     return apiresponse;
   }
 
-  Future<ApiResponse> createBook(
+  Future<ApiResponseBookConsultation> createBook(
       {required String token,
       required String id_mentor,
       required int fee,
       required String id_date_mentoring,
       required String id_time_mentoring}) async {
-    ApiResponse apiresponse = ApiResponse();
+    ApiResponseBookConsultation apiresponse = ApiResponseBookConsultation();
+
     try {
       final response = await http.post(
           Uri.parse("${Environment().zendmindBASEURL}api/mentor/book"),
@@ -175,10 +239,12 @@ class ConsultationService {
             'id_time_mentoring': id_time_mentoring,
           });
 
+      print("bokkkdata : ");
       print(response.body);
       switch (response.statusCode) {
         case 200:
-          apiresponse.data = jsonDecode(response.body)['data'];
+          apiresponse.type = jsonDecode(response.body)['data']['type'];
+          apiresponse.data = jsonDecode(response.body)['data']['data'];
           break;
         case 400:
           apiresponse.error = jsonDecode(response.body)['data'];
