@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:month_year_picker/month_year_picker.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:shimmer/shimmer.dart';
 import 'package:zenmind/DB/auth_preference.dart';
 import 'package:zenmind/Func/Services/consultation_services.dart';
 import 'package:zenmind/Func/time_formated.dart';
@@ -16,6 +17,8 @@ import 'package:zenmind/Models/profilementor_model.dart';
 import 'package:zenmind/Models/schedulementor_model.dart';
 import 'package:zenmind/Models/timeschedule_model.dart';
 import 'package:zenmind/Widget/Button.dart';
+import 'package:zenmind/env.dart';
+import 'package:zenmind/settings_all.dart';
 
 import '../../../../Func/date_fromated.dart';
 
@@ -83,7 +86,7 @@ class _BookConsultationState extends State<BookConsultation> {
 
       if (res.error == null) {
         if (res.type == 'Free') {
-          Navigator.push(
+          await Navigator.push(
               context,
               MaterialPageRoute(
                 builder: (context) => ChatRoom(
@@ -91,9 +94,10 @@ class _BookConsultationState extends State<BookConsultation> {
               ));
           setState(() {
             isLoad = false;
+            getData();
           });
         } else {
-          Navigator.push(
+          await Navigator.push(
               context,
               MaterialPageRoute(
                 builder: (context) => PaymentGatewayWebView(
@@ -102,6 +106,7 @@ class _BookConsultationState extends State<BookConsultation> {
               ));
           setState(() {
             isLoad = false;
+            getData();
           });
         }
 
@@ -226,8 +231,28 @@ class _BookConsultationState extends State<BookConsultation> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        leading: IconButton(
+            onPressed: () {
+              Navigator.pop(context);
+            },
+            icon: Icon(
+              Icons.arrow_circle_left_rounded,
+              size: 30,
+              color: Color(0xFFFF4DCCC1),
+            )),
+        title: Text(
+          'Book Consultation',
+          style: TextStyle(
+            fontWeight: FontWeight.w600,
+            fontSize: 17,
+          ),
+        ),
+        backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+        elevation: 0,
+      ),
       body: SafeArea(
-        minimum: const EdgeInsets.symmetric(vertical: 20, horizontal: 24),
+        minimum: const EdgeInsets.symmetric(horizontal: 24),
         child: isLoad
             ? Center(
                 child: CircularProgressIndicator(),
@@ -235,41 +260,97 @@ class _BookConsultationState extends State<BookConsultation> {
             : Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Row(
-                    children: [
-                      IconButton(
-                        icon: const Icon(
-                          Icons.arrow_circle_left,
-                          color: Color(0xff42CCC9),
-                          size: 30,
-                        ),
-                        onPressed: () {
-                          Navigator.pop(context);
-                        },
-                      ),
-                      const Text(
-                        'Book Consultation',
-                        style: TextStyle(
-                          color: Colors.black,
-                          fontSize: 18,
-                          fontWeight: FontWeight.w600,
-                        ),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(
-                    height: 25,
-                  ),
                   Column(
                     children: [
                       Row(
                         mainAxisAlignment: MainAxisAlignment.start,
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Image.asset(
-                            'Assets/Picture/Svg/DoctorPhoto.png',
+                          SizedBox(
                             height: 120,
                             width: 120,
+                            child: ClipRRect(
+                              borderRadius: BorderRadius.circular(20),
+                              child: mentorData.data!.user!.imgProfileURL !=
+                                      null
+                                  ? Image.network(
+                                      Environment().zendmindBASEURL +
+                                          mentorData.data!.user!.imgProfileURL
+                                              .toString(),
+                                      fit: BoxFit.cover,
+                                      loadingBuilder: (BuildContext context,
+                                          Widget child,
+                                          ImageChunkEvent? loadingProgress) {
+                                        if (loadingProgress == null) {
+                                          return child;
+                                        } else {
+                                          return Center(
+                                            child: Shimmer.fromColors(
+                                              baseColor: Colors.grey[200]!,
+                                              highlightColor: Colors.grey[350]!,
+                                              child: Center(
+                                                child: Container(
+                                                  height: 120,
+                                                  width: 120,
+                                                  decoration: BoxDecoration(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            20),
+                                                    color: GetTheme()
+                                                        .backgroundGrey(
+                                                            context),
+                                                  ),
+                                                  child: Icon(
+                                                    Icons.person,
+                                                    color: Colors.white,
+                                                    size: 32,
+                                                  ),
+                                                ),
+                                              ),
+                                            ),
+                                          );
+                                        }
+                                      },
+                                      errorBuilder: (BuildContext context,
+                                          Object exception,
+                                          StackTrace? stackTrace) {
+                                        return Center(
+                                          child: Container(
+                                            height: 120,
+                                            width: 120,
+                                            decoration: BoxDecoration(
+                                              borderRadius:
+                                                  BorderRadius.circular(20),
+                                              color: GetTheme()
+                                                  .backgroundGrey(context),
+                                            ),
+                                            child: Icon(
+                                              Icons.person,
+                                              color: Colors.white,
+                                              size: 32,
+                                            ),
+                                          ),
+                                        );
+                                      },
+                                    )
+                                  : Center(
+                                      child: Container(
+                                        height: 120,
+                                        width: 120,
+                                        decoration: BoxDecoration(
+                                          borderRadius:
+                                              BorderRadius.circular(20),
+                                          color: GetTheme()
+                                              .backgroundGrey(context),
+                                        ),
+                                        child: Icon(
+                                          Icons.person,
+                                          color: Colors.white,
+                                          size: 32,
+                                        ),
+                                      ),
+                                    ),
+                            ),
                           ),
                           const SizedBox(
                             width: 15,
@@ -502,49 +583,45 @@ class _BookConsultationState extends State<BookConsultation> {
                           const SizedBox(
                             height: 10,
                           ),
-                          SizedBox(
-                              height: 80,
-                              child: scheduleMentor.data!.length <= 0
-                                  ? Center(
-                                      child: Text("schedule not available"))
-                                  : Wrap(
-                                      alignment: WrapAlignment.start,
-                                      runSpacing: 10,
-                                      spacing: 10,
-                                      children: List.generate(
-                                          scheduleMentor.data!.length, (index) {
-                                        var dataSch =
-                                            scheduleMentor.data![index];
-                                        return InkWell(
-                                          onTap: () {
-                                            setState(() {
-                                              idDateSelected =
-                                                  dataSch.id.toString();
-                                              idTimeDateSelected = "";
-                                              getTimeSchedule(dataSch.id ?? 0);
-                                              if (idDateSelected != "" &&
-                                                  idTimeDateSelected != "") {
-                                                isValidate = true;
-                                              } else {
-                                                isValidate = false;
-                                              }
-                                            });
-                                          },
-                                          child: dateCard(
-                                            isSelected: idDateSelected ==
-                                                    dataSch.id.toString()
-                                                ? true
-                                                : false,
-                                            day: formatDayName(
-                                                    dataSch.date.toString())
+                          scheduleMentor.data!.length <= 0
+                              ? Center(child: Text("schedule not available"))
+                              : Wrap(
+                                  alignment: WrapAlignment.start,
+                                  runSpacing: 10,
+                                  spacing: 10,
+                                  children: List.generate(
+                                      scheduleMentor.data!.length, (index) {
+                                    var dataSch = scheduleMentor.data![index];
+                                    return InkWell(
+                                      onTap: () {
+                                        setState(() {
+                                          idDateSelected =
+                                              dataSch.id.toString();
+                                          idTimeDateSelected = "";
+                                          getTimeSchedule(dataSch.id ?? 0);
+                                          if (idDateSelected != "" &&
+                                              idTimeDateSelected != "") {
+                                            isValidate = true;
+                                          } else {
+                                            isValidate = false;
+                                          }
+                                        });
+                                      },
+                                      child: dateCard(
+                                        isSelected: idDateSelected ==
+                                                dataSch.id.toString()
+                                            ? true
+                                            : false,
+                                        day: formatDayName(
+                                                dataSch.date.toString())
+                                            .toString(),
+                                        date:
+                                            formattoDay(dataSch.date.toString())
                                                 .toString(),
-                                            date: formattoDay(
-                                                    dataSch.date.toString())
-                                                .toString(),
-                                          ),
-                                        );
-                                      }),
-                                    )),
+                                      ),
+                                    );
+                                  }),
+                                )
                         ],
                       ),
                       const SizedBox(
@@ -565,57 +642,53 @@ class _BookConsultationState extends State<BookConsultation> {
                           const SizedBox(
                             height: 10,
                           ),
-                          SizedBox(
-                              height: 50,
-                              child: isLoadTimeSchedule
-                                  ? Center(
-                                      child: CircularProgressIndicator(),
+                          isLoadTimeSchedule
+                              ? Center(
+                                  child: CircularProgressIndicator(),
+                                )
+                              : idDateSelected != ""
+                                  ? Wrap(
+                                      alignment: WrapAlignment.center,
+                                      spacing: 10,
+                                      runSpacing: 10,
+                                      children: List.generate(
+                                          timeSchedule.data!.length,
+                                          (index) => InkWell(
+                                                onTap: () {
+                                                  setState(() {
+                                                    idTimeDateSelected =
+                                                        timeSchedule
+                                                            .data![index].id
+                                                            .toString();
+                                                    if (idDateSelected != "" &&
+                                                        idTimeDateSelected !=
+                                                            "") {
+                                                      isValidate = true;
+                                                    } else {
+                                                      isValidate = false;
+                                                    }
+                                                  });
+                                                },
+                                                child: timePicker(
+                                                    time: timeFormatToHAndM(
+                                                        timeSchedule
+                                                            .data![index].time
+                                                            .toString()),
+                                                    isSelected:
+                                                        idTimeDateSelected ==
+                                                                timeSchedule
+                                                                    .data![
+                                                                        index]
+                                                                    .id
+                                                                    .toString()
+                                                            ? true
+                                                            : false),
+                                              )),
                                     )
-                                  : idDateSelected != ""
-                                      ? Wrap(
-                                          alignment: WrapAlignment.center,
-                                          spacing: 10,
-                                          runSpacing: 10,
-                                          children: List.generate(
-                                              timeSchedule.data!.length,
-                                              (index) => InkWell(
-                                                    onTap: () {
-                                                      setState(() {
-                                                        idTimeDateSelected =
-                                                            timeSchedule
-                                                                .data![index].id
-                                                                .toString();
-                                                        if (idDateSelected !=
-                                                                "" &&
-                                                            idTimeDateSelected !=
-                                                                "") {
-                                                          isValidate = true;
-                                                        } else {
-                                                          isValidate = false;
-                                                        }
-                                                      });
-                                                    },
-                                                    child: timePicker(
-                                                        time: timeFormatToHAndM(
-                                                            timeSchedule
-                                                                .data![index]
-                                                                .time
-                                                                .toString()),
-                                                        isSelected:
-                                                            idTimeDateSelected ==
-                                                                    timeSchedule
-                                                                        .data![
-                                                                            index]
-                                                                        .id
-                                                                        .toString()
-                                                                ? true
-                                                                : false),
-                                                  )),
-                                        )
-                                      : Center(
-                                          child: Text(
-                                              "please select a date in advance"),
-                                        )),
+                                  : Center(
+                                      child: Text(
+                                          "please select a date in advance"),
+                                    )
                         ],
                       ),
                       const SizedBox(

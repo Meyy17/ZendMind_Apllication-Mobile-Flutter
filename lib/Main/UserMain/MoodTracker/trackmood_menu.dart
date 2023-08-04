@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:month_year_picker/month_year_picker.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:shimmer/shimmer.dart';
 import 'package:zenmind/DB/auth_preference.dart';
 import 'package:zenmind/Func/Services/trackmood_service.dart';
 import 'package:zenmind/Func/date_fromated.dart';
@@ -24,7 +25,7 @@ class _MoodTrackerMenuState extends State<MoodTrackerMenu> {
 
   void addOneDay() {
     setState(() {
-      // isLoad = true;
+      isLoad = true;
       selectedDate = DateTime(selectedDate.year, selectedDate.month + 1);
       getData();
     });
@@ -32,7 +33,7 @@ class _MoodTrackerMenuState extends State<MoodTrackerMenu> {
 
   void kurangiOneDay() {
     setState(() {
-      // isLoad = true;
+      isLoad = true;
       selectedDate = DateTime(selectedDate.year, selectedDate.month - 1);
       getData();
     });
@@ -124,18 +125,14 @@ class _MoodTrackerMenuState extends State<MoodTrackerMenu> {
               const SizedBox(
                 height: 20,
               ),
-              isLoad
-                  ? Center(
-                      child: CircularProgressIndicator(),
-                    )
-                  : Column(
-                      children: [
-                        TrackerMoodWidget()
-                            .chartMood(context: context, moodData: moodData),
-                        TrackerMoodWidget()
-                            .listMood(context: context, moodData: moodData)
-                      ],
-                    ),
+              Column(
+                children: [
+                  TrackerMoodWidget().chartMood(
+                      context: context, moodData: moodData, isload: isLoad),
+                  TrackerMoodWidget().listMood(
+                      context: context, moodData: moodData, isLoad: isLoad)
+                ],
+              ),
             ],
           ),
         ),

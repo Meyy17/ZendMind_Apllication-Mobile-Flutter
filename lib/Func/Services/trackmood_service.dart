@@ -56,6 +56,7 @@ class TrackMoodService {
           body: {
             'month': '${date!.month}',
             'year': '${date.year}',
+            'day': '${date.day}',
             'mood': '$mood'
           });
 

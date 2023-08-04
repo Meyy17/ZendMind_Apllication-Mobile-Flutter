@@ -35,6 +35,8 @@ class Data {
   String? dateMentoring;
   String? timeMentoring;
   String? notes;
+  String? urlTrx;
+  String? idTRx;
   String? status;
   String? createdAt;
   String? updatedAt;
@@ -49,6 +51,8 @@ class Data {
       this.dateMentoring,
       this.timeMentoring,
       this.notes,
+      this.urlTrx,
+      this.idTRx,
       this.status,
       this.createdAt,
       this.updatedAt,
@@ -63,6 +67,8 @@ class Data {
     dateMentoring = json['date_mentoring'];
     timeMentoring = json['time_mentoring'];
     notes = json['notes'];
+    urlTrx = json['urlTrx'];
+    idTRx = json['idTRx'];
     status = json['status'];
     createdAt = json['createdAt'];
     updatedAt = json['updatedAt'];
@@ -80,6 +86,8 @@ class Data {
     data['date_mentoring'] = this.dateMentoring;
     data['time_mentoring'] = this.timeMentoring;
     data['notes'] = this.notes;
+    data['urlTrx'] = this.urlTrx;
+    data['idTRx'] = this.idTRx;
     data['status'] = this.status;
     data['createdAt'] = this.createdAt;
     data['updatedAt'] = this.updatedAt;

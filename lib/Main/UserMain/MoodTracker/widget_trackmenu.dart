@@ -1,12 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:shimmer/shimmer.dart';
 import 'package:zenmind/Models/trackmood_Model.dart';
 import 'package:zenmind/Widget/CustomLeading.dart';
 import 'package:zenmind/settings_all.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 
 class TrackerMoodWidget {
-  Widget chartMood({required context, required MoodTrackerModel? moodData}) {
+  Widget chartMood(
+      {required context,
+      required MoodTrackerModel? moodData,
+      required bool isload}) {
     return Column(
       children: [
         Row(
@@ -20,21 +24,38 @@ class TrackerMoodWidget {
         const SizedBox(
           height: 20,
         ),
-        AspectRatio(
-          aspectRatio: 16 / 9,
-          child: Container(
-            width: double.infinity,
-            decoration: BoxDecoration(
-                color: GetTheme().backgroundGrey(context),
-                borderRadius: BorderRadius.circular(10)),
-            child: LineChartWidget(moodData!.data!.moodData!),
-          ),
-        ),
+        isload
+            ? Shimmer.fromColors(
+                baseColor: Colors.black,
+                highlightColor: Colors.grey[350]!,
+                child: AspectRatio(
+                  aspectRatio: 16 / 9,
+                  child: Container(
+                    width: double.infinity,
+                    decoration: BoxDecoration(
+                        color: GetTheme().backgroundGrey(context),
+                        borderRadius: BorderRadius.circular(10)),
+                  ),
+                ),
+              )
+            : AspectRatio(
+                aspectRatio: 16 / 9,
+                child: Container(
+                  width: double.infinity,
+                  decoration: BoxDecoration(
+                      color: GetTheme().backgroundGrey(context),
+                      borderRadius: BorderRadius.circular(10)),
+                  child: LineChartWidget(moodData!.data!.moodData!),
+                ),
+              )
       ],
     );
   }
 
-  Widget listMood({required context, required MoodTrackerModel? moodData}) {
+  Widget listMood(
+      {required context,
+      required MoodTrackerModel? moodData,
+      required bool isLoad}) {
     return Column(
       children: [
         const SizedBox(
@@ -51,50 +72,102 @@ class TrackerMoodWidget {
         const SizedBox(
           height: 20,
         ),
-        leadingWithArrow(
-            context: context,
-            title: "Senang",
-            subtitle: "Jumlah mood : ${moodData!.data!.happyCount}",
-            leading: templateFeelIconsNoTitle(
-                bgColor: const Color(0xffEF5DA8),
-                svgIconsName: 'FeelHappyIcons.svg'),
-            colorWidget: const Color(0xffEF5DA8)),
+        isLoad
+            ? Shimmer.fromColors(
+                baseColor: Colors.grey[200]!,
+                highlightColor: Colors.grey[350]!,
+                child: leadingWithArrow(
+                    context: context,
+                    title: "Mood",
+                    subtitle: "Jumlah mood : 0",
+                    leading: templateFeelIconsNoTitle(
+                        bgColor: const Color(0xffEF5DA8),
+                        svgIconsName: 'FeelHappyIcons.svg'),
+                    colorWidget: const Color(0xffEF5DA8)),
+              )
+            : leadingWithArrow(
+                context: context,
+                title: "Senang",
+                subtitle: "Jumlah mood : ${moodData!.data!.happyCount}",
+                leading: templateFeelIconsNoTitle(
+                    bgColor: const Color(0xffEF5DA8),
+                    svgIconsName: 'FeelHappyIcons.svg'),
+                colorWidget: const Color(0xffEF5DA8)),
         const SizedBox(
           height: 10,
         ),
-        leadingWithArrow(
-          context: context,
-          title: "Sedih",
-          subtitle: "Jumlah mood : ${moodData.data!.sadCount}",
-          leading: templateFeelIconsNoTitle(
-              bgColor: const Color(0xff4DCCC1),
-              svgIconsName: 'FeelSadIcons.svg'),
-          colorWidget: const Color(0xff4DCCC1),
-        ),
+        isLoad
+            ? Shimmer.fromColors(
+                baseColor: Colors.grey[200]!,
+                highlightColor: Colors.grey[350]!,
+                child: leadingWithArrow(
+                    context: context,
+                    title: "Mood",
+                    subtitle: "Jumlah mood : 0",
+                    leading: templateFeelIconsNoTitle(
+                        bgColor: const Color(0xffEF5DA8),
+                        svgIconsName: 'FeelHappyIcons.svg'),
+                    colorWidget: const Color(0xffEF5DA8)),
+              )
+            : leadingWithArrow(
+                context: context,
+                title: "Sedih",
+                subtitle: "Jumlah mood : ${moodData!.data!.sadCount}",
+                leading: templateFeelIconsNoTitle(
+                    bgColor: const Color(0xff4DCCC1),
+                    svgIconsName: 'FeelSadIcons.svg'),
+                colorWidget: const Color(0xff4DCCC1),
+              ),
         const SizedBox(
           height: 10,
         ),
-        leadingWithArrow(
-          context: context,
-          title: "Biasa Saja",
-          subtitle: "Jumlah mood : ${moodData.data!.normalCount}",
-          leading: templateFeelIconsNoTitle(
-              bgColor: const Color(0xff00CE90),
-              svgIconsName: 'FeelNormalIcons.svg'),
-          colorWidget: const Color(0xff00CE90),
-        ),
+        isLoad
+            ? Shimmer.fromColors(
+                baseColor: Colors.grey[200]!,
+                highlightColor: Colors.grey[350]!,
+                child: leadingWithArrow(
+                    context: context,
+                    title: "Mood",
+                    subtitle: "Jumlah mood : 0",
+                    leading: templateFeelIconsNoTitle(
+                        bgColor: const Color(0xffEF5DA8),
+                        svgIconsName: 'FeelHappyIcons.svg'),
+                    colorWidget: const Color(0xffEF5DA8)),
+              )
+            : leadingWithArrow(
+                context: context,
+                title: "Biasa Saja",
+                subtitle: "Jumlah mood : ${moodData!.data!.normalCount}",
+                leading: templateFeelIconsNoTitle(
+                    bgColor: const Color(0xff00CE90),
+                    svgIconsName: 'FeelNormalIcons.svg'),
+                colorWidget: const Color(0xff00CE90),
+              ),
         const SizedBox(
           height: 10,
         ),
-        leadingWithArrow(
-          context: context,
-          title: "Marah",
-          subtitle: "Jumlah mood : ${moodData.data!.angryCount}",
-          leading: templateFeelIconsNoTitle(
-              bgColor: const Color(0xffFF696B),
-              svgIconsName: 'FeelAngryIcons.svg'),
-          colorWidget: const Color(0xffFF696B),
-        ),
+        isLoad
+            ? Shimmer.fromColors(
+                baseColor: Colors.grey[200]!,
+                highlightColor: Colors.grey[350]!,
+                child: leadingWithArrow(
+                    context: context,
+                    title: "Mood",
+                    subtitle: "Jumlah mood : 0",
+                    leading: templateFeelIconsNoTitle(
+                        bgColor: const Color(0xffEF5DA8),
+                        svgIconsName: 'FeelHappyIcons.svg'),
+                    colorWidget: const Color(0xffEF5DA8)),
+              )
+            : leadingWithArrow(
+                context: context,
+                title: "Marah",
+                subtitle: "Jumlah mood : ${moodData!.data!.angryCount}",
+                leading: templateFeelIconsNoTitle(
+                    bgColor: const Color(0xffFF696B),
+                    svgIconsName: 'FeelAngryIcons.svg'),
+                colorWidget: const Color(0xffFF696B),
+              ),
       ],
     );
   }

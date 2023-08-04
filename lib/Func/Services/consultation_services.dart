@@ -186,12 +186,42 @@ class ConsultationService {
     return apiresponse;
   }
 
-  Future<ApiResponse> getHistoryBookFree({required String token}) async {
+  Future<ApiResponse> gettrxData(
+      {required String? token, required String? status}) async {
+    ApiResponse apiresponse = ApiResponse();
+    try {
+      final response = await http.get(
+          Uri.parse(
+              "${Environment().zendmindBASEURL}api/mentor/book/transaction/get/$status"),
+          headers: {
+            'Accept': 'application/json',
+            'Authorization': 'Bearer $token'
+          });
+      print(response.body);
+      switch (response.statusCode) {
+        case 200:
+          apiresponse.data =
+              ListScheduleMentoring.fromJson(jsonDecode(response.body));
+          break;
+        case 400:
+          apiresponse.error = jsonDecode(response.body)['data'];
+          break;
+        default:
+          apiresponse.error = somethingWentWrong;
+          break;
+      }
+    } catch (err) {
+      apiresponse.error = serverError;
+    }
+    return apiresponse;
+  }
+
+  Future<ApiResponse> getHistoryBook({required String token,required String status}) async {
     ApiResponse apiresponse = ApiResponse();
 
     try {
       final response = await http.get(
-          Uri.parse("${Environment().zendmindBASEURL}api/mentor/book/free"),
+          Uri.parse("${Environment().zendmindBASEURL}api/mentor/book/history/$status"),
           headers: {
             'Accept': 'application/json',
             'Authorization': 'Bearer $token'
@@ -265,6 +295,33 @@ class ConsultationService {
       final response = await http.get(
         Uri.parse(
             "${Environment().zendmindBASEURL}api/mentor/book/cancel/$idBook"),
+        headers: {'Accept': 'application/json'},
+      );
+
+      print(response.body);
+      switch (response.statusCode) {
+        case 200:
+          apiresponse.data = jsonDecode(response.body)['data'];
+          break;
+        case 400:
+          apiresponse.error = jsonDecode(response.body)['data'];
+          break;
+        default:
+          apiresponse.error = somethingWentWrong;
+          break;
+      }
+    } catch (err) {
+      apiresponse.error = serverError;
+    }
+    return apiresponse;
+  }
+
+  Future<ApiResponse> cancelTrx({required String id}) async {
+    ApiResponse apiresponse = ApiResponse();
+    try {
+      final response = await http.get(
+        Uri.parse(
+            "${Environment().zendmindBASEURL}api/mentor/book/transaction/cancel/$id"),
         headers: {'Accept': 'application/json'},
       );
 

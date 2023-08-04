@@ -153,12 +153,12 @@ class Mentor {
 class User {
   int? id;
   String? email;
-  Null? imgProfileURL;
+  String? imgProfileURL;
   String? name;
   String? verifyToken;
   String? role;
   String? isVerify;
-  Null? gender;
+  String? gender;
   String? createdAt;
   String? updatedAt;
 

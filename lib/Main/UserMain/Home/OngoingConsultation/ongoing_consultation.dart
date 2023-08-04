@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:shimmer/shimmer.dart';
 import 'package:zenmind/DB/auth_preference.dart';
 import 'package:zenmind/Func/Services/consultation_services.dart';
 import 'package:zenmind/Func/time_formated.dart';
@@ -7,6 +8,7 @@ import 'package:zenmind/Main/AllRoleMain/Messages/chat_screen.dart';
 import 'package:zenmind/Main/UserMain/Home/home_menu.dart';
 import 'package:zenmind/Models/listschedulementor_model.dart';
 import 'package:zenmind/Models/listsmentoring_model.dart';
+import 'package:zenmind/env.dart';
 
 import '../../../../Func/date_fromated.dart';
 import '../../../../Widget/Button.dart';
@@ -155,6 +157,26 @@ class _OngoingConsulState extends State<OngoingConsul> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        leading: IconButton(
+            onPressed: () {
+              Navigator.pop(context);
+            },
+            icon: Icon(
+              Icons.arrow_circle_left_rounded,
+              size: 30,
+              color: Color(0xFFFF4DCCC1),
+            )),
+        title: Text(
+          'On Going',
+          style: TextStyle(
+            fontWeight: FontWeight.w600,
+            fontSize: 17,
+          ),
+        ),
+        backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+        elevation: 0,
+      ),
       body: isLoad
           ? Center(
               child: CircularProgressIndicator(),
@@ -163,32 +185,8 @@ class _OngoingConsulState extends State<OngoingConsul> {
               padding: const EdgeInsets.symmetric(horizontal: 20),
               child: Column(
                 children: [
-                  Container(
-                    padding: const EdgeInsets.only(top: 60),
-                    child: Row(
-                      children: [
-                        GestureDetector(
-                          child: Icon(
-                            Icons.arrow_circle_left_rounded,
-                            color: Color(0xFF4DCCC1),
-                            size: 35,
-                          ),
-                          onTap: () {
-                            Navigator.pop(context);
-                          },
-                        ),
-                        SizedBox(
-                          width: 15,
-                        ),
-                        Text(
-                          "Ongoing",
-                          style: TextStyle(
-                            fontSize: 20,
-                            fontWeight: FontWeight.w600,
-                          ),
-                        ),
-                      ],
-                    ),
+                  SizedBox(
+                    height: 20,
                   ),
                   ListView.separated(
                     itemCount: dataOngoing.data!.length,
@@ -199,23 +197,120 @@ class _OngoingConsulState extends State<OngoingConsul> {
                       return Container(
                         padding: const EdgeInsets.all(20),
                         decoration: BoxDecoration(
+                          boxShadow: [
+                            BoxShadow(
+                                color: Colors.black12,
+                                offset: Offset(0, 0),
+                                blurRadius: 20,
+                                spreadRadius: 3)
+                          ],
                           borderRadius: BorderRadius.circular(10),
-                          color: index % 2 != 0
-                              ? Color(0xffF5F5DA)
-                              : Color(0xffACD8FE),
+                          color: Colors.white,
                         ),
                         child: Column(
                           children: [
                             Row(
                               children: [
-                                Container(
-                                  height: 72,
-                                  width: 72,
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(8),
-                                    color: GetTheme().backgroundGrey(context),
-                                  ),
-                                ),
+                                dataMentor.mentor!.user!.imgProfileURL != ""
+                                    ? Container(
+                                        height: 72,
+                                        width: 72,
+                                        decoration: BoxDecoration(
+                                          borderRadius:
+                                              BorderRadius.circular(8),
+                                          color: GetTheme()
+                                              .backgroundGrey(context),
+                                        ),
+                                        child: ClipRRect(
+                                          borderRadius:
+                                              BorderRadius.circular(8),
+                                          child: Image.network(
+                                            Environment().zendmindBASEURL +
+                                                dataMentor
+                                                    .mentor!.user!.imgProfileURL
+                                                    .toString(),
+                                            fit: BoxFit.cover,
+                                            loadingBuilder:
+                                                (BuildContext context,
+                                                    Widget child,
+                                                    ImageChunkEvent?
+                                                        loadingProgress) {
+                                              if (loadingProgress == null) {
+                                                return child;
+                                              } else {
+                                                return Center(
+                                                  child: Shimmer.fromColors(
+                                                    baseColor:
+                                                        Colors.grey[200]!,
+                                                    highlightColor:
+                                                        Colors.grey[350]!,
+                                                    child: Center(
+                                                      child: Container(
+                                                        height: 72,
+                                                        width: 72,
+                                                        decoration:
+                                                            BoxDecoration(
+                                                          borderRadius:
+                                                              BorderRadius
+                                                                  .circular(8),
+                                                          color: GetTheme()
+                                                              .backgroundGrey(
+                                                                  context),
+                                                        ),
+                                                        child: Icon(
+                                                          Icons.person,
+                                                          color: Colors.white,
+                                                          size: 32,
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  ),
+                                                );
+                                              }
+                                            },
+                                            errorBuilder: (BuildContext context,
+                                                Object exception,
+                                                StackTrace? stackTrace) {
+                                              return Center(
+                                                child: Container(
+                                                  height: 72,
+                                                  width: 72,
+                                                  decoration: BoxDecoration(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            8),
+                                                    color: GetTheme()
+                                                        .backgroundGrey(
+                                                            context),
+                                                  ),
+                                                  child: Icon(
+                                                    Icons.person,
+                                                    color: Colors.white,
+                                                    size: 32,
+                                                  ),
+                                                ),
+                                              );
+                                            },
+                                          ),
+                                        ),
+                                      )
+                                    : Center(
+                                        child: Container(
+                                          height: 72,
+                                          width: 72,
+                                          decoration: BoxDecoration(
+                                            borderRadius:
+                                                BorderRadius.circular(8),
+                                            color: GetTheme()
+                                                .backgroundGrey(context),
+                                          ),
+                                          child: Icon(
+                                            Icons.person,
+                                            color: Colors.white,
+                                            size: 32,
+                                          ),
+                                        ),
+                                      ),
                                 SizedBox(
                                   width: 20,
                                 ),
@@ -282,7 +377,8 @@ class _OngoingConsulState extends State<OngoingConsul> {
                                         context,
                                         MaterialPageRoute(
                                           builder: (context) => ChatRoom(
-                                            id_SecondUser: dataMentor.mentor!.id
+                                            id_SecondUser: dataMentor
+                                                .mentor!.user!.id
                                                 .toString(),
                                           ),
                                         ),
@@ -349,43 +445,62 @@ class _OngoingConsulState extends State<OngoingConsul> {
                                 ],
                               ),
                             ),
-                            SizedBox(height: 10,),
+                            SizedBox(
+                              height: 10,
+                            ),
                             Row(
                               children: [
+                                // Container(
+                                //   decoration: BoxDecoration(
+                                //     borderRadius: BorderRadius.circular(10),
+                                //     color: DateTime.now().isBefore(
+                                //             formatToDatetime(
+                                //                 date:
+                                //                     dataMentor
+                                //                         .dateMentoring
+                                //                         .toString(),
+                                //                 time: dataMentor.timeMentoring
+                                //                     .toString()))
+                                //         ? Colors.grey[400]
+                                //         : Color(0xFF4DCCC1),
+                                //   ),
+                                //   height: 45,
+                                //   width: 180,
+                                //   child: Center(
+                                //     child: Text(
+                                //       "Selesaikan mentoring",
+                                //       style: TextStyle(
+                                //         fontWeight: FontWeight.w600,
+                                //         fontSize: 15,
+                                //         color: Colors.white,
+                                //       ),
+                                //     ),
+                                //   ),
+                                // ),
+                                // Spacer(),
                                 Container(
                                   decoration: BoxDecoration(
                                     borderRadius: BorderRadius.circular(10),
-                                    color: Color(0xFF4DCCC1),
+                                    color: DateTime.now().isBefore(
+                                            formatToDatetime(
+                                                date:
+                                                    dataMentor
+                                                        .dateMentoring
+                                                        .toString(),
+                                                time: dataMentor.timeMentoring
+                                                    .toString()))
+                                        ? Colors.grey[400]
+                                        : Color(0xFF589FDC),
                                   ),
                                   height: 45,
-                                  width: 180,
-                                  child: Center(
-                                    child: Text(
-                                      "Rate mentor",
-                                      style: TextStyle(
-                                        fontWeight: FontWeight.w600,
-                                        fontSize: 15,
-                                        color: Colors.white,
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                                Spacer(),
-                                Container(
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(10),
-                                    color: Color(0xFF589FDC),
-                                  ),
-                                  height: 45,
-                                  width: 180,
+                                  width: 370,
                                   child: Center(
                                     child: Text(
                                       "Join meet",
                                       style: TextStyle(
-                                        fontWeight: FontWeight.w600,
-                                        fontSize: 15,
-                                        color: Colors.white
-                                      ),
+                                          fontWeight: FontWeight.w600,
+                                          fontSize: 15,
+                                          color: Colors.white),
                                     ),
                                   ),
                                 ),

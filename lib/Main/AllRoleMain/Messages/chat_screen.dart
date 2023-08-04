@@ -93,7 +93,26 @@ class _ChatRoomState extends State<ChatRoom> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(),
+      appBar: AppBar(
+        leading: IconButton(
+            onPressed: () {
+              Navigator.pop(context);
+            },
+            icon: Icon(
+              Icons.arrow_circle_left_rounded,
+              size: 30,
+              color: Color(0xFFFF4DCCC1),
+            )),
+        title: Text(
+          isLoad ? "Loading..." : 'User',
+          style: TextStyle(
+            fontWeight: FontWeight.w600,
+            fontSize: 17,
+          ),
+        ),
+        backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+        elevation: 0,
+      ),
       body: Column(
         children: [
           Expanded(

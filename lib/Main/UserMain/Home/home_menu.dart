@@ -1,12 +1,15 @@
 import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:zenmind/DB/auth_preference.dart';
 import 'package:zenmind/Func/Services/article_services.dart';
+import 'package:zenmind/Func/Services/consultation_services.dart';
 import 'package:zenmind/Func/Services/trackmood_service.dart';
 import 'package:zenmind/Main/Authentication/auth_services.dart';
 import 'package:zenmind/Main/UserMain/Home/widget_home.dart';
 import 'package:zenmind/Models/articles_model.dart';
+import 'package:zenmind/Models/listsmentoring_model.dart';
 import 'package:zenmind/Models/user_model.dart';
 import 'package:zenmind/settings_all.dart';
 
@@ -19,15 +22,17 @@ class HomeMenu extends StatefulWidget {
 
 class _HomeMenuState extends State<HomeMenu> {
   int hoursnow = 0;
-  String greeting = "";
+  String greeting = "Hello";
   double paddingScreen = GetSizeScreen().paddingScreen;
 
   UserModel users = UserModel();
   ArticlesModel article = ArticlesModel();
+  ListScheduleMentoring dataOngoing = ListScheduleMentoring();
   AuthPreferences authPreferences = AuthPreferences();
 
   String tokenLocalUsers = "";
   bool isLoad = true;
+  String username = "User";
 
   void getData() async {
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
@@ -39,13 +44,55 @@ class _HomeMenuState extends State<HomeMenu> {
 
     var res = await AuthServices().getUsers(token: tokenLocalUsers);
     var resArticle = await getArticle();
+    var resOnGoing =
+        await ConsultationService().getAllBookOngoing(token: tokenLocalUsers);
     setState(() {
       if (res.error == null) {
         users = res.data as UserModel;
         article = resArticle.data as ArticlesModel;
+        dataOngoing = resOnGoing.data as ListScheduleMentoring;
+        username = users.data!.name.toString();
         isLoad = false;
       } else {}
     });
+  }
+
+  void cancelBook(int idbook) async {
+    showDialog(
+      context: context,
+      builder: (context) => Center(child: CircularProgressIndicator()),
+    );
+    var res = await ConsultationService().cancelBook(idBook: idbook);
+
+    if (res.error == null) {
+      // Navigator.pop(context);
+      Navigator.pop(context);
+      setState(() {
+        getData();
+      });
+    } else {
+      print(res.error);
+    }
+  }
+
+  String formatDate(DateTime dateTime) {
+    // Format tanggal ke dalam format yyyy-mm-dd
+    return "${dateTime.year}-${_twoDigits(dateTime.month)}-${_twoDigits(dateTime.day)}";
+  }
+
+  String _twoDigits(int n) {
+    // Fungsi pembantu untuk mengonversi bilangan ke dua digit (tambahkan nol jika perlu)
+    if (n >= 10) {
+      return "$n";
+    }
+    return "0$n";
+  }
+
+  String formatTime(TimeOfDay timeOfDay) {
+    // Format waktu ke dalam format hh:mm:00
+    String hour = _twoDigits(timeOfDay.hour);
+    String minute = _twoDigits(timeOfDay.minute);
+    return "$hour:$minute:00";
   }
 
   getCurrentDate() {
@@ -71,6 +118,30 @@ class _HomeMenuState extends State<HomeMenu> {
   }
 
   void isiSurvey(mood) async {
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (context) => Center(
+          child: Container(
+              height: 70,
+              padding: EdgeInsets.symmetric(horizontal: 20),
+              decoration: BoxDecoration(
+                  color: Colors.white, borderRadius: BorderRadius.circular(8)),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  CupertinoActivityIndicator(),
+                  SizedBox(
+                    height: 5,
+                  ),
+                  Text(
+                    "Loading ...",
+                    style: TextStyle(fontWeight: FontWeight.w700),
+                  ),
+                ],
+              ))),
+    );
     var resadd = await TrackMoodService()
         .addMood(token: tokenLocalUsers, date: DateTime.now(), mood: mood);
     if (resadd.error == null) {
@@ -84,7 +155,7 @@ class _HomeMenuState extends State<HomeMenu> {
           contentType: ContentType.success,
         ),
       );
-
+      Navigator.pop(context);
       ScaffoldMessenger.of(context)
         ..hideCurrentSnackBar()
         ..showSnackBar(snackBar);
@@ -100,85 +171,87 @@ class _HomeMenuState extends State<HomeMenu> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: isLoad
-          ? const Center(
-              child: CircularProgressIndicator(),
-            )
-          : SafeArea(
-              child: SingleChildScrollView(
-                child: Column(
+      body: SafeArea(
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
+              SizedBox(
+                height: paddingScreen,
+              ),
+              HomeWidget().header(
+                  username: username,
+                  context: context,
+                  greeting: greeting,
+                  paddingScreen: paddingScreen),
+              HomeWidget()
+                  .action(context: context, paddingScreen: paddingScreen),
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: paddingScreen),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    SizedBox(
-                      height: paddingScreen,
+                    InkWell(
+                      onTap: () {
+                        isiSurvey('happy');
+                      },
+                      child: templateFeelIcons(
+                          caption: 'Happy',
+                          bgColor: const Color(0xffEF5DA8),
+                          svgIconsName: 'FeelHappyIcons.svg'),
                     ),
-                    HomeWidget().header(
-                        username: users.data!.name ?? "",
-                        context: context,
-                        greeting: greeting,
-                        paddingScreen: paddingScreen),
-                    HomeWidget()
-                        .action(context: context, paddingScreen: paddingScreen),
-                    Padding(
-                      padding: EdgeInsets.symmetric(horizontal: paddingScreen),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          InkWell(
-                            onTap: () {
-                              isiSurvey('happy');
-                            },
-                            child: templateFeelIcons(
-                                caption: 'Happy',
-                                bgColor: const Color(0xffEF5DA8),
-                                svgIconsName: 'FeelHappyIcons.svg'),
-                          ),
-                          InkWell(
-                            onTap: () {
-                              isiSurvey('normal');
-                            },
-                            child: templateFeelIcons(
-                                caption: 'Normal',
-                                bgColor: const Color(0xff00CE90),
-                                svgIconsName: 'FeelNormalIcons.svg'),
-                          ),
-                          InkWell(
-                            onTap: () {
-                              isiSurvey('sad');
-                            },
-                            child: templateFeelIcons(
-                                caption: 'Sad',
-                                bgColor: const Color(0xff4DCCC1),
-                                svgIconsName: 'FeelSadIcons.svg'),
-                          ),
-                          InkWell(
-                            onTap: () {
-                              isiSurvey('angry');
-                            },
-                            child: templateFeelIcons(
-                                caption: 'Angry',
-                                bgColor: const Color(0xffFF696B),
-                                svgIconsName: 'FeelAngryIcons.svg'),
-                          ),
-                        ],
-                      ),
+                    InkWell(
+                      onTap: () {
+                        isiSurvey('normal');
+                      },
+                      child: templateFeelIcons(
+                          caption: 'Normal',
+                          bgColor: const Color(0xff00CE90),
+                          svgIconsName: 'FeelNormalIcons.svg'),
                     ),
-                    HomeWidget().featMentalHealth(
-                        context: context, paddingScreen: paddingScreen),
-                    HomeWidget().aboutMentalHealth(
-                        context: context, paddingScreen: paddingScreen),
-                    SizedBox(
-                      height: paddingScreen,
+                    InkWell(
+                      onTap: () {
+                        isiSurvey('sad');
+                      },
+                      child: templateFeelIcons(
+                          caption: 'Sad',
+                          bgColor: const Color(0xff4DCCC1),
+                          svgIconsName: 'FeelSadIcons.svg'),
                     ),
-                    HomeWidget().recomendationMeditasi(
-                        context: context, paddingScreen: paddingScreen),
-                    HomeWidget().finishMeditasi(
-                        context: context, paddingScreen: paddingScreen),
-                    // HomeWidget()
-                    //     .article(context: context, paddingScreen: paddingScreen)
+                    InkWell(
+                      onTap: () {
+                        isiSurvey('angry');
+                      },
+                      child: templateFeelIcons(
+                          caption: 'Angry',
+                          bgColor: const Color(0xffFF696B),
+                          svgIconsName: 'FeelAngryIcons.svg'),
+                    ),
                   ],
                 ),
               ),
-            ),
+              HomeWidget().featMentalHealth(
+                  context: context, paddingScreen: paddingScreen),
+              HomeWidget().aboutMentalHealth(
+                  context: context, paddingScreen: paddingScreen),
+              SizedBox(
+                height: paddingScreen,
+              ),
+              HomeWidget().recomendationMeditasi(
+                  articledata: article,
+                  context: context,
+                  paddingScreen: paddingScreen,
+                  isLoad: isLoad),
+              HomeWidget().finishMeditasi(
+                  ongoingdata: dataOngoing,
+                  isLoad: isLoad,
+                  context: context,
+                  paddingScreen: paddingScreen),
+              // HomeWidget()
+              //     .article(context: context, paddingScreen: paddingScreen)
+            ],
+          ),
+        ),
+      ),
     );
   }
 }

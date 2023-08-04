@@ -5,6 +5,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:shimmer/shimmer.dart';
 import 'package:zenmind/DB/auth_preference.dart';
 import 'package:zenmind/Func/file_fromated.dart';
 import 'package:zenmind/Main/Authentication/auth_services.dart';
@@ -48,8 +49,10 @@ class _ProfileEditState extends State<ProfileEdit> {
         _emailController.text = users.data!.email ?? "";
         _nameController.text = users.data!.name ?? "";
         _usernameController.text = users.data!.gender ?? "";
-        _urlImgProfileController = Environment().zendmindBASEURL +
-            users.data!.imgProfileURL.toString();
+        _urlImgProfileController = users.data!.imgProfileURL != null
+            ? Environment().zendmindBASEURL +
+                users.data!.imgProfileURL.toString()
+            : "";
         isLoad = false;
       } else {}
     });
@@ -194,6 +197,42 @@ class _ProfileEditState extends State<ProfileEdit> {
                                         ? Image.network(
                                             _urlImgProfileController,
                                             fit: BoxFit.cover,
+                                            loadingBuilder:
+                                                (BuildContext context,
+                                                    Widget child,
+                                                    ImageChunkEvent?
+                                                        loadingProgress) {
+                                              if (loadingProgress == null) {
+                                                return child;
+                                              } else {
+                                                return Center(
+                                                  child: Shimmer.fromColors(
+                                                    baseColor:
+                                                        Colors.grey[200]!,
+                                                    highlightColor:
+                                                        Colors.grey[350]!,
+                                                    child: const Center(
+                                                      child: Icon(
+                                                        Icons.person,
+                                                        color: Colors.white,
+                                                        size: 32,
+                                                      ),
+                                                    ),
+                                                  ),
+                                                );
+                                              }
+                                            },
+                                            errorBuilder: (BuildContext context,
+                                                Object exception,
+                                                StackTrace? stackTrace) {
+                                              return const Center(
+                                                child: Icon(
+                                                  Icons.person,
+                                                  color: Colors.white,
+                                                  size: 32,
+                                                ),
+                                              );
+                                            },
                                           )
                                         : const Center(
                                             child: Icon(

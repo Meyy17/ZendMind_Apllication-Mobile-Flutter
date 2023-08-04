@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:shimmer/shimmer.dart';
 import 'package:zenmind/Main/UserMain/Article/article_menu.dart';
 import 'package:zenmind/Models/articles_model.dart';
 import 'package:zenmind/settings_all.dart';
@@ -16,42 +17,78 @@ class _ArticleDetailState extends State<ArticleDetail> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Column(children: [
-        Stack(
+      body: SafeArea(
+        child: Stack(
           children: [
-            Container(
-              width: double.infinity,
-              height: 570,
-              decoration: BoxDecoration(
-                color: Colors.black.withOpacity(0.4),
-              ),
-              child: Image.network(
-                widget.p.bannerURL.toString(),
-                fit: BoxFit.cover,
-              ),
-            ),
-            Container(
-              alignment: Alignment.center,
-              margin: const EdgeInsets.only(top: 300, left: 24),
-              decoration: BoxDecoration(
-                color: Colors.white.withOpacity(0.2),
-                borderRadius: BorderRadius.circular(100),
-              ),
-              width: 150,
-              height: 40,
-              child: const Text(
-                'Mental',
-                style: TextStyle(
-                  fontSize: 15,
-                  fontWeight: FontWeight.w600,
-                  color: Colors.white,
+            Stack(
+              children: [
+                Container(
+                  width: double.infinity,
+                  height: 570,
+                  decoration: BoxDecoration(
+                    color: Colors.black.withOpacity(0.4),
+                  ),
+                  child: Image.network(
+                    widget.p.bannerURL.toString(),
+                    fit: BoxFit.cover,
+                    loadingBuilder: (BuildContext context, Widget child,
+                        ImageChunkEvent? loadingProgress) {
+                      if (loadingProgress == null) {
+                        return child;
+                      } else {
+                        return Center(
+                          child: Shimmer.fromColors(
+                            baseColor: Colors.grey[200]!,
+                            highlightColor: Colors.grey[350]!,
+                            child: Image.asset(
+                              'Assets/Picture/Svg/error-image.png',
+                              fit: BoxFit.cover,
+                            ),
+                          ),
+                        );
+                      }
+                    },
+                    errorBuilder: (BuildContext context, Object exception,
+                        StackTrace? stackTrace) {
+                      return Image.asset(
+                        'Assets/Picture/Svg/error-image.png',
+                        fit: BoxFit.cover,
+                      );
+                    },
+                  ),
                 ),
-              ),
+                Container(
+                  width: double.infinity,
+                  height: 570,
+                  decoration: BoxDecoration(
+                    color: Colors.black.withOpacity(0.8),
+                  ),
+                ),
+              ],
             ),
+            // Container(
+            //   alignment: Alignment.center,
+            //   margin: const EdgeInsets.only(top: 300, left: 24),
+            //   decoration: BoxDecoration(
+            //     color: Colors.white.withOpacity(0.2),
+            //     borderRadius: BorderRadius.circular(100),
+            //   ),
+            //   width: 150,
+            //   height: 40,
+            //   child: const Text(
+            //     'Mental',
+            //     style: TextStyle(
+            //       fontSize: 15,
+            //       fontWeight: FontWeight.w600,
+            //       color: Colors.white,
+            //     ),
+            //   ),
+            // ),
             Container(
               margin: const EdgeInsets.only(top: 350, left: 24),
               child: Text(
                 widget.p.title.toString(),
+                maxLines: 2,
                 style: TextStyle(
                   color: Colors.white,
                   fontSize: 20,
@@ -59,45 +96,45 @@ class _ArticleDetailState extends State<ArticleDetail> {
                 ),
               ),
             ),
-            Container(
-              margin: const EdgeInsets.only(top: 420, left: 24),
-              child: Row(
-                children: [
-                  Text(
-                    'Trending',
-                    style: TextStyle(
-                      fontSize: 15,
-                      color: Colors.white,
-                    ),
-                  ),
-                  SizedBox(
-                    width: 7,
-                  ),
-                  Text(
-                    '•',
-                    style: TextStyle(
-                      fontSize: 15,
-                      color: Colors.white,
-                    ),
-                  ),
-                  SizedBox(
-                    width: 7,
-                  ),
-                  Text(
-                    '6 Hours ago',
-                    style: TextStyle(
-                      fontSize: 15,
-                      color: Colors.white,
-                    ),
-                  ),
-                ],
-              ),
-            ),
+            // Container(
+            //   margin: const EdgeInsets.only(top: 420, left: 24),
+            //   child: Row(
+            //     children: [
+            //       Text(
+            //         'Trending',
+            //         style: TextStyle(
+            //           fontSize: 15,
+            //           color: Colors.white,
+            //         ),
+            //       ),
+            //       SizedBox(
+            //         width: 7,
+            //       ),
+            //       Text(
+            //         '•',
+            //         style: TextStyle(
+            //           fontSize: 15,
+            //           color: Colors.white,
+            //         ),
+            //       ),
+            //       SizedBox(
+            //         width: 7,
+            //       ),
+            //       Text(
+            //         '6 Hours ago',
+            //         style: TextStyle(
+            //           fontSize: 15,
+            //           color: Colors.white,
+            //         ),
+            //       ),
+            //     ],
+            //   ),
+            // ),
             SizedBox(
               height: GetSizeScreen().height(context),
               child: SingleChildScrollView(
                 child: Padding(
-                  padding: const EdgeInsets.only(top: 470),
+                  padding: const EdgeInsets.only(top: 420),
                   child: Container(
                     padding:
                         const EdgeInsets.only(top: 36, left: 40, right: 40),
@@ -110,30 +147,30 @@ class _ArticleDetailState extends State<ArticleDetail> {
                         )),
                     child: Column(
                       children: [
-                        Row(
-                          children: [
-                            CircleAvatar(
-                              backgroundColor: Colors.grey,
-                              radius: 25,
-                            ),
-                            SizedBox(
-                              width: 20,
-                            ),
-                            Text(
-                              'Source Name',
-                              style: TextStyle(
-                                  fontSize: 17, fontWeight: FontWeight.w800),
-                            ),
-                            SizedBox(
-                              width: 10,
-                            ),
-                            Icon(
-                              Icons.verified,
-                              size: 30,
-                              color: Colors.blue,
-                            )
-                          ],
-                        ),
+                        // Row(
+                        //   children: [
+                        //     CircleAvatar(
+                        //       backgroundColor: Colors.grey,
+                        //       radius: 25,
+                        //     ),
+                        //     SizedBox(
+                        //       width: 20,
+                        //     ),
+                        //     Text(
+                        //       'Source Name',
+                        //       style: TextStyle(
+                        //           fontSize: 17, fontWeight: FontWeight.w800),
+                        //     ),
+                        //     SizedBox(
+                        //       width: 10,
+                        //     ),
+                        //     Icon(
+                        //       Icons.verified,
+                        //       size: 30,
+                        //       color: Colors.blue,
+                        //     )
+                        //   ],
+                        // ),
                         const SizedBox(
                           height: 20,
                         ),
@@ -167,7 +204,7 @@ class _ArticleDetailState extends State<ArticleDetail> {
             ),
           ],
         ),
-      ]),
+      ),
     );
   }
 }

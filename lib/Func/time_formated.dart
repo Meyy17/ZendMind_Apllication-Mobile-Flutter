@@ -6,3 +6,11 @@ String timeFormatToHAndM(time) {
   String minute = dateTime.minute.toString().padLeft(2, '0');
   return '${hour}:${minute}';
 }
+
+DateTime formatToDatetime({required String date, required String time}) {
+  String storedDateTimeStr = "${date} ${time}";
+
+  DateTime storedDateTime =
+      DateFormat("yyyy-MM-dd HH:mm").parse(storedDateTimeStr);
+  return storedDateTime;
+}
