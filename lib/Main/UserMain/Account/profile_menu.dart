@@ -12,7 +12,9 @@ import 'package:zenmind/Func/Services/consultation_services.dart';
 import 'package:zenmind/Func/file_fromated.dart';
 import 'package:zenmind/Main/Authentication/auth_services.dart';
 import 'package:zenmind/Main/Authentication/login_menu.dart';
+import 'package:zenmind/Main/UserMain/Account/ChangePassword/change_pass.dart';
 import 'package:zenmind/Main/UserMain/Account/EditAccount/profile_edit.dart';
+import 'package:zenmind/Main/UserMain/Account/FAQ%20&%20Help/faq_help_page.dart';
 import 'package:zenmind/Main/UserMain/Account/widget_profile.dart';
 import 'package:zenmind/Models/bookhistory_model.dart';
 import 'package:zenmind/Models/user_model.dart';
@@ -218,6 +220,22 @@ class _ProfileMenuState extends State<ProfileMenu> {
                                 isLoad = true;
                                 getData();
                               });
+                            },
+                            background: Colors.white70,
+                            contentColors: Colors.black,
+                            icon: Icons.edit),
+                        ProfileWidget().cardDrawer(
+                            title: 'FAQ & Help',
+                            onPressed: (){
+                              Navigator.push(context, MaterialPageRoute(builder: (context) => FaqHelpPage(),));
+                            },
+                            background: Colors.white70,
+                            contentColors: Colors.black,
+                            icon: Icons.edit),
+                        ProfileWidget().cardDrawer(
+                            title: 'Change Pass',
+                            onPressed: (){
+                              Navigator.push(context, MaterialPageRoute(builder: (context) => ChangePass(),));
                             },
                             background: Colors.white70,
                             contentColors: Colors.black,
