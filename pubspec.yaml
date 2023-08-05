@@ -38,7 +38,7 @@ dependencies:
     sdk: flutter
   flutter_localization: null
   flutter_svg: ^2.0.4
-  google_fonts: ^5.1.0
+  google_fonts: 4.0.4
   image_picker: ^0.8.7+5
   intl: null
   month_year_picker: ^0.3.0+1
@@ -50,6 +50,8 @@ dependencies:
   socket_io_client: ^2.0.2
   syncfusion_flutter_charts: ^22.2.5
   webview_flutter: ^4.2.2
+  zego_uikit_prebuilt_call: ^1.0.0
+
 
 dev_dependencies:
   flutter_lints: ^2.0.0
