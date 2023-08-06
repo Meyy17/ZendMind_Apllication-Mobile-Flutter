@@ -22,7 +22,7 @@ class _ChangePassState extends State<ChangePass> {
               children: [
                 GestureDetector(
                   onTap: (){
-                    Navigator.push(context, MaterialPageRoute(builder: (context) => ProfileMenu(),));
+                  Navigator.pop(context);
                   },
                   child: Icon(
                     Icons.arrow_circle_left_rounded,

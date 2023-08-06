@@ -179,227 +179,232 @@ class _AllMentoringState extends State<AllMentoring> {
           ? Center(
               child: CircularProgressIndicator(),
             )
-          : SingleChildScrollView(
-              child: Column(
-                children: [
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
+          : listSch.data!.length > 0
+              ? SingleChildScrollView(
+                  child: Column(
                     children: [
-                      Container(
-                        padding: EdgeInsets.only(
-                          left: 29,
-                        ),
-                        alignment: Alignment.centerLeft,
-                        child: Text(
-                          'Good morning, doctors',
-                          style: TextStyle(
-                            fontSize: 20,
-                            fontWeight: FontWeight.w600,
-                          ),
-                        ),
+                      // Column(
+                      //   crossAxisAlignment: CrossAxisAlignment.start,
+                      //   children: [
+                      //     Container(
+                      //       padding: EdgeInsets.only(
+                      //         left: 29,
+                      //       ),
+                      //       alignment: Alignment.centerLeft,
+                      //       child: Text(
+                      //         'Good morning, doctors',
+                      //         style: TextStyle(
+                      //           fontSize: 20,
+                      //           fontWeight: FontWeight.w600,
+                      //         ),
+                      //       ),
+                      //     ),
+                      //     Container(
+                      //       padding: EdgeInsets.only(left: 29),
+                      //       alignment: Alignment.centerLeft,
+                      //       child: Text(
+                      //         'This is all schedule you have',
+                      //         style: TextStyle(fontSize: 15),
+                      //       ),
+                      //     ),
+                      //   ],
+                      // ),
+                      SizedBox(
+                        height: 15,
                       ),
-                      Container(
-                        padding: EdgeInsets.only(left: 29),
-                        alignment: Alignment.centerLeft,
-                        child: Text(
-                          'This is all schedule you have',
-                          style: TextStyle(fontSize: 15),
-                        ),
-                      ),
-                    ],
-                  ),
-                  SizedBox(
-                    height: 15,
-                  ),
-                  ListView.separated(
-                    padding: EdgeInsets.symmetric(horizontal: 20),
-                    shrinkWrap: true,
-                    physics: NeverScrollableScrollPhysics(),
-                    itemCount: listSch.data!.length,
-                    separatorBuilder: (BuildContext context, int index) {
-                      return SizedBox(
-                        height: 12,
-                      );
-                    },
-                    itemBuilder: (BuildContext context, int index) {
-                      var data = listSch.data![index];
-                      return Container(
-                        padding:
-                            EdgeInsets.symmetric(horizontal: 20, vertical: 20),
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(10),
-                          color: Color(0xFFE6E6E6),
-                        ),
-                        width: 400,
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Row(
-                              children: [
-                                SizedBox(
-                                  width: 15,
-                                ),
-                                Text(
-                                  'Meet with ${data.user!.name}',
-                                  style: TextStyle(
-                                    fontSize: 20,
-                                    fontWeight: FontWeight.w600,
-                                  ),
-                                ),
-                                Spacer(),
-                                InkWell(
-                                  onTap: () {
-                                    Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                          builder: (context) => ChatRoom(
-                                              id_SecondUser:
-                                                  data.user!.id.toString()),
-                                        ));
-                                  },
-                                  child: Icon(
-                                    Icons.chat,
-                                    size: 30,
-                                  ),
-                                ),
-                              ],
+                      ListView.separated(
+                        padding: EdgeInsets.symmetric(horizontal: 20),
+                        shrinkWrap: true,
+                        physics: NeverScrollableScrollPhysics(),
+                        itemCount: listSch.data!.length,
+                        separatorBuilder: (BuildContext context, int index) {
+                          return SizedBox(
+                            height: 12,
+                          );
+                        },
+                        itemBuilder: (BuildContext context, int index) {
+                          var data = listSch.data![index];
+                          return Container(
+                            padding: EdgeInsets.symmetric(
+                                horizontal: 20, vertical: 20),
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(10),
+                              color: Color(0xFFE6E6E6),
                             ),
-                            SizedBox(
-                              height: 15,
-                            ),
-                            Column(
+                            width: 400,
+                            child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Text(
-                                  '• Estimated income: ${MoneyFormated.convertToIdrWithSymbol(count: data.fee, decimalDigit: 2)}',
-                                  style: TextStyle(
-                                    fontSize: 15,
-                                  ),
-                                ),
-                                Text(
-                                  '• Date : ${formatDateEnglish(data.dateMentoring.toString())}, ${timeFormatToHAndM(data.timeMentoring.toString())}',
-                                  style: TextStyle(
-                                    fontSize: 15,
-                                  ),
+                                Row(
+                                  children: [
+                                    SizedBox(
+                                      width: 15,
+                                    ),
+                                    Text(
+                                      'Meet with ${data.user!.name}',
+                                      style: TextStyle(
+                                        fontSize: 20,
+                                        fontWeight: FontWeight.w600,
+                                      ),
+                                    ),
+                                    Spacer(),
+                                    InkWell(
+                                      onTap: () {
+                                        Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                              builder: (context) => ChatRoom(
+                                                  id_SecondUser:
+                                                      data.user!.id.toString()),
+                                            ));
+                                      },
+                                      child: Icon(
+                                        Icons.chat,
+                                        size: 30,
+                                      ),
+                                    ),
+                                  ],
                                 ),
                                 SizedBox(
                                   height: 15,
                                 ),
-                                // Text(
-                                //   'Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet.',
-                                //   style: TextStyle(
-                                //     fontSize: 15,
-                                //   ),
-                                // ),
-                                // SizedBox(
-                                //   height: 15,
-                                // ),
-                                // Text(
-                                //   'Adam@gmail.com',
-                                //   style: TextStyle(
-                                //     fontSize: 15,
-                                //     fontWeight: FontWeight.w600,
-                                //   ),
-                                // ),
-
-                                Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
+                                Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    Container(
-                                      alignment: Alignment.center,
-                                      decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.circular(10),
-                                        color: Color(0xFF1E2754),
-                                      ),
-                                      width: 115,
-                                      height: 45,
-                                      child: Text(
-                                        'Meet',
-                                        style: TextStyle(
-                                          fontWeight: FontWeight.w600,
-                                          fontSize: 15,
-                                          color: Colors.white,
-                                        ),
+                                    Text(
+                                      '• Estimated income: ${MoneyFormated.convertToIdrWithSymbol(count: data.fee, decimalDigit: 2)}',
+                                      style: TextStyle(
+                                        fontSize: 15,
                                       ),
                                     ),
-                                    InkWell(
-                                      onTap: () {
-                                        reschedule(
-                                            "${formatDateEnglish(data.dateMentoring.toString())}, ${timeFormatToHAndM(data.timeMentoring.toString())}",
-                                            data.id.toString());
-                                      },
-                                      child: Container(
-                                        alignment: Alignment.center,
-                                        decoration: BoxDecoration(
-                                          borderRadius:
-                                              BorderRadius.circular(10),
-                                          color: Color(0xFF4DCCC1),
-                                        ),
-                                        width: 115,
-                                        height: 45,
-                                        child: Text(
-                                          'Reschedule',
-                                          style: TextStyle(
-                                            fontWeight: FontWeight.w600,
-                                            fontSize: 15,
-                                            color: Colors.white,
+                                    Text(
+                                      '• Date : ${formatDateEnglish(data.dateMentoring.toString())}, ${timeFormatToHAndM(data.timeMentoring.toString())}',
+                                      style: TextStyle(
+                                        fontSize: 15,
+                                      ),
+                                    ),
+                                    SizedBox(
+                                      height: 15,
+                                    ),
+                                    // Text(
+                                    //   'Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet.',
+                                    //   style: TextStyle(
+                                    //     fontSize: 15,
+                                    //   ),
+                                    // ),
+                                    // SizedBox(
+                                    //   height: 15,
+                                    // ),
+                                    // Text(
+                                    //   'Adam@gmail.com',
+                                    //   style: TextStyle(
+                                    //     fontSize: 15,
+                                    //     fontWeight: FontWeight.w600,
+                                    //   ),
+                                    // ),
+
+                                    Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Container(
+                                          alignment: Alignment.center,
+                                          decoration: BoxDecoration(
+                                            borderRadius:
+                                                BorderRadius.circular(10),
+                                            color: Color(0xFF1E2754),
+                                          ),
+                                          width: 115,
+                                          height: 45,
+                                          child: Text(
+                                            'Meet',
+                                            style: TextStyle(
+                                              fontWeight: FontWeight.w600,
+                                              fontSize: 15,
+                                              color: Colors.white,
+                                            ),
                                           ),
                                         ),
-                                      ),
-                                    ),
-                                    InkWell(
-                                      onTap: () => showDialog(
-                                        context: context,
-                                        builder: (context) => AlertDialog(
-                                          content: Text(
-                                              "Are you sure to cancel mentoring with ${data.user!.name}? \n at ${formatDateEnglish(data.dateMentoring.toString())}, ${timeFormatToHAndM(data.timeMentoring.toString())}"),
-                                          actions: [
-                                            TextButton(
-                                                onPressed: () {
-                                                  Navigator.pop(context);
-                                                },
-                                                child: Text("No")),
-                                            TextButton(
-                                                onPressed: () {
-                                                  cancelBook(int.parse(
-                                                      data.id.toString()));
-                                                },
-                                                child: Text("Yes"))
-                                          ],
-                                        ),
-                                      ),
-                                      child: Container(
-                                        alignment: Alignment.center,
-                                        decoration: BoxDecoration(
-                                          borderRadius:
-                                              BorderRadius.circular(10),
-                                          color: Colors.red,
-                                        ),
-                                        width: 115,
-                                        height: 45,
-                                        child: Text(
-                                          'Cancel',
-                                          style: TextStyle(
-                                            fontWeight: FontWeight.w600,
-                                            fontSize: 15,
-                                            color: Colors.white,
+                                        InkWell(
+                                          onTap: () {
+                                            reschedule(
+                                                "${formatDateEnglish(data.dateMentoring.toString())}, ${timeFormatToHAndM(data.timeMentoring.toString())}",
+                                                data.id.toString());
+                                          },
+                                          child: Container(
+                                            alignment: Alignment.center,
+                                            decoration: BoxDecoration(
+                                              borderRadius:
+                                                  BorderRadius.circular(10),
+                                              color: Color(0xFF4DCCC1),
+                                            ),
+                                            width: 115,
+                                            height: 45,
+                                            child: Text(
+                                              'Reschedule',
+                                              style: TextStyle(
+                                                fontWeight: FontWeight.w600,
+                                                fontSize: 15,
+                                                color: Colors.white,
+                                              ),
+                                            ),
                                           ),
                                         ),
-                                      ),
-                                    ),
+                                        InkWell(
+                                          onTap: () => showDialog(
+                                            context: context,
+                                            builder: (context) => AlertDialog(
+                                              content: Text(
+                                                  "Are you sure to cancel mentoring with ${data.user!.name}? \n at ${formatDateEnglish(data.dateMentoring.toString())}, ${timeFormatToHAndM(data.timeMentoring.toString())}"),
+                                              actions: [
+                                                TextButton(
+                                                    onPressed: () {
+                                                      Navigator.pop(context);
+                                                    },
+                                                    child: Text("No")),
+                                                TextButton(
+                                                    onPressed: () {
+                                                      cancelBook(int.parse(
+                                                          data.id.toString()));
+                                                    },
+                                                    child: Text("Yes"))
+                                              ],
+                                            ),
+                                          ),
+                                          child: Container(
+                                            alignment: Alignment.center,
+                                            decoration: BoxDecoration(
+                                              borderRadius:
+                                                  BorderRadius.circular(10),
+                                              color: Colors.red,
+                                            ),
+                                            width: 115,
+                                            height: 45,
+                                            child: Text(
+                                              'Cancel',
+                                              style: TextStyle(
+                                                fontWeight: FontWeight.w600,
+                                                fontSize: 15,
+                                                color: Colors.white,
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    )
                                   ],
-                                )
+                                ),
                               ],
                             ),
-                          ],
-                        ),
-                      );
-                    },
+                          );
+                        },
+                      ),
+                    ],
                   ),
-                ],
-              ),
-            ),
+                )
+              : Center(
+                  child: Text("No mentoring data"),
+                ),
     );
   }
 }

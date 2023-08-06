@@ -408,6 +408,7 @@ class HomeWidget {
       {required context,
       required double paddingScreen,
       required bool isLoad,
+      required int countOngoing,
       required ListScheduleMentoring ongoingdata}) {
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: paddingScreen),
@@ -421,124 +422,138 @@ class HomeWidget {
                 color: GetTheme().themeColor,
               ),
               subtitle: "jadwal konsultasi kamu yang belum selesai"),
-          ListView.separated(
-            itemCount: isLoad
-                ? 1
-                : ongoingdata.data!.length > 5
-                    ? 5
-                    : ongoingdata.data!.length,
-            shrinkWrap: true,
-            physics: const NeverScrollableScrollPhysics(),
-            separatorBuilder: (context, index) {
-              return const SizedBox(
-                height: 10,
-              );
-            },
-            itemBuilder: (BuildContext context, int index) {
-              return isLoad
-                  ? Shimmer.fromColors(
-                      baseColor: Colors.black,
-                      highlightColor: Colors.grey[350]!,
-                      child: leadingWithArrow(
-                        context: context,
-                        colorWidget: Colors.blue,
-                        title: "Mentor Name",
-                        subtitle: "00-00-0000 at 00:00",
-                        leading: Container(
-                          width: 50,
-                          height: 50,
-                          decoration: BoxDecoration(
-                              color: GetTheme().backgroundGrey(context),
-                              borderRadius: BorderRadius.circular(100)),
-                        ),
-                      ),
-                    )
-                  : leadingWithArrow(
-                      context: context,
-                      colorWidget: Colors.blue,
-                      title: "${ongoingdata.data![index].mentor!.user!.name}",
-                      subtitle:
-                          "${formatDateToId(date: ongoingdata.data![index].dateMentoring.toString())} at ${timeFormatToHAndM(ongoingdata.data![index].timeMentoring)}",
-                      leading: ongoingdata
-                                  .data![index].mentor!.user!.imgProfileURL !=
-                              ""
-                          ? Container(
-                              width: 50,
-                              height: 50,
-                              decoration: BoxDecoration(
-                                  color: GetTheme().backgroundGrey(context),
-                                  borderRadius: BorderRadius.circular(100)),
-                              child: ClipRRect(
-                                borderRadius: BorderRadius.circular(100),
-                                child: Image.network(
-                                  Environment().zendmindBASEURL +
-                                      ongoingdata.data![index].mentor!.user!
-                                          .imgProfileURL
-                                          .toString(),
-                                  fit: BoxFit.cover,
-                                  loadingBuilder: (BuildContext context,
-                                      Widget child,
-                                      ImageChunkEvent? loadingProgress) {
-                                    if (loadingProgress == null) {
-                                      return child;
-                                    } else {
-                                      return Center(
-                                        child: Shimmer.fromColors(
-                                            baseColor: Colors.grey[200]!,
-                                            highlightColor: Colors.grey[350]!,
-                                            child: Container(
-                                              width: 50,
-                                              height: 50,
-                                              decoration: BoxDecoration(
-                                                  color: GetTheme()
-                                                      .backgroundGrey(context),
-                                                  borderRadius:
-                                                      BorderRadius.circular(
-                                                          100)),
-                                              child: Icon(
-                                                Icons.person,
-                                                color: Colors.black,
-                                                size: 32,
-                                              ),
-                                            )),
-                                      );
-                                    }
-                                  },
-                                  errorBuilder: (BuildContext context,
-                                      Object exception,
-                                      StackTrace? stackTrace) {
-                                    return Container(
-                                      width: 50,
-                                      height: 50,
-                                      decoration: BoxDecoration(
-                                          color: GetTheme()
-                                              .backgroundGrey(context),
-                                          borderRadius:
-                                              BorderRadius.circular(100)),
-                                      child: Icon(
-                                        Icons.person,
-                                        color: Colors.black,
-                                        size: 32,
+          countOngoing > 0
+              ? ListView.separated(
+                  itemCount: isLoad
+                      ? 1
+                      : ongoingdata.data!.length > 5
+                          ? 5
+                          : ongoingdata.data!.length,
+                  shrinkWrap: true,
+                  physics: const NeverScrollableScrollPhysics(),
+                  separatorBuilder: (context, index) {
+                    return const SizedBox(
+                      height: 10,
+                    );
+                  },
+                  itemBuilder: (BuildContext context, int index) {
+                    return isLoad
+                        ? Shimmer.fromColors(
+                            baseColor: Colors.black,
+                            highlightColor: Colors.grey[350]!,
+                            child: leadingWithArrow(
+                              context: context,
+                              colorWidget: Colors.blue,
+                              title: "Mentor Name",
+                              subtitle: "00-00-0000 at 00:00",
+                              leading: Container(
+                                width: 50,
+                                height: 50,
+                                decoration: BoxDecoration(
+                                    color: GetTheme().backgroundGrey(context),
+                                    borderRadius: BorderRadius.circular(100)),
+                              ),
+                            ),
+                          )
+                        : leadingWithArrow(
+                            context: context,
+                            colorWidget: Colors.blue,
+                            title:
+                                "${ongoingdata.data![index].mentor!.user!.name}",
+                            subtitle:
+                                "${formatDateToId(date: ongoingdata.data![index].dateMentoring.toString())} at ${timeFormatToHAndM(ongoingdata.data![index].timeMentoring)}",
+                            leading: ongoingdata.data![index].mentor!.user!
+                                        .imgProfileURL !=
+                                    ""
+                                ? Container(
+                                    width: 50,
+                                    height: 50,
+                                    decoration: BoxDecoration(
+                                        color:
+                                            GetTheme().backgroundGrey(context),
+                                        borderRadius:
+                                            BorderRadius.circular(100)),
+                                    child: ClipRRect(
+                                      borderRadius: BorderRadius.circular(100),
+                                      child: Image.network(
+                                        Environment().zendmindBASEURL +
+                                            ongoingdata.data![index].mentor!
+                                                .user!.imgProfileURL
+                                                .toString(),
+                                        fit: BoxFit.cover,
+                                        loadingBuilder: (BuildContext context,
+                                            Widget child,
+                                            ImageChunkEvent? loadingProgress) {
+                                          if (loadingProgress == null) {
+                                            return child;
+                                          } else {
+                                            return Center(
+                                              child: Shimmer.fromColors(
+                                                  baseColor: Colors.grey[200]!,
+                                                  highlightColor:
+                                                      Colors.grey[350]!,
+                                                  child: Container(
+                                                    width: 50,
+                                                    height: 50,
+                                                    decoration: BoxDecoration(
+                                                        color: GetTheme()
+                                                            .backgroundGrey(
+                                                                context),
+                                                        borderRadius:
+                                                            BorderRadius
+                                                                .circular(100)),
+                                                    child: Icon(
+                                                      Icons.person,
+                                                      color: Colors.black,
+                                                      size: 32,
+                                                    ),
+                                                  )),
+                                            );
+                                          }
+                                        },
+                                        errorBuilder: (BuildContext context,
+                                            Object exception,
+                                            StackTrace? stackTrace) {
+                                          return Container(
+                                            width: 50,
+                                            height: 50,
+                                            decoration: BoxDecoration(
+                                                color: GetTheme()
+                                                    .backgroundGrey(context),
+                                                borderRadius:
+                                                    BorderRadius.circular(100)),
+                                            child: Icon(
+                                              Icons.person,
+                                              color: Colors.black,
+                                              size: 32,
+                                            ),
+                                          );
+                                        },
                                       ),
-                                    );
-                                  },
-                                ),
-                              ),
-                            )
-                          : Container(
-                              width: 50,
-                              height: 50,
-                              decoration: BoxDecoration(
-                                  color: GetTheme().backgroundGrey(context),
-                                  borderRadius: BorderRadius.circular(100)),
-                              child: Icon(
-                                Icons.person,
-                                color: Colors.black,
-                                size: 32,
-                              ),
-                            ));
-            },
-          ),
+                                    ),
+                                  )
+                                : Container(
+                                    width: 50,
+                                    height: 50,
+                                    decoration: BoxDecoration(
+                                        color:
+                                            GetTheme().backgroundGrey(context),
+                                        borderRadius:
+                                            BorderRadius.circular(100)),
+                                    child: Icon(
+                                      Icons.person,
+                                      color: Colors.black,
+                                      size: 32,
+                                    ),
+                                  ));
+                  },
+                )
+              : SizedBox(
+                  height: 100,
+                  child: Center(
+                    child: Text("Tidak tersedia data"),
+                  ),
+                )
         ],
       ),
     );

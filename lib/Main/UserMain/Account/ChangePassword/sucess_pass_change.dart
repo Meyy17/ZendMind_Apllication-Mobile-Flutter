@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:zenmind/Main/UserMain/Account/profile_menu.dart';
+import 'package:zenmind/Main/UserMain/navigation_menu.dart';
 
 class SuccessPassChange extends StatefulWidget {
   const SuccessPassChange({Key? key}) : super(key: key);
@@ -17,13 +18,17 @@ class _SuccessPassChangeState extends State<SuccessPassChange> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            SizedBox(height: 120,),
+            SizedBox(
+              height: 120,
+            ),
             Image.asset(
-                "Assets/Picture/Svg/CheckSuccess.png",
+              "Assets/Picture/Svg/CheckSuccess.png",
               height: 180,
               width: 180,
             ),
-            SizedBox(height: 20,),
+            SizedBox(
+              height: 20,
+            ),
             Text(
               "Password has been",
               style: TextStyle(
@@ -38,7 +43,9 @@ class _SuccessPassChangeState extends State<SuccessPassChange> {
                 fontSize: 20,
               ),
             ),
-            SizedBox(height: 20,),
+            SizedBox(
+              height: 20,
+            ),
             Text(
               "Remember and don't lose your",
               style: TextStyle(
@@ -53,10 +60,16 @@ class _SuccessPassChangeState extends State<SuccessPassChange> {
                 fontSize: 15,
               ),
             ),
-            SizedBox(height: 200,),
+            SizedBox(
+              height: 200,
+            ),
             GestureDetector(
-              onTap: (){
-                Navigator.push(context, MaterialPageRoute(builder: (context) => ProfileMenu(),));
+              onTap: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => Navigation(),
+                    ));
               },
               child: Container(
                 alignment: Alignment.center,

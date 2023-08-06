@@ -376,54 +376,65 @@ class _HomeMenuMentorState extends State<HomeMenuMentor> {
                             height: 15,
                           ),
                           SizedBox(
-                            height: 90,
-                            child: ListView.separated(
-                              itemCount: users
-                                  .data!.mentorProfile!.scheduleMentor!.length,
-                              shrinkWrap: true,
-                              scrollDirection: Axis.horizontal,
-                              separatorBuilder:
-                                  (BuildContext context, int index) {
-                                return SizedBox(
-                                  width: 15,
-                                );
-                              },
-                              itemBuilder: (BuildContext context, int index) {
-                                var scheduleData = users.data!.mentorProfile!
-                                    .scheduleMentor![index];
-                                return Container(
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(10),
-                                    color: Color(0xFFE6E6E6),
-                                  ),
-                                  height: 80,
-                                  width: 70,
-                                  child: Column(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      Text(
-                                        formattoDay(
-                                                scheduleData.date.toString())
-                                            .toString(),
-                                        style: TextStyle(
-                                          fontWeight: FontWeight.w600,
-                                          fontSize: 15,
-                                        ),
-                                      ),
-                                      Text(
-                                        formatMonthName(
-                                                scheduleData.date.toString())
-                                            .toString(),
-                                        style: TextStyle(
-                                          fontSize: 15,
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                );
-                              },
-                            ),
-                          ),
+                              height: 90,
+                              child: users.data!.mentorProfile!.scheduleMentor!
+                                          .length >
+                                      0
+                                  ? ListView.separated(
+                                      itemCount: users.data!.mentorProfile!
+                                          .scheduleMentor!.length,
+                                      shrinkWrap: true,
+                                      scrollDirection: Axis.horizontal,
+                                      separatorBuilder:
+                                          (BuildContext context, int index) {
+                                        return SizedBox(
+                                          width: 15,
+                                        );
+                                      },
+                                      itemBuilder:
+                                          (BuildContext context, int index) {
+                                        var scheduleData = users
+                                            .data!
+                                            .mentorProfile!
+                                            .scheduleMentor![index];
+                                        return Container(
+                                          decoration: BoxDecoration(
+                                            borderRadius:
+                                                BorderRadius.circular(10),
+                                            color: Color(0xFFE6E6E6),
+                                          ),
+                                          height: 80,
+                                          width: 70,
+                                          child: Column(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.center,
+                                            children: [
+                                              Text(
+                                                formattoDay(scheduleData.date
+                                                        .toString())
+                                                    .toString(),
+                                                style: TextStyle(
+                                                  fontWeight: FontWeight.w600,
+                                                  fontSize: 15,
+                                                ),
+                                              ),
+                                              Text(
+                                                formatMonthName(scheduleData
+                                                        .date
+                                                        .toString())
+                                                    .toString(),
+                                                style: TextStyle(
+                                                  fontSize: 15,
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        );
+                                      },
+                                    )
+                                  : Center(
+                                      child: Text("No schedule"),
+                                    )),
                           SizedBox(
                             height: 10,
                           ),
@@ -498,88 +509,102 @@ class _HomeMenuMentorState extends State<HomeMenuMentor> {
                                 height: 15,
                               ),
                               SizedBox(
-                                height: 80,
-                                child: ListView.separated(
-                                  shrinkWrap: true,
-                                  scrollDirection: Axis.horizontal,
-                                  itemCount: todaySch.data!.length,
-                                  separatorBuilder:
-                                      (BuildContext context, int index) {
-                                    return SizedBox(
-                                      width: 10,
-                                    );
-                                  },
-                                  itemBuilder:
-                                      (BuildContext context, int index) {
-                                    var dataschNow = todaySch.data![index];
-                                    return Container(
-                                      padding: EdgeInsets.only(right: 15),
-                                      decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.circular(15),
-                                        color: Color(0xFFE6E6E6),
-                                      ),
-                                      width: 170,
-                                      height: 80,
-                                      child: Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
-                                        children: [
-                                          Container(
-                                            decoration: BoxDecoration(
-                                              borderRadius: BorderRadius.only(
-                                                  topLeft: Radius.circular(15),
-                                                  bottomLeft:
-                                                      Radius.circular(15)),
-                                              color: Color(0xFFACD8FE),
-                                            ),
-                                            width: 21,
-                                            height: 80,
-                                          ),
-                                          Column(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.center,
-                                            children: [
-                                              Text(
-                                                '${dataschNow.user!.name}',
-                                                style: TextStyle(
-                                                  fontSize: 12,
-                                                  fontWeight: FontWeight.w600,
-                                                ),
+                                  height: 80,
+                                  child: todaySch.data!.length > 0
+                                      ? ListView.separated(
+                                          shrinkWrap: true,
+                                          scrollDirection: Axis.horizontal,
+                                          itemCount: todaySch.data!.length,
+                                          separatorBuilder:
+                                              (BuildContext context,
+                                                  int index) {
+                                            return SizedBox(
+                                              width: 10,
+                                            );
+                                          },
+                                          itemBuilder: (BuildContext context,
+                                              int index) {
+                                            var dataschNow =
+                                                todaySch.data![index];
+                                            return Container(
+                                              padding:
+                                                  EdgeInsets.only(right: 15),
+                                              decoration: BoxDecoration(
+                                                borderRadius:
+                                                    BorderRadius.circular(15),
+                                                color: Color(0xFFE6E6E6),
                                               ),
-                                              SizedBox(
-                                                height: 3,
+                                              width: 170,
+                                              height: 80,
+                                              child: Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment
+                                                        .spaceBetween,
+                                                children: [
+                                                  Container(
+                                                    decoration: BoxDecoration(
+                                                      borderRadius:
+                                                          BorderRadius.only(
+                                                              topLeft: Radius
+                                                                  .circular(15),
+                                                              bottomLeft: Radius
+                                                                  .circular(
+                                                                      15)),
+                                                      color: Color(0xFFACD8FE),
+                                                    ),
+                                                    width: 21,
+                                                    height: 80,
+                                                  ),
+                                                  Column(
+                                                    crossAxisAlignment:
+                                                        CrossAxisAlignment
+                                                            .start,
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment
+                                                            .center,
+                                                    children: [
+                                                      Text(
+                                                        '${dataschNow.user!.name}',
+                                                        style: TextStyle(
+                                                          fontSize: 12,
+                                                          fontWeight:
+                                                              FontWeight.w600,
+                                                        ),
+                                                      ),
+                                                      SizedBox(
+                                                        height: 3,
+                                                      ),
+                                                      Text(
+                                                        formatDateEnglish(
+                                                            '${dataschNow.dateMentoring}'),
+                                                        style: TextStyle(
+                                                          fontSize: 12,
+                                                        ),
+                                                      ),
+                                                      SizedBox(
+                                                        height: 3,
+                                                      ),
+                                                      Text(
+                                                        timeFormatToHAndM(
+                                                            '${dataschNow.timeMentoring}'),
+                                                        style: TextStyle(
+                                                          fontSize: 12,
+                                                        ),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                  Icon(
+                                                    Icons.add,
+                                                    size: 30,
+                                                  ),
+                                                ],
                                               ),
-                                              Text(
-                                                formatDateEnglish(
-                                                    '${dataschNow.dateMentoring}'),
-                                                style: TextStyle(
-                                                  fontSize: 12,
-                                                ),
-                                              ),
-                                              SizedBox(
-                                                height: 3,
-                                              ),
-                                              Text(
-                                                timeFormatToHAndM(
-                                                    '${dataschNow.timeMentoring}'),
-                                                style: TextStyle(
-                                                  fontSize: 12,
-                                                ),
-                                              ),
-                                            ],
-                                          ),
-                                          Icon(
-                                            Icons.add,
-                                            size: 30,
-                                          ),
-                                        ],
-                                      ),
-                                    );
-                                  },
-                                ),
-                              ),
+                                            );
+                                          },
+                                        )
+                                      : Center(
+                                          child: Text("No mentoring in today"),
+                                        )),
                               SizedBox(
                                 height: 20,
                               ),
@@ -621,86 +646,96 @@ class _HomeMenuMentorState extends State<HomeMenuMentor> {
                               ),
                               SizedBox(
                                 height: 80,
-                                child: ListView.separated(
-                                  shrinkWrap: true,
-                                  scrollDirection: Axis.horizontal,
-                                  itemCount: allSch.data!.length,
-                                  separatorBuilder:
-                                      (BuildContext context, int index) {
-                                    return SizedBox(
-                                      width: 10,
-                                    );
-                                  },
-                                  itemBuilder:
-                                      (BuildContext context, int index) {
-                                    var dataSchAll = allSch.data![index];
-                                    return Container(
-                                      padding: EdgeInsets.only(right: 15),
-                                      decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.circular(15),
-                                        color: Color(0xFFE6E6E6),
-                                      ),
-                                      width: 170,
-                                      height: 80,
-                                      child: Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
-                                        children: [
-                                          Container(
+                                child: allSch.data!.length > 0
+                                    ? ListView.separated(
+                                        shrinkWrap: true,
+                                        scrollDirection: Axis.horizontal,
+                                        itemCount: allSch.data!.length,
+                                        separatorBuilder:
+                                            (BuildContext context, int index) {
+                                          return SizedBox(
+                                            width: 10,
+                                          );
+                                        },
+                                        itemBuilder:
+                                            (BuildContext context, int index) {
+                                          var dataSchAll = allSch.data![index];
+                                          return Container(
+                                            padding: EdgeInsets.only(right: 15),
                                             decoration: BoxDecoration(
-                                              borderRadius: BorderRadius.only(
-                                                  topLeft: Radius.circular(15),
-                                                  bottomLeft:
-                                                      Radius.circular(15)),
-                                              color: Color(0xFFACD8FE),
+                                              borderRadius:
+                                                  BorderRadius.circular(15),
+                                              color: Color(0xFFE6E6E6),
                                             ),
-                                            width: 21,
+                                            width: 170,
                                             height: 80,
-                                          ),
-                                          Column(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.center,
-                                            children: [
-                                              Text(
-                                                '${dataSchAll.user!.name}',
-                                                style: TextStyle(
-                                                  fontSize: 12,
-                                                  fontWeight: FontWeight.w600,
+                                            child: Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment
+                                                      .spaceBetween,
+                                              children: [
+                                                Container(
+                                                  decoration: BoxDecoration(
+                                                    borderRadius:
+                                                        BorderRadius.only(
+                                                            topLeft: Radius
+                                                                .circular(15),
+                                                            bottomLeft:
+                                                                Radius.circular(
+                                                                    15)),
+                                                    color: Color(0xFFACD8FE),
+                                                  ),
+                                                  width: 21,
+                                                  height: 80,
                                                 ),
-                                              ),
-                                              SizedBox(
-                                                height: 3,
-                                              ),
-                                              Text(
-                                                formatDateEnglish(
-                                                    '${dataSchAll.dateMentoring}'),
-                                                style: TextStyle(
-                                                  fontSize: 12,
+                                                Column(
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.start,
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment.center,
+                                                  children: [
+                                                    Text(
+                                                      '${dataSchAll.user!.name}',
+                                                      style: TextStyle(
+                                                        fontSize: 12,
+                                                        fontWeight:
+                                                            FontWeight.w600,
+                                                      ),
+                                                    ),
+                                                    SizedBox(
+                                                      height: 3,
+                                                    ),
+                                                    Text(
+                                                      formatDateEnglish(
+                                                          '${dataSchAll.dateMentoring}'),
+                                                      style: TextStyle(
+                                                        fontSize: 12,
+                                                      ),
+                                                    ),
+                                                    SizedBox(
+                                                      height: 3,
+                                                    ),
+                                                    Text(
+                                                      timeFormatToHAndM(
+                                                          '${dataSchAll.timeMentoring}'),
+                                                      style: TextStyle(
+                                                        fontSize: 12,
+                                                      ),
+                                                    ),
+                                                  ],
                                                 ),
-                                              ),
-                                              SizedBox(
-                                                height: 3,
-                                              ),
-                                              Text(
-                                                timeFormatToHAndM(
-                                                    '${dataSchAll.timeMentoring}'),
-                                                style: TextStyle(
-                                                  fontSize: 12,
+                                                Icon(
+                                                  Icons.add,
+                                                  size: 30,
                                                 ),
-                                              ),
-                                            ],
-                                          ),
-                                          Icon(
-                                            Icons.add,
-                                            size: 30,
-                                          ),
-                                        ],
+                                              ],
+                                            ),
+                                          );
+                                        },
+                                      )
+                                    : Center(
+                                        child: Text("No mentoring data"),
                                       ),
-                                    );
-                                  },
-                                ),
                               ),
                             ],
                           ),
@@ -709,11 +744,6 @@ class _HomeMenuMentorState extends State<HomeMenuMentor> {
                           ),
                         ],
                       ),
-                      ElevatedButton(
-                          onPressed: () {
-                            logOut();
-                          },
-                          child: Text('Logout')),
                     ],
                   ),
                 ),

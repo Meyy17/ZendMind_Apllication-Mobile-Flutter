@@ -1,11 +1,11 @@
-class DetailMentorModel {
+class GetRateModel {
   int? status;
   String? message;
   Data? data;
 
-  DetailMentorModel({this.status, this.message, this.data});
+  GetRateModel({this.status, this.message, this.data});
 
-  DetailMentorModel.fromJson(Map<String, dynamic> json) {
+  GetRateModel.fromJson(Map<String, dynamic> json) {
     status = json['status'];
     message = json['message'];
     data = json['data'] != null ? new Data.fromJson(json['data']) : null;
@@ -23,73 +23,57 @@ class DetailMentorModel {
 }
 
 class Data {
-  MentorData? mentorData;
-  int? patientCount;
-  int? ratingCount;
-  dynamic averageRate;
+  List<Review>? review;
+  double? averageRate;
 
-  Data(
-      {this.mentorData, this.patientCount, this.ratingCount, this.averageRate});
+  Data({this.review, this.averageRate});
 
   Data.fromJson(Map<String, dynamic> json) {
-    mentorData = json['mentorData'] != null
-        ? new MentorData.fromJson(json['mentorData'])
-        : null;
-    patientCount = json['patientCount'];
-    ratingCount = json['ratingCount'];
+    if (json['review'] != null) {
+      review = <Review>[];
+      json['review'].forEach((v) {
+        review!.add(new Review.fromJson(v));
+      });
+    }
     averageRate = json['averageRate'];
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
-    if (this.mentorData != null) {
-      data['mentorData'] = this.mentorData!.toJson();
+    if (this.review != null) {
+      data['review'] = this.review!.map((v) => v.toJson()).toList();
     }
-    data['patientCount'] = this.patientCount;
-    data['ratingCount'] = this.ratingCount;
     data['averageRate'] = this.averageRate;
     return data;
   }
 }
 
-class MentorData {
+class Review {
   int? id;
   int? idUser;
-  String? role;
-  String? username;
-  int? fee;
-  int? incomeNow;
-  String? specialist;
-  String? about;
-  String? status;
+  int? idMentor;
+  String? message;
+  double? rate;
   String? createdAt;
   String? updatedAt;
   User? user;
 
-  MentorData(
+  Review(
       {this.id,
       this.idUser,
-      this.role,
-      this.username,
-      this.fee,
-      this.incomeNow,
-      this.specialist,
-      this.about,
-      this.status,
+      this.idMentor,
+      this.message,
+      this.rate,
       this.createdAt,
       this.updatedAt,
       this.user});
 
-  MentorData.fromJson(Map<String, dynamic> json) {
+  Review.fromJson(Map<String, dynamic> json) {
     id = json['id'];
-    idUser = json['idUser'];
-    role = json['role'];
-    username = json['username'];
-    fee = json['fee'];
-    incomeNow = json['incomeNow'];
-    specialist = json['specialist'];
-    about = json['about'];
-    status = json['status'];
+    idUser = json['id_user'];
+    idMentor = json['id_mentor'];
+    message = json['message'];
+    rate = json['rate'];
     createdAt = json['createdAt'];
     updatedAt = json['updatedAt'];
     user = json['User'] != null ? new User.fromJson(json['User']) : null;
@@ -98,14 +82,10 @@ class MentorData {
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['id'] = this.id;
-    data['idUser'] = this.idUser;
-    data['role'] = this.role;
-    data['username'] = this.username;
-    data['fee'] = this.fee;
-    data['incomeNow'] = this.incomeNow;
-    data['specialist'] = this.specialist;
-    data['about'] = this.about;
-    data['status'] = this.status;
+    data['id_user'] = this.idUser;
+    data['id_mentor'] = this.idMentor;
+    data['message'] = this.message;
+    data['rate'] = this.rate;
     data['createdAt'] = this.createdAt;
     data['updatedAt'] = this.updatedAt;
     if (this.user != null) {
@@ -118,12 +98,12 @@ class MentorData {
 class User {
   int? id;
   String? email;
-  String? imgProfileURL;
+  Null? imgProfileURL;
   String? name;
   String? verifyToken;
   String? role;
   String? isVerify;
-  String? gender;
+  Null? gender;
   String? createdAt;
   String? updatedAt;
 

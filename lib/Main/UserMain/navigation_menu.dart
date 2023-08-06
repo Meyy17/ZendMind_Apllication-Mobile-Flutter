@@ -22,7 +22,9 @@ class _NavigationState extends State<Navigation> {
     const ArticleMenu(),
     const ConsultationMenu(),
     const MoodTrackerMenu(),
-    const ProfileMenu()
+    const ProfileMenu(
+      isMentor: false,
+    )
     // Consumer(builder: (context, ThemeModel themeNotifier, child) {
     //   return Center(
     //     child: IconButton(

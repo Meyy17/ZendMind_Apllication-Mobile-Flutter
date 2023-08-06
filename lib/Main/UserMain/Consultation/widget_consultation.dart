@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:shimmer/shimmer.dart';
+import 'package:zenmind/Func/money_formated.dart';
 import 'package:zenmind/Models/listmentor_model.dart';
 import 'package:zenmind/Widget/Button.dart';
 import 'package:zenmind/settings_all.dart';
@@ -54,10 +55,10 @@ class ConsultationWidget {
         : Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const Text(
-                "Recomendation",
-                style: TextStyle(fontWeight: FontWeight.w600, fontSize: 14),
-              ),
+              // const Text(
+              //   "Recomendation",
+              //   style: TextStyle(fontWeight: FontWeight.w600, fontSize: 14),
+              // ),
               const SizedBox(
                 height: 20,
               ),
@@ -209,15 +210,15 @@ class ConsultationWidget {
                                       borderRadius: BorderRadius.circular(10),
                                       color: GetTheme().cardColors(context)),
                                   child: const Icon(
-                                    Icons.timer,
+                                    Icons.price_change,
                                     size: 18,
                                   ),
                                 ),
                                 const SizedBox(
                                   width: 10,
                                 ),
-                                const Text(
-                                  "Avaliable Anytime",
+                                Text(
+                                  "${MoneyFormated.convertToIdrWithSymbol(count: dataMentor.fee, decimalDigit: 2)}",
                                   style: TextStyle(
                                       fontSize: 12,
                                       fontWeight: FontWeight.w600),

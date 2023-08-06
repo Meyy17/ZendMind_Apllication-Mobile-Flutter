@@ -4,6 +4,9 @@ import 'package:zenmind/DB/auth_preference.dart';
 import 'package:zenmind/Func/Services/message_services.dart';
 import 'package:zenmind/Main/AllRoleMain/Messages/chat_screen.dart';
 import 'package:zenmind/Models/listchat_model.dart';
+import 'package:socket_io_client/socket_io_client.dart' as IO;
+
+import '../../../env.dart';
 
 class ListRoomUserScreen extends StatefulWidget {
   const ListRoomUserScreen({Key? key}) : super(key: key);
@@ -15,15 +18,32 @@ class ListRoomUserScreen extends StatefulWidget {
 class _ListRoomUserScreenState extends State<ListRoomUserScreen> {
   AuthPreferences authPreferences = AuthPreferences();
   ListChatModel listData = ListChatModel();
+  IO.Socket? socket;
 
   String tokenLocalUsers = "";
+  int idUser = 0;
   bool isLoad = true;
+
+  void connectSocket() {
+    socket = IO.io(Environment().zendmindBASEURL, <String, dynamic>{
+      'transports': ['websocket'],
+    });
+    socket!.connect();
+
+    socket!.on('room-${idUser}', (data) {
+      print("Data : " + data['message']);
+      setState(() {
+        getData();
+      });
+    });
+  }
 
   void getData() async {
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
     setState(() {
       tokenLocalUsers =
           sharedPreferences.getString(AuthPreferences.tokenKey) ?? "";
+      idUser = sharedPreferences.getInt(AuthPreferences.idKey) ?? 0;
     });
 
     var res = await MessageServices().getListChat(token: tokenLocalUsers);
@@ -31,6 +51,7 @@ class _ListRoomUserScreenState extends State<ListRoomUserScreen> {
     setState(() {
       if (res.error == null) {
         listData = res.data as ListChatModel;
+        connectSocket();
         isLoad = false;
       } else {}
     });

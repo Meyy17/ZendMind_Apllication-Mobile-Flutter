@@ -27,7 +27,9 @@ class _NavigationMentorState extends State<NavigationMentor> {
     const EarningHistory(),
     const ReviewRating(),
     const MentoringHistory(),
-    const ProfileMentor()
+    const ProfileMenu(
+      isMentor: true,
+    )
   ];
   @override
   Widget build(BuildContext context) {
@@ -55,12 +57,12 @@ class _NavigationMentorState extends State<NavigationMentor> {
       bottomNavigationBar: BottomNavigationBar(
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(icon: Icon(Icons.home), label: "Home"),
-          BottomNavigationBarItem(icon: Icon(Icons.book), label: "Article"),
           BottomNavigationBarItem(
-              icon: Icon(Icons.people_sharp), label: "Consultation"),
+              icon: Icon(Icons.money), label: "Earning Data"),
           BottomNavigationBarItem(
-              icon: Icon(Icons.stacked_line_chart_rounded),
-              label: "Mood Tracker"),
+              icon: Icon(Icons.rate_review), label: "Review and Rate"),
+          BottomNavigationBarItem(
+              icon: Icon(Icons.history), label: "History Mentoring"),
           BottomNavigationBarItem(icon: Icon(Icons.person), label: "Profile"),
         ],
         unselectedItemColor: GetTheme().accentCardColors(context),

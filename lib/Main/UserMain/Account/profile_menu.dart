@@ -21,7 +21,8 @@ import 'package:zenmind/Models/user_model.dart';
 import 'package:zenmind/settings_all.dart';
 
 class ProfileMenu extends StatefulWidget {
-  const ProfileMenu({super.key});
+  const ProfileMenu({super.key, required this.isMentor});
+  final bool isMentor;
 
   @override
   State<ProfileMenu> createState() => _ProfileMenuState();
@@ -226,20 +227,28 @@ class _ProfileMenuState extends State<ProfileMenu> {
                             icon: Icons.edit),
                         ProfileWidget().cardDrawer(
                             title: 'FAQ & Help',
-                            onPressed: (){
-                              Navigator.push(context, MaterialPageRoute(builder: (context) => FaqHelpPage(),));
+                            onPressed: () {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => FaqHelpPage(),
+                                  ));
                             },
                             background: Colors.white70,
                             contentColors: Colors.black,
                             icon: Icons.edit),
-                        ProfileWidget().cardDrawer(
-                            title: 'Change Pass',
-                            onPressed: (){
-                              Navigator.push(context, MaterialPageRoute(builder: (context) => ChangePass(),));
-                            },
-                            background: Colors.white70,
-                            contentColors: Colors.black,
-                            icon: Icons.edit)
+                        // ProfileWidget().cardDrawer(
+                        //     title: 'Change Pass',
+                        //     onPressed: () {
+                        //       Navigator.push(
+                        //           context,
+                        //           MaterialPageRoute(
+                        //             builder: (context) => ChangePass(),
+                        //           ));
+                        //     },
+                        //     background: Colors.white70,
+                        //     contentColors: Colors.black,
+                        //     icon: Icons.edit)
                       ],
                     ),
                     ProfileWidget().cardDrawer(
@@ -257,89 +266,136 @@ class _ProfileMenuState extends State<ProfileMenu> {
           ),
         ),
       ),
-      body: DefaultTabController(
-        initialIndex: 0,
-        length: 2,
-        child: SafeArea(
-          child: Padding(
-              padding: EdgeInsets.symmetric(
-                  horizontal: GetSizeScreen().paddingScreen),
-              child: Column(
-                children: [
-                  const SizedBox(
-                    height: 50,
-                  ),
-                  ProfileWidget().header(
-                    userdata: users,
-                    isLoad: isLoad,
-                    context: context,
-                    tapPhotosProfile: () {
-                      pickImageProfile();
-                    },
-                    onTapSetting: () {
-                      scaffoldKey.currentState!.openEndDrawer();
-                    },
-                    onTapEditProfile: () async {
-                      await Navigator.push(
-                        context,
-                        PageTransition(
-                            child: const ProfileEdit(),
-                            type: PageTransitionType.fade),
-                      );
-                      setState(() {
-                        isLoad = true;
-                        getData();
-                      });
-                    },
-                  ),
-                  const SizedBox(
-                    height: 40,
-                  ),
-                  Container(
-                    height: 64,
-                    decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(10),
-                        color: GetTheme().backgroundGrey(context)),
-                    child: TabBar(
-                      indicator: BoxDecoration(
-                          color: GetTheme().primaryColor(context),
-                          borderRadius: BorderRadius.circular(10)),
-                      labelColor: Colors.white,
-                      unselectedLabelColor:
-                          GetTheme().unselectedWidget(context),
-                      tabs: const [
-                        Tab(
-                          text: 'General',
-                        ),
-                        Tab(
-                          text: 'History',
-                        ),
-                      ],
+      body: widget.isMentor
+          ? SafeArea(
+              child: Padding(
+                padding: EdgeInsets.symmetric(
+                    horizontal: GetSizeScreen().paddingScreen),
+                child: Column(
+                  children: [
+                    const SizedBox(
+                      height: 50,
                     ),
-                  ),
-                  const SizedBox(
-                    height: 20,
-                  ),
-                  Expanded(
-                    child: TabBarView(
+                    ProfileWidget().header(
+                      userdata: users,
+                      isLoad: isLoad,
+                      context: context,
+                      tapPhotosProfile: () {
+                        pickImageProfile();
+                      },
+                      onTapSetting: () {
+                        scaffoldKey.currentState!.openEndDrawer();
+                      },
+                      onTapEditProfile: () async {
+                        await Navigator.push(
+                          context,
+                          PageTransition(
+                              child: const ProfileEdit(),
+                              type: PageTransitionType.fade),
+                        );
+                        setState(() {
+                          isLoad = true;
+                          getData();
+                        });
+                      },
+                    ),
+                    const SizedBox(
+                      height: 40,
+                    ),
+                    Expanded(
+                      child: ProfileWidget().generalView(
+                          userdata: users,
+                          isLoad: isLoad,
+                          context: context,
+                          email: emailController),
+                    ),
+                  ],
+                ),
+              ),
+            )
+          : DefaultTabController(
+              initialIndex: 0,
+              length: 2,
+              child: SafeArea(
+                child: Padding(
+                    padding: EdgeInsets.symmetric(
+                        horizontal: GetSizeScreen().paddingScreen),
+                    child: Column(
                       children: [
-                        ProfileWidget().generalView(
-                            userdata: users,
-                            isLoad: isLoad,
-                            context: context,
-                            email: emailController),
-                        ProfileWidget().historyView(
-                            bookpaidData: paidhistory,
-                            isLoad: isLoad,
-                            context: context,
-                            bookfreeData: freehistory)
+                        const SizedBox(
+                          height: 50,
+                        ),
+                        ProfileWidget().header(
+                          userdata: users,
+                          isLoad: isLoad,
+                          context: context,
+                          tapPhotosProfile: () {
+                            pickImageProfile();
+                          },
+                          onTapSetting: () {
+                            scaffoldKey.currentState!.openEndDrawer();
+                          },
+                          onTapEditProfile: () async {
+                            await Navigator.push(
+                              context,
+                              PageTransition(
+                                  child: const ProfileEdit(),
+                                  type: PageTransitionType.fade),
+                            );
+                            setState(() {
+                              isLoad = true;
+                              getData();
+                            });
+                          },
+                        ),
+                        const SizedBox(
+                          height: 40,
+                        ),
+                        Container(
+                          height: 64,
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(10),
+                              color: GetTheme().backgroundGrey(context)),
+                          child: TabBar(
+                            indicator: BoxDecoration(
+                                color: GetTheme().primaryColor(context),
+                                borderRadius: BorderRadius.circular(10)),
+                            labelColor: Colors.white,
+                            unselectedLabelColor:
+                                GetTheme().unselectedWidget(context),
+                            tabs: const [
+                              Tab(
+                                text: 'General',
+                              ),
+                              Tab(
+                                text: 'History',
+                              ),
+                            ],
+                          ),
+                        ),
+                        const SizedBox(
+                          height: 20,
+                        ),
+                        Expanded(
+                          child: TabBarView(
+                            children: [
+                              ProfileWidget().generalView(
+                                  userdata: users,
+                                  isLoad: isLoad,
+                                  context: context,
+                                  email: emailController),
+                              ProfileWidget().historyView(
+                                  bookpaidData: paidhistory,
+                                  isLoad: isLoad,
+                                  context: context,
+                                  bookfreeData: freehistory)
+                            ],
+                          ),
+                        )
                       ],
-                    ),
-                  )
-                ],
-              )),
-        ),
-      ),
+                    )),
+              ),
+            ),
     );
   }
 }

@@ -22,6 +22,7 @@ class HomeMenu extends StatefulWidget {
 
 class _HomeMenuState extends State<HomeMenu> {
   int hoursnow = 0;
+  int countonGoing = 0;
   String greeting = "Hello";
   double paddingScreen = GetSizeScreen().paddingScreen;
 
@@ -52,6 +53,7 @@ class _HomeMenuState extends State<HomeMenu> {
         article = resArticle.data as ArticlesModel;
         dataOngoing = resOnGoing.data as ListScheduleMentoring;
         username = users.data!.name.toString();
+        countonGoing = dataOngoing.data!.length;
         isLoad = false;
       } else {}
     });
@@ -241,11 +243,13 @@ class _HomeMenuState extends State<HomeMenu> {
                   context: context,
                   paddingScreen: paddingScreen,
                   isLoad: isLoad),
-              HomeWidget().finishMeditasi(
-                  ongoingdata: dataOngoing,
-                  isLoad: isLoad,
-                  context: context,
-                  paddingScreen: paddingScreen),
+               HomeWidget().finishMeditasi(
+                    ongoingdata: dataOngoing,
+                    countOngoing: countonGoing,
+                    isLoad: isLoad,
+                    context: context,
+                    paddingScreen: paddingScreen),
+              
               // HomeWidget()
               //     .article(context: context, paddingScreen: paddingScreen)
             ],

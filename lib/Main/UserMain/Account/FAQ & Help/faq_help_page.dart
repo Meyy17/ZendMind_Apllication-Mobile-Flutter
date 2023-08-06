@@ -21,8 +21,8 @@ class _FaqHelpPageState extends State<FaqHelpPage> {
             Row(
               children: [
                 GestureDetector(
-                  onTap: (){
-                    Navigator.push(context, MaterialPageRoute(builder: (context) => ProfileMenu(),));
+                  onTap: () {
+                    Navigator.pop(context);
                   },
                   child: Icon(
                     Icons.arrow_circle_left_rounded,
@@ -30,7 +30,9 @@ class _FaqHelpPageState extends State<FaqHelpPage> {
                     color: Color(0xFF4DCCC1),
                   ),
                 ),
-                SizedBox(width: 20,),
+                SizedBox(
+                  width: 20,
+                ),
                 Text(
                   "FAQ",
                   style: TextStyle(
@@ -40,7 +42,9 @@ class _FaqHelpPageState extends State<FaqHelpPage> {
                 ),
               ],
             ),
-            SizedBox(height: 40,),
+            SizedBox(
+              height: 40,
+            ),
             Text(
               "FAQ & Help",
               style: TextStyle(
@@ -48,7 +52,9 @@ class _FaqHelpPageState extends State<FaqHelpPage> {
                 fontWeight: FontWeight.w600,
               ),
             ),
-            SizedBox(height: 40,),
+            SizedBox(
+              height: 40,
+            ),
             Container(
               padding: EdgeInsets.symmetric(horizontal: 30, vertical: 25),
               decoration: BoxDecoration(
@@ -65,7 +71,9 @@ class _FaqHelpPageState extends State<FaqHelpPage> {
                 ),
               ),
             ),
-            SizedBox(height: 15,),
+            SizedBox(
+              height: 15,
+            ),
             Container(
               padding: EdgeInsets.symmetric(horizontal: 30, vertical: 25),
               decoration: BoxDecoration(
@@ -82,7 +90,9 @@ class _FaqHelpPageState extends State<FaqHelpPage> {
                 ),
               ),
             ),
-            SizedBox(height: 15,),
+            SizedBox(
+              height: 15,
+            ),
             Container(
               padding: EdgeInsets.symmetric(horizontal: 30, vertical: 25),
               decoration: BoxDecoration(
@@ -99,7 +109,9 @@ class _FaqHelpPageState extends State<FaqHelpPage> {
                 ),
               ),
             ),
-            SizedBox(height: 15,),
+            SizedBox(
+              height: 15,
+            ),
             Container(
               padding: EdgeInsets.symmetric(horizontal: 30, vertical: 25),
               decoration: BoxDecoration(

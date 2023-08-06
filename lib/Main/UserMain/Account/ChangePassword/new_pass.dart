@@ -21,8 +21,8 @@ class _NewPasswordState extends State<NewPassword> {
             Row(
               children: [
                 GestureDetector(
-                  onTap: (){
-                    Navigator.push(context, MaterialPageRoute(builder: (context) => ProfileMenu(),));
+                  onTap: () {
+                    Navigator.pop(context);
                   },
                   child: Icon(
                     Icons.arrow_circle_left_rounded,
@@ -30,7 +30,9 @@ class _NewPasswordState extends State<NewPassword> {
                     color: Color(0xFF4DCCC1),
                   ),
                 ),
-                SizedBox(width: 20,),
+                SizedBox(
+                  width: 20,
+                ),
                 Text(
                   "Back",
                   style: TextStyle(
@@ -40,7 +42,9 @@ class _NewPasswordState extends State<NewPassword> {
                 ),
               ],
             ),
-            SizedBox(height: 40,),
+            SizedBox(
+              height: 40,
+            ),
             Text(
               "Create new password",
               style: TextStyle(
@@ -48,7 +52,9 @@ class _NewPasswordState extends State<NewPassword> {
                 fontWeight: FontWeight.w600,
               ),
             ),
-            SizedBox(height: 20,),
+            SizedBox(
+              height: 20,
+            ),
             Text(
               "Your new password must be different\nfrom previous used passwords.",
               style: TextStyle(
@@ -56,7 +62,9 @@ class _NewPasswordState extends State<NewPassword> {
                 color: Color(0xFF5C5C5C),
               ),
             ),
-            SizedBox(height: 40,),
+            SizedBox(
+              height: 40,
+            ),
             Text(
               "New password",
               style: TextStyle(
@@ -64,7 +72,9 @@ class _NewPasswordState extends State<NewPassword> {
                 fontWeight: FontWeight.w600,
               ),
             ),
-            SizedBox(height: 10,),
+            SizedBox(
+              height: 10,
+            ),
             Container(
               alignment: Alignment.centerLeft,
               padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
@@ -81,7 +91,9 @@ class _NewPasswordState extends State<NewPassword> {
                     size: 25,
                     color: Color(0xFFB0AFAF),
                   ),
-                  SizedBox(width: 15,),
+                  SizedBox(
+                    width: 15,
+                  ),
                   Text(
                     "Password",
                     style: TextStyle(
@@ -93,15 +105,19 @@ class _NewPasswordState extends State<NewPassword> {
                 ],
               ),
             ),
-            SizedBox(height: 10,),
+            SizedBox(
+              height: 10,
+            ),
             Text(
               "Must be at least 8 characters.",
-                style: TextStyle(
-                  fontSize: 15,
-                  color: Color(0xFFB0AFAF),
-                ),
+              style: TextStyle(
+                fontSize: 15,
+                color: Color(0xFFB0AFAF),
+              ),
             ),
-            SizedBox(height: 30,),
+            SizedBox(
+              height: 30,
+            ),
             Text(
               "Confirm new password",
               style: TextStyle(
@@ -109,7 +125,9 @@ class _NewPasswordState extends State<NewPassword> {
                 fontWeight: FontWeight.w600,
               ),
             ),
-            SizedBox(height: 10,),
+            SizedBox(
+              height: 10,
+            ),
             Container(
               alignment: Alignment.centerLeft,
               padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
@@ -126,7 +144,9 @@ class _NewPasswordState extends State<NewPassword> {
                     size: 25,
                     color: Color(0xFFB0AFAF),
                   ),
-                  SizedBox(width: 15,),
+                  SizedBox(
+                    width: 15,
+                  ),
                   Text(
                     "Password",
                     style: TextStyle(
@@ -138,7 +158,9 @@ class _NewPasswordState extends State<NewPassword> {
                 ],
               ),
             ),
-            SizedBox(height: 10,),
+            SizedBox(
+              height: 10,
+            ),
             Text(
               "Both password must match.",
               style: TextStyle(
@@ -146,10 +168,16 @@ class _NewPasswordState extends State<NewPassword> {
                 color: Color(0xFFB0AFAF),
               ),
             ),
-            SizedBox(height: 70,),
+            SizedBox(
+              height: 70,
+            ),
             GestureDetector(
-              onTap: (){
-                Navigator.push(context, MaterialPageRoute(builder: (context) => SuccessPassChange(),));
+              onTap: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => SuccessPassChange(),
+                    ));
               },
               child: Container(
                 alignment: Alignment.center,

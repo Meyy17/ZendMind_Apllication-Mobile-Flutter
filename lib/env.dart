@@ -1,3 +1,3 @@
 class Environment {
-  String zendmindBASEURL = "https://799d-36-65-215-132.ngrok-free.app/";
+  String zendmindBASEURL = "https://7f91-43-252-106-218.ngrok-free.app/";
 }

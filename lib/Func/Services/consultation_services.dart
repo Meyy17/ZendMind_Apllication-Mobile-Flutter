@@ -79,6 +79,8 @@ class ConsultationService {
             'Accept': 'application/json',
           });
 
+      print(response.body);
+
       switch (response.statusCode) {
         case 200:
           apiresponse.data =
@@ -216,12 +218,14 @@ class ConsultationService {
     return apiresponse;
   }
 
-  Future<ApiResponse> getHistoryBook({required String token,required String status}) async {
+  Future<ApiResponse> getHistoryBook(
+      {required String token, required String status}) async {
     ApiResponse apiresponse = ApiResponse();
 
     try {
       final response = await http.get(
-          Uri.parse("${Environment().zendmindBASEURL}api/mentor/book/history/$status"),
+          Uri.parse(
+              "${Environment().zendmindBASEURL}api/mentor/book/history/$status"),
           headers: {
             'Accept': 'application/json',
             'Authorization': 'Bearer $token'
@@ -297,6 +301,45 @@ class ConsultationService {
             "${Environment().zendmindBASEURL}api/mentor/book/cancel/$idBook"),
         headers: {'Accept': 'application/json'},
       );
+
+      print(response.body);
+      switch (response.statusCode) {
+        case 200:
+          apiresponse.data = jsonDecode(response.body)['data'];
+          break;
+        case 400:
+          apiresponse.error = jsonDecode(response.body)['data'];
+          break;
+        default:
+          apiresponse.error = somethingWentWrong;
+          break;
+      }
+    } catch (err) {
+      apiresponse.error = serverError;
+    }
+    return apiresponse;
+  }
+
+  Future<ApiResponse> finishBook(
+      {required String idBook,
+      required String rate,
+      required String idmentor,
+      required String token,
+      required String notes}) async {
+    ApiResponse apiresponse = ApiResponse();
+    try {
+      final response = await http.put(
+          Uri.parse(
+              "${Environment().zendmindBASEURL}api/mentor/book/finish/$idBook"),
+          headers: {
+            'Accept': 'application/json',
+            'Authorization': 'Bearer $token'
+          },
+          body: {
+            'id_mentor': idmentor,
+            'review': notes,
+            'rate': rate,
+          });
 
       print(response.body);
       switch (response.statusCode) {

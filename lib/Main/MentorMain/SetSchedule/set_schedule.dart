@@ -186,205 +186,190 @@ class _SetScheduleState extends State<SetSchedule> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      floatingActionButton: InkWell(
-        onTap: () {
-          addDate();
-        },
-        child: Container(
-          height: 50,
-          width: 50,
-          decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(10),
-              color: Color(0xFF1E2754)),
-          child: Icon(
-            Icons.add,
-            color: Colors.white,
-          ),
-        ),
-      ),
-      appBar: AppBar(
-        leading: IconButton(
-            onPressed: () {
-              Navigator.pop(context);
-            },
-            icon: Icon(
-              Icons.arrow_circle_left_rounded,
-              size: 30,
-              color: Color(0xFFFF4DCCC1),
-            )),
-        title: Text(
-          'Set schedule',
-          style: TextStyle(
-            fontWeight: FontWeight.w600,
-            fontSize: 17,
-          ),
-        ),
-        backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-        elevation: 0,
-      ),
-      body: isLoad
-          ? Center(
-              child: CircularProgressIndicator(),
-            )
-          : SingleChildScrollView(
-              child: Column(
-                children: [
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Container(
-                        padding: EdgeInsets.only(
-                          left: 29,
-                        ),
-                        alignment: Alignment.centerLeft,
-                        child: Text(
-                          'Good morning, doctors',
-                          style: TextStyle(
-                            fontSize: 24,
-                            fontWeight: FontWeight.w600,
-                          ),
-                        ),
-                      ),
-                      Container(
-                        padding: EdgeInsets.only(left: 29),
-                        alignment: Alignment.centerLeft,
-                        child: Text(
-                          'This is your schedules',
-                          style: TextStyle(fontSize: 15),
-                        ),
-                      ),
-                    ],
-                  ),
-                  SizedBox(
-                    height: 35,
-                  ),
-                  ListView.separated(
-                    physics: NeverScrollableScrollPhysics(),
-                    padding: EdgeInsets.symmetric(horizontal: 20),
-                    shrinkWrap: true,
-                    itemCount: listSch.data!.length,
-                    separatorBuilder: (BuildContext context, int index) {
-                      return SizedBox(
-                        height: 15,
-                      );
-                    },
-                    itemBuilder: (BuildContext context, int index) {
-                      var data = listSch.data![index];
-                      return Container(
-                        padding:
-                            EdgeInsets.symmetric(horizontal: 20, vertical: 20),
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(10),
-                          color: Color(0xFFE6E6E6),
-                        ),
-                        width: 400,
-                        child: Column(
-                          children: [
-                            Column(
-                              children: [
-                                Row(
-                                  children: [
-                                    SizedBox(
-                                      width: 15,
-                                    ),
-                                    Text(
-                                      formatDateEnglish(data.date.toString()),
-                                      style: TextStyle(
-                                        fontSize: 15,
-                                        fontWeight: FontWeight.w600,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                                SizedBox(
-                                  height: 15,
-                                ),
-                                Row(
-                                  children: [
-                                    Expanded(
-                                      child: Wrap(
-                                        children: List.generate(
-                                          data.timeSchedule!.length,
-                                          (i) => Stack(
-                                            children: [
-                                              Padding(
-                                                padding:
-                                                    const EdgeInsets.all(10)
-                                                        .copyWith(left: 0),
-                                                child: Container(
-                                                  alignment: Alignment.center,
-                                                  decoration: BoxDecoration(
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                              10),
-                                                      color: Color(0xFF00CBC8)),
-                                                  width: 80,
-                                                  height: 40,
-                                                  child: Text(
-                                                    timeFormatToHAndM(data
-                                                        .timeSchedule![i].time),
-                                                    style: TextStyle(
-                                                      fontSize: 17,
-                                                      color: Colors.white,
-                                                    ),
-                                                  ),
-                                                ),
-                                              ),
-                                              InkWell(
-                                                onTap: () {
-                                                  deleteTime(data
-                                                      .timeSchedule![i].id
-                                                      .toString());
-                                                },
-                                                child: Container(
-                                                  margin:
-                                                      EdgeInsets.only(left: 67),
-                                                  decoration: BoxDecoration(
-                                                      shape: BoxShape.circle,
-                                                      color: Color(0xFF369B92)),
-                                                  child: Icon(
-                                                    Icons.close_rounded,
-                                                    size: 15,
-                                                    color: Colors.white,
-                                                  ),
-                                                  width: 25,
-                                                  height: 25,
-                                                ),
-                                              ),
-                                            ],
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                    InkWell(
-                                      onTap: () {
-                                        setTime(data.id.toString());
-                                      },
-                                      child: Container(
-                                        decoration: BoxDecoration(
-                                            borderRadius:
-                                                BorderRadius.circular(5),
-                                            color: Color(0xFF1E2754)),
-                                        width: 30,
-                                        height: 100,
-                                        child: Icon(
-                                          Icons.add,
-                                          color: Colors.white,
-                                        ),
-                                      ),
-                                    )
-                                  ],
-                                )
-                              ],
-                            ),
-                          ],
-                        ),
-                      );
-                    },
-                  ),
-                ],
-              ),
+        floatingActionButton: InkWell(
+          onTap: () {
+            addDate();
+          },
+          child: Container(
+            height: 50,
+            width: 50,
+            decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(10),
+                color: Color(0xFF1E2754)),
+            child: Icon(
+              Icons.add,
+              color: Colors.white,
             ),
-    );
+          ),
+        ),
+        appBar: AppBar(
+          leading: IconButton(
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              icon: Icon(
+                Icons.arrow_circle_left_rounded,
+                size: 30,
+                color: Color(0xFFFF4DCCC1),
+              )),
+          title: Text(
+            'Set schedule',
+            style: TextStyle(
+              fontWeight: FontWeight.w600,
+              fontSize: 17,
+            ),
+          ),
+          backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+          elevation: 0,
+        ),
+        body: isLoad
+            ? Center(
+                child: CircularProgressIndicator(),
+              )
+            : listSch.data!.length > 0
+                ? SingleChildScrollView(
+                    child: Column(
+                      children: [
+                        SizedBox(
+                          height: 35,
+                        ),
+                        ListView.separated(
+                          physics: NeverScrollableScrollPhysics(),
+                          padding: EdgeInsets.symmetric(horizontal: 20),
+                          shrinkWrap: true,
+                          itemCount: listSch.data!.length,
+                          separatorBuilder: (BuildContext context, int index) {
+                            return SizedBox(
+                              height: 15,
+                            );
+                          },
+                          itemBuilder: (BuildContext context, int index) {
+                            var data = listSch.data![index];
+                            return Container(
+                              padding: EdgeInsets.symmetric(
+                                  horizontal: 20, vertical: 20),
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(10),
+                                color: Color(0xFFE6E6E6),
+                              ),
+                              width: 400,
+                              child: Column(
+                                children: [
+                                  Column(
+                                    children: [
+                                      Row(
+                                        children: [
+                                          SizedBox(
+                                            width: 15,
+                                          ),
+                                          Text(
+                                            formatDateEnglish(
+                                                data.date.toString()),
+                                            style: TextStyle(
+                                              fontSize: 15,
+                                              fontWeight: FontWeight.w600,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                      SizedBox(
+                                        height: 15,
+                                      ),
+                                      Row(
+                                        children: [
+                                          Expanded(
+                                            child: Wrap(
+                                              children: List.generate(
+                                                data.timeSchedule!.length,
+                                                (i) => Stack(
+                                                  children: [
+                                                    Padding(
+                                                      padding: const EdgeInsets
+                                                              .all(10)
+                                                          .copyWith(left: 0),
+                                                      child: Container(
+                                                        alignment:
+                                                            Alignment.center,
+                                                        decoration: BoxDecoration(
+                                                            borderRadius:
+                                                                BorderRadius
+                                                                    .circular(
+                                                                        10),
+                                                            color: Color(
+                                                                0xFF00CBC8)),
+                                                        width: 80,
+                                                        height: 40,
+                                                        child: Text(
+                                                          timeFormatToHAndM(data
+                                                              .timeSchedule![i]
+                                                              .time),
+                                                          style: TextStyle(
+                                                            fontSize: 17,
+                                                            color: Colors.white,
+                                                          ),
+                                                        ),
+                                                      ),
+                                                    ),
+                                                    InkWell(
+                                                      onTap: () {
+                                                        deleteTime(data
+                                                            .timeSchedule![i].id
+                                                            .toString());
+                                                      },
+                                                      child: Container(
+                                                        margin: EdgeInsets.only(
+                                                            left: 67),
+                                                        decoration:
+                                                            BoxDecoration(
+                                                                shape: BoxShape
+                                                                    .circle,
+                                                                color: Color(
+                                                                    0xFF369B92)),
+                                                        child: Icon(
+                                                          Icons.close_rounded,
+                                                          size: 15,
+                                                          color: Colors.white,
+                                                        ),
+                                                        width: 25,
+                                                        height: 25,
+                                                      ),
+                                                    ),
+                                                  ],
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                          InkWell(
+                                            onTap: () {
+                                              setTime(data.id.toString());
+                                            },
+                                            child: Container(
+                                              decoration: BoxDecoration(
+                                                  borderRadius:
+                                                      BorderRadius.circular(5),
+                                                  color: Color(0xFF1E2754)),
+                                              width: 30,
+                                              height: 100,
+                                              child: Icon(
+                                                Icons.add,
+                                                color: Colors.white,
+                                              ),
+                                            ),
+                                          )
+                                        ],
+                                      )
+                                    ],
+                                  ),
+                                ],
+                              ),
+                            );
+                          },
+                        ),
+                      ],
+                    ),
+                  )
+                : Center(
+                    child: Text("No Schedule"),
+                  ));
   }
 }
