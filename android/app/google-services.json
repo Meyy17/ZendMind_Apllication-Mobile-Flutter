@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "345660819509",
+    "project_id": "zendmind",
+    "storage_bucket": "zendmind.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:345660819509:android:46ffba21e1ebe1f5c7497c",
+        "android_client_info": {
+          "package_name": "com.example.zenmind"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "345660819509-q74rg0cbsbtod8b5qqbbogqk8u0eqp81.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.zenmind",
+            "certificate_hash": "b6e04f866d3d9251c629e745361b61ee68e7450c"
+          }
+        },
+        {
+          "client_id": "345660819509-j5d0iild3mqssvgho4iel732idiblvqs.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCfOELwHmbZgwNqk-dh7WS7AlOQ7CVk-4w"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "345660819509-j5d0iild3mqssvgho4iel732idiblvqs.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

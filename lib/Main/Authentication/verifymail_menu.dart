@@ -3,6 +3,7 @@
 import 'dart:async';
 
 import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:zenmind/DB/auth_preference.dart';
@@ -76,8 +77,12 @@ class _VerifyEmailMenuState extends State<VerifyEmailMenu> {
     var res = await AuthServices().checkVerifyEmail(email: widget.email);
 
     if (res.error == null) {
-      var resLogin = await AuthServices()
-          .login(email: widget.email, password: widget.password);
+      final FirebaseMessaging _fcm = FirebaseMessaging.instance;
+      final token = await _fcm.getToken();
+      var resLogin = await AuthServices().login(
+          email: widget.email,
+          password: widget.password,
+          tokenDvc: token.toString());
 
       if (resLogin.error == null) {
         setState(() {

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:shimmer/shimmer.dart';
 import 'package:zenmind/Main/UserMain/Article/widget_article.dart';
 import 'package:zenmind/Models/articles_model.dart';
 
@@ -22,7 +23,9 @@ class _ArticleMenuState extends State<ArticleMenu> {
       if (resArticle.error == null) {
         article = resArticle.data as ArticlesModel;
         isLoad = false;
-      } else {}
+      } else {
+        print(resArticle.error);
+      }
     });
   }
 
@@ -35,28 +38,25 @@ class _ArticleMenuState extends State<ArticleMenu> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: isLoad
-          ? const Center(
-              child: CircularProgressIndicator(),
-            )
-          : SafeArea(
-              child: SingleChildScrollView(
-                child: Column(
-                  children: [
-                    ArticleWidget().header(
-                        article: article,
-                        onChangeCarosuel: (p0, p1) {
-                          setState(() {
-                            indexSlider = p0!;
-                          });
-                          return null;
-                        },
-                        indexSlider: indexSlider),
-                    ArticleWidget().listLastArticle(article: article)
-                  ],
-                ),
-              ),
-            ),
+      body: SafeArea(
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
+              ArticleWidget().header(
+                  isLoad: isLoad,
+                  article: article,
+                  onChangeCarosuel: (p0, p1) {
+                    setState(() {
+                      indexSlider = p0!;
+                    });
+                    return null;
+                  },
+                  indexSlider: indexSlider),
+              ArticleWidget().listLastArticle(article: article, isLoad: isLoad)
+            ],
+          ),
+        ),
+      ),
     );
   }
 }

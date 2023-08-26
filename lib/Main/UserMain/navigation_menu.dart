@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:zenmind/Main/AllRoleMain/Messages/chat_screen.dart';
+import 'package:zenmind/Main/AllRoleMain/Messages/listroom_screen.dart';
 import 'package:zenmind/Main/UserMain/Account/profile_menu.dart';
 import 'package:zenmind/Main/UserMain/Article/article_menu.dart';
 import 'package:zenmind/Main/UserMain/Consultation/consultation_menu.dart';
@@ -20,7 +22,9 @@ class _NavigationState extends State<Navigation> {
     const ArticleMenu(),
     const ConsultationMenu(),
     const MoodTrackerMenu(),
-    const ProfileMenu()
+    const ProfileMenu(
+      isMentor: false,
+    )
     // Consumer(builder: (context, ThemeModel themeNotifier, child) {
     //   return Center(
     //     child: IconButton(
@@ -55,16 +59,36 @@ class _NavigationState extends State<Navigation> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      floatingActionButton: InkWell(
+        onTap: () {
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => ListRoomUserScreen(),
+              ));
+        },
+        child: Container(
+          padding: EdgeInsets.all(14),
+          decoration: BoxDecoration(
+              color: GetTheme().primaryColor(context),
+              borderRadius: BorderRadius.all(Radius.circular(8))),
+          child: Icon(
+            Icons.message,
+            color: Colors.white,
+          ),
+        ),
+      ),
       body: screen[screenindex],
       bottomNavigationBar: BottomNavigationBar(
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(icon: Icon(Icons.home), label: "Home"),
-          BottomNavigationBarItem(icon: Icon(Icons.book), label: "None"),
+          BottomNavigationBarItem(icon: Icon(Icons.book), label: "Article"),
           BottomNavigationBarItem(
-              icon: Icon(Icons.people_sharp), label: "None"),
+              icon: Icon(Icons.people_sharp), label: "Consultation"),
           BottomNavigationBarItem(
-              icon: Icon(Icons.stacked_line_chart_rounded), label: "None"),
-          BottomNavigationBarItem(icon: Icon(Icons.person), label: "None"),
+              icon: Icon(Icons.stacked_line_chart_rounded),
+              label: "Mood Tracker"),
+          BottomNavigationBarItem(icon: Icon(Icons.person), label: "Profile"),
         ],
         unselectedItemColor: GetTheme().accentCardColors(context),
         selectedItemColor: GetTheme().buttonColors,

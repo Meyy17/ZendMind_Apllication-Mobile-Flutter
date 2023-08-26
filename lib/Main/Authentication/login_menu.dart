@@ -1,4 +1,5 @@
 import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:page_transition/page_transition.dart';
@@ -7,6 +8,7 @@ import 'package:zenmind/Main/Authentication/auth_services.dart';
 import 'package:zenmind/Main/Authentication/register_menu.dart';
 import 'package:zenmind/Main/Authentication/verifymail_menu.dart';
 import 'package:zenmind/Main/MentorMain/home_menu.dart';
+import 'package:zenmind/Main/MentorMain/navigation_menu.dart';
 import 'package:zenmind/Main/UserMain/navigation_menu.dart';
 import 'package:zenmind/Models/auth_model.dart';
 import 'package:zenmind/Models/response_model.dart';
@@ -35,10 +37,15 @@ class _LoginUIState extends State<LoginUI> {
   TextEditingController passwordController = TextEditingController();
 
   bool isLoad = false;
+  bool passwordInputVisibilty = true;
 
   void orderLogin() async {
-    var res = await AuthServices()
-        .login(email: emailController.text, password: passwordController.text);
+    final FirebaseMessaging _fcm = FirebaseMessaging.instance;
+    final token = await _fcm.getToken();
+    var res = await AuthServices().login(
+        email: emailController.text,
+        password: passwordController.text,
+        tokenDvc: token.toString());
 
     setState(() {
       responseLogin = res;
@@ -56,7 +63,7 @@ class _LoginUIState extends State<LoginUI> {
                     type: PageTransitionType.fade,
                     child: userDataFromLogin.data!.user!.role.toString() ==
                             "mentor"
-                        ? const HomeMenuMentor()
+                        ? const NavigationMentor()
                         : const Navigation()),
                 (route) => false);
           }
@@ -144,21 +151,21 @@ class _LoginUIState extends State<LoginUI> {
                       ),
                       const Spacer(),
                       form(formkey: formKey),
-                      SizedBox(
-                          width: double.infinity,
-                          child: Align(
-                            alignment: Alignment.center,
-                            child: Text(
-                              "Or",
-                              style: TextStyle(
-                                  color: GetTheme().unselectedWidget(context)),
-                            ),
-                          )),
-                      const SizedBox(
-                        height: 10,
-                      ),
-                      googleLoginBtn(
-                          context: context, onPressed: () {}, text: "Google"),
+                      // SizedBox(
+                      //     width: double.infinity,
+                      //     child: Align(
+                      //       alignment: Alignment.center,
+                      //       child: Text(
+                      //         "Or",
+                      //         style: TextStyle(
+                      //             color: GetTheme().unselectedWidget(context)),
+                      //       ),
+                      //     )),
+                      // const SizedBox(
+                      //   height: 10,
+                      // ),
+                      // googleLoginBtn(
+                      //     context: context, onPressed: () {}, text: "Google"),
                       const SizedBox(
                         height: 10,
                       ),
@@ -188,6 +195,7 @@ class _LoginUIState extends State<LoginUI> {
         children: [
           inputStyleFillWithIcons(
               readOnly: false,
+              inputVisibilty: false,
               prefixIcons: const Icon(Icons.email),
               validator: (p0) =>
                   p0!.isEmpty ? 'Mohon masukkan email anda' : null,
@@ -198,6 +206,7 @@ class _LoginUIState extends State<LoginUI> {
             height: 20,
           ),
           inputStyleFillWithIcons(
+              inputVisibilty: passwordInputVisibilty,
               readOnly: false,
               prefixIcons: const Icon(Icons.lock),
               validator: (p0) => p0!.length < 6

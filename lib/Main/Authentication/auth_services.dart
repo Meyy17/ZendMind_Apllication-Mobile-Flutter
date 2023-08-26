@@ -10,13 +10,15 @@ import 'package:zenmind/env.dart';
 
 class AuthServices {
   Future<ApiResponse> login(
-      {required String email, required String password}) async {
+      {required String email,
+      required String password,
+      required String tokenDvc}) async {
     ApiResponse apiresponse = ApiResponse();
     try {
       final response = await http.post(
           Uri.parse("${Environment().zendmindBASEURL}api/auth/login"),
           headers: {'Accept': 'application/json'},
-          body: {'email': email, 'password': password});
+          body: {'email': email, 'password': password, 'tokenDvc': tokenDvc});
 
       switch (response.statusCode) {
         case 200:
@@ -115,11 +117,13 @@ class AuthServices {
     return apiresponse;
   }
 
-  Future<ApiResponse> logOut({required String token}) async {
+  Future<ApiResponse> logOut(
+      {required String token, required String tokenDvc}) async {
     ApiResponse apiresponse = ApiResponse();
     try {
       final response = await http.delete(
-          Uri.parse("${Environment().zendmindBASEURL}api/auth/logout"),
+          Uri.parse(
+              "${Environment().zendmindBASEURL}api/auth/logout/${tokenDvc}"),
           headers: {
             'Accept': 'application/json',
             'Authorization': 'Bearer $token'

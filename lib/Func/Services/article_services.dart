@@ -11,10 +11,12 @@ Future<ApiResponse> getArticle() async {
   ApiResponse apiresponse = ApiResponse();
   try {
     final response = await http.get(
-        Uri.parse("${Environment().zendmindBASEURL}api/articles"),
+        Uri.parse("https://apizendmind.igniteteam.id/api/articles"),
         headers: {
           'Accept': 'application/json',
         });
+
+    print(response.body);
 
     switch (response.statusCode) {
       case 200:

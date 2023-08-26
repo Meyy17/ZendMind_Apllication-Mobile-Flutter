@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:shimmer/shimmer.dart';
 import 'package:zenmind/Func/date_fromated.dart';
+import 'package:zenmind/Func/money_formated.dart';
+import 'package:zenmind/Models/bookhistory_model.dart';
 import 'package:zenmind/Models/user_model.dart';
 import 'package:zenmind/Widget/Button.dart';
 import 'package:zenmind/Widget/InputText.dart';
@@ -31,6 +34,7 @@ class ProfileWidget {
       required Function() onTapSetting,
       required Function() tapPhotosProfile,
       required Function() onTapEditProfile,
+      required bool isLoad,
       required UserModel userdata}) {
     return Row(
       children: [
@@ -38,29 +42,72 @@ class ProfileWidget {
           height: 130,
           child: Stack(
             children: [
-              Container(
-                width: 115,
-                height: 115,
-                decoration: BoxDecoration(
-                    color: GetTheme().backgroundGrey(context),
-                    borderRadius: BorderRadius.circular(100)),
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(100),
-                  child: userdata.data!.imgProfileURL != null
-                      ? Image.network(
-                          Environment().zendmindBASEURL +
-                              userdata.data!.imgProfileURL.toString(),
-                          fit: BoxFit.cover,
-                        )
-                      : const Center(
-                          child: Icon(
-                            Icons.person,
-                            color: Colors.white,
-                            size: 32,
-                          ),
-                        ),
-                ),
-              ),
+              isLoad
+                  ? Shimmer.fromColors(
+                      baseColor: Colors.black,
+                      highlightColor: Colors.grey[350]!,
+                      child: Container(
+                        width: 115,
+                        height: 115,
+                        decoration: BoxDecoration(
+                            color: GetTheme().backgroundGrey(context),
+                            borderRadius: BorderRadius.circular(100)),
+                      ),
+                    )
+                  : Container(
+                      width: 115,
+                      height: 115,
+                      decoration: BoxDecoration(
+                          color: GetTheme().backgroundGrey(context),
+                          borderRadius: BorderRadius.circular(100)),
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(100),
+                        child: userdata.data!.imgProfileURL != null
+                            ? Image.network(
+                                Environment().zendmindBASEURL +
+                                    userdata.data!.imgProfileURL.toString(),
+                                fit: BoxFit.cover,
+                                loadingBuilder: (BuildContext context,
+                                    Widget child,
+                                    ImageChunkEvent? loadingProgress) {
+                                  if (loadingProgress == null) {
+                                    return child;
+                                  } else {
+                                    return Center(
+                                      child: Shimmer.fromColors(
+                                        baseColor: Colors.grey[200]!,
+                                        highlightColor: Colors.grey[350]!,
+                                        child: const Center(
+                                          child: Icon(
+                                            Icons.person,
+                                            color: Colors.white,
+                                            size: 32,
+                                          ),
+                                        ),
+                                      ),
+                                    );
+                                  }
+                                },
+                                errorBuilder: (BuildContext context,
+                                    Object exception, StackTrace? stackTrace) {
+                                  return const Center(
+                                    child: Icon(
+                                      Icons.person,
+                                      color: Colors.white,
+                                      size: 32,
+                                    ),
+                                  );
+                                },
+                              )
+                            : const Center(
+                                child: Icon(
+                                  Icons.person,
+                                  color: Colors.white,
+                                  size: 32,
+                                ),
+                              ),
+                      ),
+                    ),
               Positioned(
                 bottom: 0,
                 child: SizedBox(
@@ -102,7 +149,7 @@ class ProfileWidget {
                 children: [
                   Expanded(
                       child: Text(
-                    userdata.data!.name ?? "Error",
+                    isLoad ? "User" : userdata.data!.name ?? "Error",
                     maxLines: 2,
                     overflow: TextOverflow.ellipsis,
                     style: const TextStyle(
@@ -116,7 +163,7 @@ class ProfileWidget {
                 ],
               ),
               Text(
-                "Joined at ${formatDateToSlash(date: userdata.data!.createdAt.toString())}",
+                "Joined at ${formatDateToSlash(date: isLoad ? "0000-00-00 00:00:00" : userdata.data!.createdAt.toString())}",
                 style: const TextStyle(
                   fontSize: 10,
                 ),
@@ -141,6 +188,7 @@ class ProfileWidget {
 
   Widget generalView(
       {required context,
+      required bool isLoad,
       required TextEditingController email,
       required UserModel userdata}) {
     return Column(
@@ -151,9 +199,10 @@ class ProfileWidget {
           height: 10,
         ),
         inputStyleFillWithIcons(
+            inputVisibilty: false,
             readOnly: true,
             context: context,
-            hintText: userdata.data!.email ?? "",
+            hintText: isLoad ? "Loading data..." : userdata.data!.email ?? "",
             prefixIcons: const Icon(Icons.email),
             controller: email,
             validator: null),
@@ -163,24 +212,25 @@ class ProfileWidget {
           height: 10,
         ),
         inputStyleFillWithIcons(
+            inputVisibilty: false,
             readOnly: true,
             context: context,
-            hintText: userdata.data!.name ?? "",
+            hintText: isLoad ? "Loading data..." : userdata.data!.name ?? "",
             prefixIcons: const Icon(Icons.email),
             controller: email,
             validator: null),
         const Spacer(),
-        titleGeneralView(text: "Gender"),
-        const SizedBox(
-          height: 10,
-        ),
-        inputStyleFillWithIcons(
-            readOnly: true,
-            context: context,
-            hintText: userdata.data!.gender ?? "",
-            prefixIcons: const Icon(Icons.email),
-            controller: email,
-            validator: null),
+        // titleGeneralView(text: "Gender"),
+        // const SizedBox(
+        //   height: 10,
+        // ),
+        // inputStyleFillWithIcons(
+        //     readOnly: true,
+        //     context: context,
+        //     hintText: userdata.data!.gender ?? "",
+        //     prefixIcons: const Icon(Icons.email),
+        //     controller: email,
+        //     validator: null),
         const Spacer(
           flex: 5,
         ),
@@ -188,7 +238,11 @@ class ProfileWidget {
     );
   }
 
-  Widget historyView({required context}) {
+  Widget historyView(
+      {required context,
+      required BookingHistoryModel bookfreeData,
+      required BookingHistoryModel bookpaidData,
+      required bool isLoad}) {
     return DefaultTabController(
       length: 2,
       child: Column(
@@ -208,10 +262,10 @@ class ProfileWidget {
               unselectedLabelColor: GetTheme().unselectedWidget(context),
               tabs: const [
                 Tab(
-                  text: 'General',
+                  text: 'Free',
                 ),
                 Tab(
-                  text: 'History',
+                  text: 'Paid',
                 ),
               ],
             ),
@@ -223,17 +277,30 @@ class ProfileWidget {
               child: TabBarView(
             children: [
               ListView.builder(
-                itemCount: 20,
+                itemCount: isLoad ? 0 : bookfreeData.data!.length,
                 shrinkWrap: true,
                 itemBuilder: (BuildContext context, int index) {
-                  return cardHistory(context: context);
+                  var freeData = bookfreeData.data![index];
+                  return cardHistory(
+                      context: context,
+                      date:
+                          "${freeData.dateMentoring} ${freeData.timeMentoring}",
+                      name: "${freeData.mentor!.user!.name}",
+                      type: "Free");
                 },
               ),
               ListView.builder(
-                itemCount: 1,
+                itemCount: isLoad ? 0 : bookpaidData.data!.length,
                 shrinkWrap: true,
                 itemBuilder: (BuildContext context, int index) {
-                  return cardHistory(context: context);
+                  var paidData = bookpaidData.data![index];
+                  return cardHistory(
+                      context: context,
+                      date:
+                          "${paidData.dateMentoring} ${paidData.timeMentoring}",
+                      name: "${paidData.mentor!.user!.name}",
+                      type: MoneyFormated.convertToIdrWithSymbol(
+                          count: paidData.fee, decimalDigit: 2));
                 },
               ),
             ],
@@ -244,7 +311,11 @@ class ProfileWidget {
   }
 }
 
-Widget cardHistory({required context}) {
+Widget cardHistory(
+    {required context,
+    required String name,
+    required String type,
+    required String date}) {
   return Column(
     children: [
       Row(
@@ -257,7 +328,7 @@ Widget cardHistory({required context}) {
           const SizedBox(
             width: 20,
           ),
-          const Expanded(
+          Expanded(
               child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -265,13 +336,13 @@ Widget cardHistory({required context}) {
                 children: [
                   Expanded(
                     child: Text(
-                      "Lugas Richtigo",
+                      name,
                       style:
                           TextStyle(fontWeight: FontWeight.bold, fontSize: 15),
                     ),
                   ),
                   Text(
-                    "Free",
+                    type,
                     style: TextStyle(fontWeight: FontWeight.bold),
                   )
                 ],
@@ -281,7 +352,7 @@ Widget cardHistory({required context}) {
                 style: TextStyle(fontSize: 12),
               ),
               Text(
-                "13 Feb 15:30",
+                date,
                 style: TextStyle(
                   fontSize: 10,
                 ),
