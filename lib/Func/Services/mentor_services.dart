@@ -36,6 +36,7 @@ class MentorServices {
           break;
       }
     } catch (err) {
+      print(err);
       apiresponse.error = serverError;
     }
     return apiresponse;

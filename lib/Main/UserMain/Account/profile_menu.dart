@@ -2,6 +2,7 @@
 
 import 'dart:io';
 
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
@@ -100,7 +101,10 @@ class _ProfileMenuState extends State<ProfileMenu> {
                             ],
                           ))),
                 );
-                var res = await AuthServices().logOut(token: tokenLocalUsers);
+                final FirebaseMessaging _fcm = FirebaseMessaging.instance;
+                final token = await _fcm.getToken();
+                var res = await AuthServices()
+                    .logOut(token: tokenLocalUsers, tokenDvc: token.toString());
                 if (res.error == null) {
                   authPreferences.setToken("");
                   authPreferences.setId(0);

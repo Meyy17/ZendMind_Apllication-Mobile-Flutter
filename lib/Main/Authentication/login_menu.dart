@@ -1,4 +1,5 @@
 import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:page_transition/page_transition.dart';
@@ -39,8 +40,12 @@ class _LoginUIState extends State<LoginUI> {
   bool passwordInputVisibilty = true;
 
   void orderLogin() async {
-    var res = await AuthServices()
-        .login(email: emailController.text, password: passwordController.text);
+    final FirebaseMessaging _fcm = FirebaseMessaging.instance;
+    final token = await _fcm.getToken();
+    var res = await AuthServices().login(
+        email: emailController.text,
+        password: passwordController.text,
+        tokenDvc: token.toString());
 
     setState(() {
       responseLogin = res;

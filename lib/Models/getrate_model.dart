@@ -24,7 +24,7 @@ class GetRateModel {
 
 class Data {
   List<Review>? review;
-  double? averageRate;
+  dynamic averageRate;
 
   Data({this.review, this.averageRate});
 
@@ -53,7 +53,7 @@ class Review {
   int? idUser;
   int? idMentor;
   String? message;
-  double? rate;
+  dynamic rate;
   String? createdAt;
   String? updatedAt;
   User? user;
@@ -98,7 +98,7 @@ class Review {
 class User {
   int? id;
   String? email;
-  Null? imgProfileURL;
+  String? imgProfileURL;
   String? name;
   String? verifyToken;
   String? role;

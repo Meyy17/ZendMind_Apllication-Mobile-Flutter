@@ -1,3 +1,4 @@
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -64,7 +65,9 @@ class _HomeMenuMentorState extends State<HomeMenuMentor> {
         todaySch = resTodaySch.data as ListScheduleMentoring;
 
         isLoad = false;
-      } else {}
+      } else {
+        print(res.error);
+      }
     });
   }
 
@@ -85,7 +88,10 @@ class _HomeMenuMentorState extends State<HomeMenuMentor> {
   }
 
   void logOut() async {
-    var res = await AuthServices().logOut(token: tokenLocalUsers);
+    final FirebaseMessaging _fcm = FirebaseMessaging.instance;
+    final token = await _fcm.getToken();
+    var res = await AuthServices()
+        .logOut(token: tokenLocalUsers, tokenDvc: token.toString());
     if (res.error == null) {
       authPreferences.setToken("");
       authPreferences.setId(0);
@@ -159,18 +165,6 @@ class _HomeMenuMentorState extends State<HomeMenuMentor> {
                         crossAxisAlignment: CrossAxisAlignment.center,
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: [
-                          GestureDetector(
-                            onTap: () {
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => ProfileMentor(),
-                                  ));
-                            },
-                            child: CircleAvatar(
-                              backgroundColor: Color(0xFF000000),
-                            ),
-                          ),
                           SizedBox(
                             width: 15,
                           ),
@@ -178,7 +172,7 @@ class _HomeMenuMentorState extends State<HomeMenuMentor> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                'Good morning, ${users.data!.name}',
+                                'Good morning,\n ${users.data!.name}',
                                 style: TextStyle(
                                   fontWeight: FontWeight.w700,
                                   fontSize: 20,

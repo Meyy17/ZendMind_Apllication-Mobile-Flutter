@@ -478,6 +478,9 @@ class _OngoingConsulState extends State<OngoingConsul> {
                                       context,
                                       MaterialPageRoute(
                                         builder: (context) => ChatRoom(
+                                          username: dataMentor
+                                              .mentor!.user!.name
+                                              .toString(),
                                           id_SecondUser: dataMentor
                                               .mentor!.user!.id
                                               .toString(),
@@ -623,10 +626,13 @@ class _OngoingConsulState extends State<OngoingConsul> {
                                             context,
                                             MaterialPageRoute(
                                               builder: (context) => CallMenu(
-                                                  // id_SecondUser: dataMentor
-                                                  //     .mentor!.user!.id
-                                                  //     .toString(),
-                                                  ),
+                                                username: dataMentor
+                                                    .mentor!.user!.name
+                                                    .toString(),
+                                                id_SecondUser: dataMentor
+                                                    .mentor!.user!.id
+                                                    .toString(),
+                                              ),
                                             ),
                                           );
                                         },

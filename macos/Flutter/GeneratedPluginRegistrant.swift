@@ -7,26 +7,28 @@ import Foundation
 
 import audioplayers_darwin
 import file_selector_macos
+import firebase_auth
+import firebase_core
+import firebase_messaging
+import flutter_local_notifications
 import flutter_localization
 import path_provider_foundation
 import shared_preferences_foundation
-<<<<<<< HEAD
 import sqflite
-=======
->>>>>>> 579d92fc5c45adac92b91eb8f569a5bbbcb5778f
 import wakelock_macos
 import zego_express_engine
 
 func RegisterGeneratedPlugins(registry: FlutterPluginRegistry) {
   AudioplayersDarwinPlugin.register(with: registry.registrar(forPlugin: "AudioplayersDarwinPlugin"))
   FileSelectorPlugin.register(with: registry.registrar(forPlugin: "FileSelectorPlugin"))
+  FLTFirebaseAuthPlugin.register(with: registry.registrar(forPlugin: "FLTFirebaseAuthPlugin"))
+  FLTFirebaseCorePlugin.register(with: registry.registrar(forPlugin: "FLTFirebaseCorePlugin"))
+  FLTFirebaseMessagingPlugin.register(with: registry.registrar(forPlugin: "FLTFirebaseMessagingPlugin"))
+  FlutterLocalNotificationsPlugin.register(with: registry.registrar(forPlugin: "FlutterLocalNotificationsPlugin"))
   FlutterLocalizationPlugin.register(with: registry.registrar(forPlugin: "FlutterLocalizationPlugin"))
   PathProviderPlugin.register(with: registry.registrar(forPlugin: "PathProviderPlugin"))
   SharedPreferencesPlugin.register(with: registry.registrar(forPlugin: "SharedPreferencesPlugin"))
-<<<<<<< HEAD
   SqflitePlugin.register(with: registry.registrar(forPlugin: "SqflitePlugin"))
-=======
->>>>>>> 579d92fc5c45adac92b91eb8f569a5bbbcb5778f
   WakelockMacosPlugin.register(with: registry.registrar(forPlugin: "WakelockMacosPlugin"))
   ZegoExpressEnginePlugin.register(with: registry.registrar(forPlugin: "ZegoExpressEnginePlugin"))
 }

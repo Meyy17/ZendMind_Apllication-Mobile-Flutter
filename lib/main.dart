@@ -1,5 +1,7 @@
 // ignore_for_file: deprecated_member_use, must_be_immutable, unnecessary_null_comparison
 
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:month_year_picker/month_year_picker.dart';
 import 'package:provider/provider.dart';
@@ -16,8 +18,20 @@ import 'package:zenmind/settings_all.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 
-void main() {
+import 'Func/Controller/Firebase/notification_controller.dart';
+
+Future main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
+  FirebaseMessaging.onBackgroundMessage(backgroundHandler);
+  NotificationController.initialize();
+
   runApp(const MyApp());
+}
+
+Future<void> backgroundHandler(RemoteMessage message) async {
+  print(message.data.toString());
+  print(message.notification!.title);
 }
 
 class MyApp extends StatefulWidget {
@@ -72,6 +86,49 @@ class _MyAppState extends State<MyApp> {
   void initState() {
     super.initState();
     getData();
+    FirebaseMessaging.instance.getInitialMessage().then(
+      (message) {
+        if (message != null) {
+          print("WOII ANJRRR ");
+          // if (message.data['email'] != null) {
+          // Navigator.of(context).push(
+          //   MaterialPageRoute(
+          //     builder: (context) => ChatUI(
+          //       email: message.data['email'],
+          //     ),
+          //   ),
+          // );
+          // }
+        }
+      },
+    );
+
+    FirebaseMessaging.onMessage.listen(
+      (message) {
+        if (message.notification != null) {
+          print(message.data);
+          NotificationController.createanddisplaynotification(message);
+        }
+      },
+    );
+
+    FirebaseMessaging.onMessageOpenedApp.listen(
+      (message) {
+        if (message.notification != null) {
+          // print("yo : " + message.data["_id"]);
+          // print(message.notification!.title);
+          // print(message.notification!.body);
+          // print("message.data22 ${message.data['_id']}");
+        }
+      },
+    );
+    setTokenDevice();
+  }
+
+  void setTokenDevice() async {
+    final FirebaseMessaging _fcm = FirebaseMessaging.instance;
+    final token = await _fcm.getToken();
+    print("Token : " + token.toString());
   }
 
   @override

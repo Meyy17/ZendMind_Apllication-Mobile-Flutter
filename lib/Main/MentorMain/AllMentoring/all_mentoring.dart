@@ -7,6 +7,7 @@ import 'package:zenmind/Func/date_fromated.dart';
 import 'package:zenmind/Func/money_formated.dart';
 import 'package:zenmind/Func/time_formated.dart';
 import 'package:zenmind/Main/AllRoleMain/Messages/chat_screen.dart';
+import 'package:zenmind/Main/AllRoleMain/voiceCall/voice_screen.dart';
 import 'package:zenmind/Main/MentorMain/home_menu.dart';
 import 'package:zenmind/Models/listsmentoring_model.dart';
 
@@ -57,7 +58,7 @@ class _AllMentoringState extends State<AllMentoring> {
     setState(() {
       _selectedDate = picked!;
       date = formatDate(_selectedDate);
-      print(date);
+      // print(date);
     });
 
     TimeOfDay _selectedTime = TimeOfDay.now();
@@ -254,6 +255,9 @@ class _AllMentoringState extends State<AllMentoring> {
                                             context,
                                             MaterialPageRoute(
                                               builder: (context) => ChatRoom(
+                                                username: data
+                                                              .user!.name
+                                                              .toString(),
                                                   id_SecondUser:
                                                       data.user!.id.toString()),
                                             ));
@@ -307,21 +311,46 @@ class _AllMentoringState extends State<AllMentoring> {
                                       mainAxisAlignment:
                                           MainAxisAlignment.spaceBetween,
                                       children: [
-                                        Container(
-                                          alignment: Alignment.center,
-                                          decoration: BoxDecoration(
-                                            borderRadius:
-                                                BorderRadius.circular(10),
-                                            color: Color(0xFF1E2754),
-                                          ),
-                                          width: 115,
-                                          height: 45,
-                                          child: Text(
-                                            'Meet',
-                                            style: TextStyle(
-                                              fontWeight: FontWeight.w600,
-                                              fontSize: 15,
-                                              color: Colors.white,
+                                        InkWell(
+                                          onTap: () {
+                                            Navigator.push(
+                                                context,
+                                                MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      CallMenu(
+                                                          id_SecondUser: data
+                                                              .idUser
+                                                              .toString(),
+                                                          username: data
+                                                              .user!.name
+                                                              .toString()),
+                                                ));
+                                          },
+                                          child: Container(
+                                            alignment: Alignment.center,
+                                            decoration: BoxDecoration(
+                                              borderRadius:
+                                                  BorderRadius.circular(10),
+                                              color: DateTime.now().isBefore(
+                                                      formatToDatetime(
+                                                          date: data
+                                                              .dateMentoring
+                                                              .toString(),
+                                                          time: data
+                                                              .timeMentoring
+                                                              .toString()))
+                                                  ? Colors.grey[400]
+                                                  : Color(0xFF1E2754),
+                                            ),
+                                            width: 115,
+                                            height: 45,
+                                            child: Text(
+                                              'Meet',
+                                              style: TextStyle(
+                                                fontWeight: FontWeight.w600,
+                                                fontSize: 15,
+                                                color: Colors.white,
+                                              ),
                                             ),
                                           ),
                                         ),

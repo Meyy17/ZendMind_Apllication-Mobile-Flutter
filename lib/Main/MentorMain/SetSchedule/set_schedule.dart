@@ -252,7 +252,7 @@ class _SetScheduleState extends State<SetSchedule> {
                                 borderRadius: BorderRadius.circular(10),
                                 color: Color(0xFFE6E6E6),
                               ),
-                              width: 400,
+                              width: double.infinity,
                               child: Column(
                                 children: [
                                   Column(
@@ -273,90 +273,101 @@ class _SetScheduleState extends State<SetSchedule> {
                                         ],
                                       ),
                                       SizedBox(
-                                        height: 15,
+                                        height: 5,
                                       ),
-                                      Row(
-                                        children: [
-                                          Expanded(
-                                            child: Wrap(
-                                              children: List.generate(
-                                                data.timeSchedule!.length,
-                                                (i) => Stack(
-                                                  children: [
-                                                    Padding(
-                                                      padding: const EdgeInsets
-                                                              .all(10)
-                                                          .copyWith(left: 0),
-                                                      child: Container(
-                                                        alignment:
-                                                            Alignment.center,
-                                                        decoration: BoxDecoration(
+                                      IntrinsicHeight(
+                                        child: Row(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.stretch,
+                                          children: [
+                                            Expanded(
+                                              child: Wrap(
+                                                children: List.generate(
+                                                  data.timeSchedule!.length,
+                                                  (i) => Stack(
+                                                    children: [
+                                                      Padding(
+                                                        padding:
+                                                            const EdgeInsets
+                                                                .all(10),
+                                                        child: Container(
+                                                          alignment:
+                                                              Alignment.center,
+                                                          decoration:
+                                                              BoxDecoration(
                                                             borderRadius:
                                                                 BorderRadius
                                                                     .circular(
                                                                         10),
                                                             color: Color(
-                                                                0xFF00CBC8)),
-                                                        width: 80,
-                                                        height: 40,
-                                                        child: Text(
-                                                          timeFormatToHAndM(data
-                                                              .timeSchedule![i]
-                                                              .time),
-                                                          style: TextStyle(
-                                                            fontSize: 17,
-                                                            color: Colors.white,
+                                                                0xFF00CBC8),
+                                                          ),
+                                                          width: 80,
+                                                          height: 40,
+                                                          child: Text(
+                                                            timeFormatToHAndM(data
+                                                                .timeSchedule![
+                                                                    i]
+                                                                .time),
+                                                            style: TextStyle(
+                                                              fontSize: 17,
+                                                              color:
+                                                                  Colors.white,
+                                                            ),
                                                           ),
                                                         ),
                                                       ),
-                                                    ),
-                                                    InkWell(
-                                                      onTap: () {
-                                                        deleteTime(data
-                                                            .timeSchedule![i].id
-                                                            .toString());
-                                                      },
-                                                      child: Container(
-                                                        margin: EdgeInsets.only(
-                                                            left: 67),
-                                                        decoration:
-                                                            BoxDecoration(
-                                                                shape: BoxShape
-                                                                    .circle,
-                                                                color: Color(
-                                                                    0xFF369B92)),
-                                                        child: Icon(
-                                                          Icons.close_rounded,
-                                                          size: 15,
-                                                          color: Colors.white,
+                                                      InkWell(
+                                                        onTap: () {
+                                                          deleteTime(data
+                                                              .timeSchedule![i]
+                                                              .id
+                                                              .toString());
+                                                        },
+                                                        child: Container(
+                                                          margin:
+                                                              EdgeInsets.only(
+                                                                  left: 67),
+                                                          decoration:
+                                                              BoxDecoration(
+                                                            shape:
+                                                                BoxShape.circle,
+                                                            color: Color(
+                                                                0xFF369B92),
+                                                          ),
+                                                          child: Icon(
+                                                            Icons.close_rounded,
+                                                            size: 15,
+                                                            color: Colors.white,
+                                                          ),
+                                                          width: 25,
+                                                          height: 25,
                                                         ),
-                                                        width: 25,
-                                                        height: 25,
                                                       ),
-                                                    ),
-                                                  ],
+                                                    ],
+                                                  ),
                                                 ),
                                               ),
                                             ),
-                                          ),
-                                          InkWell(
-                                            onTap: () {
-                                              setTime(data.id.toString());
-                                            },
-                                            child: Container(
-                                              decoration: BoxDecoration(
+                                            InkWell(
+                                              onTap: () {
+                                                setTime(data.id.toString());
+                                              },
+                                              child: Container(
+                                                decoration: BoxDecoration(
                                                   borderRadius:
                                                       BorderRadius.circular(5),
-                                                  color: Color(0xFF1E2754)),
-                                              width: 30,
-                                              height: 100,
-                                              child: Icon(
-                                                Icons.add,
-                                                color: Colors.white,
+                                                  color: Color(0xFF1E2754),
+                                                ),
+                                                width: 30,
+                                                child: Icon(
+                                                  Icons.add,
+                                                  color: Colors.white,
+                                                ),
                                               ),
                                             ),
-                                          )
-                                        ],
+                                          ],
+                                        ),
                                       )
                                     ],
                                   ),

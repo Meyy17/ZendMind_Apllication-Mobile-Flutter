@@ -91,6 +91,8 @@ class _BookConsultationState extends State<BookConsultation> {
               context,
               MaterialPageRoute(
                 builder: (context) => ChatRoom(
+                    username:
+                        mentorData.data!.mentorData!.user!.name.toString(),
                     id_SecondUser:
                         mentorData.data!.mentorData!.user!.id.toString()),
               ));
@@ -457,7 +459,9 @@ class _BookConsultationState extends State<BookConsultation> {
                                         width: 7,
                                       ),
                                       Text(
-                                        '${mentorData.data!.ratingCount} Reviews',
+                                        mentorData.data!.ratingCount == 0
+                                            ? "Belum ada review"
+                                            : '${mentorData.data!.ratingCount} Reviews',
                                         style: TextStyle(
                                             fontWeight: FontWeight.w600,
                                             fontSize: 13,
@@ -476,24 +480,44 @@ class _BookConsultationState extends State<BookConsultation> {
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceAround,
                             children: [
-                              Column(
-                                children: [
-                                  Text(
-                                    '${mentorData.data!.ratingCount}',
-                                    style: TextStyle(
-                                      fontSize: 30,
-                                      fontWeight: FontWeight.w800,
+                              mentorData.data!.patientCount == 0
+                                  ? Expanded(
+                                      child: Padding(
+                                        padding: const EdgeInsets.symmetric(
+                                            horizontal: 10),
+                                        child: Text(
+                                          'There are no review yet',
+                                          maxLines: 2,
+                                          textAlign: TextAlign.center,
+                                          style: TextStyle(
+                                            fontSize: 15,
+                                            color: Color(0xFF5C5C5C),
+                                          ),
+                                        ),
+                                      ),
+                                    )
+                                  : Padding(
+                                      padding: const EdgeInsets.symmetric(
+                                          horizontal: 10),
+                                      child: Column(
+                                        children: [
+                                          Text(
+                                            '${mentorData.data!.ratingCount}',
+                                            style: TextStyle(
+                                              fontSize: 30,
+                                              fontWeight: FontWeight.w800,
+                                            ),
+                                          ),
+                                          Text(
+                                            'Reviews',
+                                            style: TextStyle(
+                                              fontSize: 15,
+                                              color: Color(0xFF5C5C5C),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
                                     ),
-                                  ),
-                                  Text(
-                                    'Reviews',
-                                    style: TextStyle(
-                                      fontSize: 15,
-                                      color: Color(0xFF5C5C5C),
-                                    ),
-                                  ),
-                                ],
-                              ),
                               Container(
                                 width: 2,
                                 height: 55,
@@ -501,24 +525,44 @@ class _BookConsultationState extends State<BookConsultation> {
                                     color: Colors.black.withOpacity(0.1),
                                     borderRadius: BorderRadius.circular(200)),
                               ),
-                              Column(
-                                children: [
-                                  Text(
-                                    '${mentorData.data!.patientCount}',
-                                    style: TextStyle(
-                                      fontSize: 30,
-                                      fontWeight: FontWeight.w800,
+                              mentorData.data!.patientCount == 0
+                                  ? Expanded(
+                                      child: Padding(
+                                        padding: const EdgeInsets.symmetric(
+                                            horizontal: 10),
+                                        child: Text(
+                                          'There are no patients yet',
+                                          maxLines: 2,
+                                          textAlign: TextAlign.center,
+                                          style: TextStyle(
+                                            fontSize: 15,
+                                            color: Color(0xFF5C5C5C),
+                                          ),
+                                        ),
+                                      ),
+                                    )
+                                  : Padding(
+                                      padding: const EdgeInsets.symmetric(
+                                          horizontal: 10),
+                                      child: Column(
+                                        children: [
+                                          Text(
+                                            '${mentorData.data!.patientCount}',
+                                            style: TextStyle(
+                                              fontSize: 30,
+                                              fontWeight: FontWeight.w800,
+                                            ),
+                                          ),
+                                          Text(
+                                            'Patients',
+                                            style: TextStyle(
+                                              fontSize: 15,
+                                              color: Color(0xFF5C5C5C),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
                                     ),
-                                  ),
-                                  Text(
-                                    'Patients',
-                                    style: TextStyle(
-                                      fontSize: 15,
-                                      color: Color(0xFF5C5C5C),
-                                    ),
-                                  ),
-                                ],
-                              ),
                               Container(
                                 width: 2,
                                 height: 55,
@@ -526,26 +570,30 @@ class _BookConsultationState extends State<BookConsultation> {
                                     color: Colors.black.withOpacity(0.1),
                                     borderRadius: BorderRadius.circular(200)),
                               ),
-                              Column(
-                                children: [
-                                  Text(
-                                    exp(DateTime.parse(mentorData
-                                            .data!.mentorData!.createdAt
-                                            .toString()))
-                                        .toString(),
-                                    style: TextStyle(
-                                      fontSize: 30,
-                                      fontWeight: FontWeight.w800,
+                              Padding(
+                                padding:
+                                    const EdgeInsets.symmetric(horizontal: 10),
+                                child: Column(
+                                  children: [
+                                    Text(
+                                      exp(DateTime.parse(mentorData
+                                              .data!.mentorData!.createdAt
+                                              .toString()))
+                                          .toString(),
+                                      style: TextStyle(
+                                        fontSize: 30,
+                                        fontWeight: FontWeight.w800,
+                                      ),
                                     ),
-                                  ),
-                                  Text(
-                                    'Years exp.',
-                                    style: TextStyle(
-                                      fontSize: 15,
-                                      color: Color(0xFF5C5C5C),
+                                    Text(
+                                      'Years exp.',
+                                      style: TextStyle(
+                                        fontSize: 15,
+                                        color: Color(0xFF5C5C5C),
+                                      ),
                                     ),
-                                  ),
-                                ],
+                                  ],
+                                ),
                               ),
                             ],
                           ),
@@ -553,6 +601,7 @@ class _BookConsultationState extends State<BookConsultation> {
                             height: 25,
                           ),
                           Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Container(
                                 alignment: Alignment.topLeft,
@@ -583,6 +632,7 @@ class _BookConsultationState extends State<BookConsultation> {
                             height: 25,
                           ),
                           Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Container(
                                 alignment: Alignment.topLeft,
@@ -677,6 +727,7 @@ class _BookConsultationState extends State<BookConsultation> {
                             height: 25,
                           ),
                           Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Container(
                                 alignment: Alignment.topLeft,
@@ -801,6 +852,9 @@ class _BookConsultationState extends State<BookConsultation> {
                                 context,
                                 MaterialPageRoute(
                                   builder: (context) => ChatRoom(
+                                    username: mentorData
+                                        .data!.mentorData!.user!.name
+                                        .toString(),
                                     id_SecondUser: mentorData
                                         .data!.mentorData!.idUser
                                         .toString(),

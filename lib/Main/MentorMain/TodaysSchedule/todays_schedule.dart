@@ -10,6 +10,7 @@ import '../../../Func/money_formated.dart';
 import '../../../Func/time_formated.dart';
 import '../../../Models/listsmentoring_model.dart';
 import '../../AllRoleMain/Messages/chat_screen.dart';
+import '../../AllRoleMain/voiceCall/voice_screen.dart';
 
 class TodaysSchedule extends StatefulWidget {
   const TodaysSchedule({Key? key}) : super(key: key);
@@ -255,6 +256,9 @@ class _TodaysScheduleState extends State<TodaysSchedule> {
                                             context,
                                             MaterialPageRoute(
                                               builder: (context) => ChatRoom(
+                                                username: data
+                                                              .user!.name
+                                                              .toString(),
                                                   id_SecondUser:
                                                       data.user!.id.toString()),
                                             ));
@@ -308,21 +312,46 @@ class _TodaysScheduleState extends State<TodaysSchedule> {
                                       mainAxisAlignment:
                                           MainAxisAlignment.spaceBetween,
                                       children: [
-                                        Container(
-                                          alignment: Alignment.center,
-                                          decoration: BoxDecoration(
-                                            borderRadius:
-                                                BorderRadius.circular(10),
-                                            color: Color(0xFF1E2754),
-                                          ),
-                                          width: 115,
-                                          height: 45,
-                                          child: Text(
-                                            'Meet',
-                                            style: TextStyle(
-                                              fontWeight: FontWeight.w600,
-                                              fontSize: 15,
-                                              color: Colors.white,
+                                        InkWell(
+                                          onTap: () {
+                                            Navigator.push(
+                                                context,
+                                                MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      CallMenu(
+                                                          id_SecondUser: data
+                                                              .idUser
+                                                              .toString(),
+                                                          username: data
+                                                              .user!.name
+                                                              .toString()),
+                                                ));
+                                          },
+                                          child: Container(
+                                            alignment: Alignment.center,
+                                            decoration: BoxDecoration(
+                                              borderRadius:
+                                                  BorderRadius.circular(10),
+                                              color: DateTime.now().isBefore(
+                                                      formatToDatetime(
+                                                          date: data
+                                                              .dateMentoring
+                                                              .toString(),
+                                                          time: data
+                                                              .timeMentoring
+                                                              .toString()))
+                                                  ? Colors.grey[400]
+                                                  : Color(0xFF1E2754),
+                                            ),
+                                            width: 115,
+                                            height: 45,
+                                            child: Text(
+                                              'Meet',
+                                              style: TextStyle(
+                                                fontWeight: FontWeight.w600,
+                                                fontSize: 15,
+                                                color: Colors.white,
+                                              ),
                                             ),
                                           ),
                                         ),

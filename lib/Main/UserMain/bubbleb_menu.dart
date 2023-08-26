@@ -1,6 +1,7 @@
 import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 import 'package:zenmind/Widget/Button.dart';
+import 'package:zenmind/env.dart';
 import 'dart:async';
 import 'dart:math';
 import 'package:zenmind/settings_all.dart';
@@ -24,8 +25,8 @@ class _BubbleBreatheState extends State<BubbleBreathe> {
   int _remainingSeconds = 0;
 
   void _startBreathing() async {
-    await player.play(UrlSource(
-        'https://6e92-180-253-65-58.ngrok-free.app/audio/awowowowk.mp3'));
+    await player.play(
+        UrlSource('${Environment().zendmindBASEURL}/audio/awowowowk.mp3'));
     // player.setPlayerMode(PlayerMode.mediaPlayer);
 
     setState(() {
@@ -86,12 +87,35 @@ class _BubbleBreatheState extends State<BubbleBreathe> {
   }
 
   void onOpened() {
+    TextEditingController ctrl = TextEditingController();
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        
+        title: Text("Masukkan Durasi"),
+        content: TextFormField(
+          controller: ctrl,
+        ),
+        actions: [
+          TextButton(
+              onPressed: () {
+                setState(() {
+                  breathDuration = int.parse(ctrl.text);
+                  Navigator.pop(context);
+                });
+              },
+              child: Text("Ok"))
+        ],
       ),
     );
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      onOpened();
+    });
   }
 
   @override

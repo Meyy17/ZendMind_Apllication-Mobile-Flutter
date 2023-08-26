@@ -25,7 +25,7 @@ class MentorProfileModel {
 class Data {
   int? id;
   String? email;
-  Null? imgProfileURL;
+  String? imgProfileURL;
   String? name;
   String? verifyToken;
   String? role;

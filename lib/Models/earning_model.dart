@@ -23,70 +23,77 @@ class GetEarningModel {
 }
 
 class Data {
-  List<EarningData>? earningData;
-  int? earningCount;
+  int? earningAll;
+  int? earningRec;
+  List<EarningRecData>? earningRecData;
+  int? earningNow;
+  List<Rekening>? rekening;
 
-  Data({this.earningData, this.earningCount});
+  Data(
+      {this.earningAll,
+      this.earningRec,
+      this.earningRecData,
+      this.earningNow,
+      this.rekening});
 
   Data.fromJson(Map<String, dynamic> json) {
-    if (json['earningData'] != null) {
-      earningData = <EarningData>[];
-      json['earningData'].forEach((v) {
-        earningData!.add(new EarningData.fromJson(v));
+    earningAll = json['earningAll'];
+    earningRec = json['earningRec'];
+    if (json['earningRecData'] != null) {
+      earningRecData = <EarningRecData>[];
+      json['earningRecData'].forEach((v) {
+        earningRecData!.add(new EarningRecData.fromJson(v));
       });
     }
-    earningCount = json['earningCount'];
+    earningNow = json['earningNow'];
+    if (json['rekening'] != null) {
+      rekening = <Rekening>[];
+      json['rekening'].forEach((v) {
+        rekening!.add(new Rekening.fromJson(v));
+      });
+    }
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
-    if (this.earningData != null) {
-      data['earningData'] = this.earningData!.map((v) => v.toJson()).toList();
+    data['earningAll'] = this.earningAll;
+    data['earningRec'] = this.earningRec;
+    if (this.earningRecData != null) {
+      data['earningRecData'] =
+          this.earningRecData!.map((v) => v.toJson()).toList();
     }
-    data['earningCount'] = this.earningCount;
+    data['earningNow'] = this.earningNow;
+    if (this.rekening != null) {
+      data['rekening'] = this.rekening!.map((v) => v.toJson()).toList();
+    }
     return data;
   }
 }
 
-class EarningData {
+class EarningRecData {
   int? id;
   int? idUser;
-  int? idMentor;
-  int? fee;
-  String? dateMentoring;
-  String? timeMentoring;
-  String? notes;
-  String? urlTrx;
-  String? idTRx;
-  String? status;
+  String? norek;
+  String? type;
+  int? total;
   String? createdAt;
   String? updatedAt;
 
-  EarningData(
+  EarningRecData(
       {this.id,
       this.idUser,
-      this.idMentor,
-      this.fee,
-      this.dateMentoring,
-      this.timeMentoring,
-      this.notes,
-      this.urlTrx,
-      this.idTRx,
-      this.status,
+      this.norek,
+      this.type,
+      this.total,
       this.createdAt,
       this.updatedAt});
 
-  EarningData.fromJson(Map<String, dynamic> json) {
+  EarningRecData.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     idUser = json['id_user'];
-    idMentor = json['id_mentor'];
-    fee = json['fee'];
-    dateMentoring = json['date_mentoring'];
-    timeMentoring = json['time_mentoring'];
-    notes = json['notes'];
-    urlTrx = json['urlTrx'];
-    idTRx = json['idTRx'];
-    status = json['status'];
+    norek = json['norek'];
+    type = json['type'];
+    total = json['total'];
     createdAt = json['createdAt'];
     updatedAt = json['updatedAt'];
   }
@@ -95,14 +102,46 @@ class EarningData {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['id'] = this.id;
     data['id_user'] = this.idUser;
-    data['id_mentor'] = this.idMentor;
-    data['fee'] = this.fee;
-    data['date_mentoring'] = this.dateMentoring;
-    data['time_mentoring'] = this.timeMentoring;
-    data['notes'] = this.notes;
-    data['urlTrx'] = this.urlTrx;
-    data['idTRx'] = this.idTRx;
-    data['status'] = this.status;
+    data['norek'] = this.norek;
+    data['type'] = this.type;
+    data['total'] = this.total;
+    data['createdAt'] = this.createdAt;
+    data['updatedAt'] = this.updatedAt;
+    return data;
+  }
+}
+
+class Rekening {
+  int? id;
+  int? idUser;
+  String? norek;
+  String? type;
+  String? createdAt;
+  String? updatedAt;
+
+  Rekening(
+      {this.id,
+      this.idUser,
+      this.norek,
+      this.type,
+      this.createdAt,
+      this.updatedAt});
+
+  Rekening.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    idUser = json['id_user'];
+    norek = json['norek'];
+    type = json['type'];
+    createdAt = json['createdAt'];
+    updatedAt = json['updatedAt'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['id'] = this.id;
+    data['id_user'] = this.idUser;
+    data['norek'] = this.norek;
+    data['type'] = this.type;
     data['createdAt'] = this.createdAt;
     data['updatedAt'] = this.updatedAt;
     return data;

@@ -218,7 +218,9 @@ class ConsultationWidget {
                                   width: 10,
                                 ),
                                 Text(
-                                  "${MoneyFormated.convertToIdrWithSymbol(count: dataMentor.fee, decimalDigit: 2)}",
+                                  dataMentor.fee == 0
+                                      ? "Free"
+                                      : "${MoneyFormated.convertToIdrWithSymbol(count: dataMentor.fee, decimalDigit: 2)}",
                                   style: TextStyle(
                                       fontSize: 12,
                                       fontWeight: FontWeight.w600),

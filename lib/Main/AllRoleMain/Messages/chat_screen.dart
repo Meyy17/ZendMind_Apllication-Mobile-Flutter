@@ -2,14 +2,18 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:zenmind/DB/auth_preference.dart';
 import 'package:zenmind/Func/Services/message_services.dart';
+import 'package:zenmind/Func/date_fromated.dart';
+import 'package:zenmind/Func/time_formated.dart';
 import 'package:zenmind/Models/message_model.dart';
 import 'package:zenmind/env.dart';
 import 'package:zenmind/settings_all.dart';
 import 'package:socket_io_client/socket_io_client.dart' as IO;
 
 class ChatRoom extends StatefulWidget {
-  const ChatRoom({super.key, required this.id_SecondUser});
+  const ChatRoom(
+      {super.key, required this.id_SecondUser, required this.username});
   final String id_SecondUser;
+  final String username;
 
   @override
   State<ChatRoom> createState() => _ChatRoomState();
@@ -28,12 +32,14 @@ class _ChatRoomState extends State<ChatRoom> {
   // bool isLoad = true;
 
   void postChat() async {
+    String msg = inputMsgCtrl.text;
+    inputMsgCtrl.clear();
+
     var res = await MessageServices().createChat(
         id_SecondUser: widget.id_SecondUser,
         token: tokenLocalUsers,
         roomID: roomID,
-        message: inputMsgCtrl.text);
-    inputMsgCtrl.clear();
+        message: msg);
   }
 
   void getData() async {
@@ -104,7 +110,7 @@ class _ChatRoomState extends State<ChatRoom> {
               color: Color(0xFFFF4DCCC1),
             )),
         title: Text(
-          isLoad ? "Loading..." : 'User',
+          isLoad ? "Loading..." : '${widget.username}',
           style: TextStyle(
             fontWeight: FontWeight.w600,
             fontSize: 17,
@@ -126,12 +132,93 @@ class _ChatRoomState extends State<ChatRoom> {
                       return Padding(
                           padding:
                               EdgeInsets.symmetric(vertical: 5, horizontal: 10),
-                          child: Text(
-                            message.data![index].message ?? "",
-                            textAlign: message.data![index].userId == idUser
-                                ? TextAlign.end
-                                : TextAlign.start,
-                          ));
+                          child: message.data![index].userId != idUser
+                              ? Row(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  children: [
+                                    Container(
+                                      constraints: BoxConstraints(
+                                          maxWidth:
+                                              GetSizeScreen().width(context) *
+                                                  0.65),
+                                      // width: 100,
+                                      padding: EdgeInsets.only(
+                                          left: 20,
+                                          top: 10,
+                                          right: 20,
+                                          bottom: 5),
+                                      decoration: BoxDecoration(
+                                          color: Color(0xff74AEE0),
+                                          borderRadius:
+                                              BorderRadius.circular(10)),
+                                      child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Text(
+                                            message.data![index].message
+                                                .toString(),
+                                            style:
+                                                TextStyle(color: Colors.white),
+                                          ),
+                                          SizedBox(
+                                            height: 5,
+                                          ),
+                                          Text(
+                                            "${formatDateToSlash(date: message.data![index].createdAt.toString())} - ${datetimeFormatToHAndM(message.data![index].createdAt.toString())}",
+                                            textAlign: TextAlign.end,
+                                            style: TextStyle(
+                                                color: Colors.white,
+                                                fontSize: 10),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ],
+                                )
+                              : Row(
+                                  mainAxisAlignment: MainAxisAlignment.end,
+                                  children: [
+                                    Container(
+                                      constraints: BoxConstraints(
+                                          maxWidth:
+                                              GetSizeScreen().width(context) *
+                                                  0.65),
+                                      // width: 100,
+                                      padding: EdgeInsets.only(
+                                          left: 20,
+                                          top: 10,
+                                          right: 20,
+                                          bottom: 5),
+                                      decoration: BoxDecoration(
+                                          color: Color(0xff4DCCC1),
+                                          borderRadius:
+                                              BorderRadius.circular(10)),
+                                      child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Text(
+                                            message.data![index].message
+                                                .toString(),
+                                            textAlign: TextAlign.start,
+                                            style:
+                                                TextStyle(color: Colors.white),
+                                          ),
+                                          SizedBox(
+                                            height: 5,
+                                          ),
+                                          Text(
+                                            "${formatDateToSlash(date: message.data![index].createdAt.toString())} - ${datetimeFormatToHAndM(message.data![index].createdAt.toString())}",
+                                            style: TextStyle(
+                                                color: Colors.white,
+                                                fontSize: 10),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ],
+                                ));
                     },
                   ),
           ),
@@ -152,7 +239,10 @@ class _ChatRoomState extends State<ChatRoom> {
                       hintText: "Pesan...",
                       suffixIcon: InkWell(
                         onTap: () async {
-                          postChat();
+                          if (inputMsgCtrl.text != "" ||
+                              inputMsgCtrl.text != null) {
+                            postChat();
+                          }
                         },
                         child: Container(
                             decoration: BoxDecoration(
